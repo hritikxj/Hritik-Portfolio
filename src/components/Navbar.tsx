@@ -12,7 +12,7 @@ export default function Navbar() {
 
   return (
     <nav className="border-b-[0.5px] border-border-subtle bg-off-white sticky top-0 z-50">
-      <div className="flex justify-between items-center px-[clamp(20px,4vw,40px)] py-4">
+      <div className="w-full flex justify-between items-center px-5 md:px-12 lg:px-10 py-4">
         <div className="font-display text-lg font-normal tracking-[0.02em]">Hritik Jasnani</div>
         
         <ul className="hidden md:flex gap-8 list-none items-center">
@@ -37,10 +37,12 @@ export default function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="md:hidden bg-off-white border-t-[0.5px] border-border-subtle flex flex-col absolute w-full px-[clamp(20px,4vw,40px)] py-4 gap-2 shadow-sm">
+        <div className="md:hidden bg-off-white border-t-[0.5px] border-border-subtle flex flex-col absolute w-full left-0 right-0">
+          <div className="w-full flex flex-col px-5 md:px-12 lg:px-10 py-4 gap-2 shadow-sm">
           <button onClick={() => scrollTo('work')} className="text-xs text-smoke text-left tracking-[0.08em] uppercase py-2">Work</button>
           <button onClick={() => scrollTo('about')} className="text-xs text-smoke text-left tracking-[0.08em] uppercase py-2">About</button>
           <button onClick={() => scrollTo('services')} className="text-xs text-smoke text-left tracking-[0.08em] uppercase py-2">Services</button>
+          </div>
         </div>
       )}
     </nav>

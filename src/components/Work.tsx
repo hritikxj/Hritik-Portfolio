@@ -10,12 +10,13 @@ export default function Work() {
 
   return (
     <>
-      <section id="work" className="scroll-mt-16 px-[clamp(20px,4vw,40px)] py-[clamp(40px,8vw,80px)]">
-        <div className="flex justify-between items-baseline mb-12 pb-5 border-b-[0.5px] border-border-subtle">
-          <h2 className="font-display text-[clamp(32px,4vw,42px)] font-light text-ink">Selected Work</h2>
+      <section id="work" className="scroll-mt-16 py-10 md:py-16 lg:py-20">
+        <div className="w-full px-5 md:px-12 lg:px-10">
+          <div className="flex justify-between items-baseline mb-12 pb-5 border-b-[0.5px] border-border-subtle">
+            <h2 className="font-display text-4xl md:text-5xl font-light text-ink">Selected Work</h2>
           <span className="text-[11px] text-smoke tracking-[0.1em]">01 / Work</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[clamp(12px,2vw,20px)]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {works.map((work, idx) => (
             <div key={idx} className={`cursor-pointer group ${work.double ? 'md:col-span-2' : ''}`}>
               <div 
@@ -37,13 +38,15 @@ export default function Work() {
               </div>
             </div>
           ))}
+          </div>
         </div>
       </section>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(30px,5vw,60px)] items-center px-[clamp(20px,4vw,40px)] py-[clamp(40px,8vw,80px)] bg-parchment">
+      <div className="bg-parchment py-10 md:py-16 lg:py-20">
+        <div className="w-full px-5 md:px-12 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
         <div>
           <p className="text-[10px] tracking-[0.12em] uppercase text-smoke mb-5">Featured Case Study</p>
-          <h2 className="font-display text-[clamp(36px,4vw,48px)] font-light leading-[1.1] mb-6">Purr Pantry<br/>Brand Identity</h2>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light leading-[1.1] mb-6">Purr Pantry<br/>Brand Identity</h2>
           <p className="text-sm text-smoke leading-[1.8] mb-8">
             A full brand identity system for a premium cat food brand — logo, color, packaging, social templates, and a 17-slide Behance case study, built end-to-end.
           </p>
@@ -58,8 +61,9 @@ export default function Work() {
             Read Case Study →
           </button>
         </div>
-        <div className="bg-ink rounded-md aspect-4/3 flex items-center justify-center">
-          <span className="font-display text-[clamp(36px,5vw,48px)] font-light text-white/15">PP</span>
+          <div className="bg-ink rounded-md aspect-4/3 flex items-center justify-center">
+            <span className="font-display text-5xl md:text-6xl font-light text-white/15">PP</span>
+          </div>
         </div>
       </div>
     </>

@@ -9,9 +9,10 @@ export default function Services() {
   ];
 
   return (
-    <section id="services" className="scroll-mt-16 px-[clamp(20px,4vw,40px)] py-[clamp(40px,8vw,80px)]">
-      <div className="flex justify-between items-baseline mb-12 pb-5 border-b-[0.5px] border-border-subtle">
-        <h2 className="font-display text-[clamp(32px,4vw,42px)] font-light text-ink">What I Do</h2>
+    <section id="services" className="scroll-mt-16 py-10 md:py-16 lg:py-20">
+      <div className="w-full px-5 md:px-12 lg:px-10">
+        <div className="flex justify-between items-baseline mb-12 pb-5 border-b-[0.5px] border-border-subtle">
+          <h2 className="font-display text-4xl md:text-5xl font-light text-ink">What I Do</h2>
         <span className="text-[11px] text-smoke tracking-[0.1em]">03 / Services</span>
       </div>
       
@@ -19,13 +20,14 @@ export default function Services() {
         {services.map((service, idx) => (
           <div 
             key={idx} 
-            className="p-[clamp(24px,3vw,36px)] px-[clamp(20px,2.5vw,28px)] transition-colors duration-200 hover:bg-parchment bg-off-white"
+            className="p-6 md:p-8 lg:p-10 transition-colors duration-200 hover:bg-parchment bg-off-white"
           >
-            <div className="font-display text-[clamp(32px,4vw,40px)] font-light text-black/5 mb-4">{service.num}</div>
+              <div className="font-display text-4xl md:text-5xl font-light text-black/5 mb-4">{service.num}</div>
             <div className="text-sm font-medium text-ink mb-2.5">{service.name}</div>
             <div className="text-xs text-smoke leading-[1.7]">{service.desc}</div>
           </div>
         ))}
+        </div>
       </div>
     </section>
   );
