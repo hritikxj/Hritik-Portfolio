@@ -2,9 +2,9 @@ import Reveal from './Reveal';
 
 export default function Work() {
   const works = [
-    { title: "Purr Pantry — Premium Cat Food Brand", category: "Branding", double: true, color: "#1A1A1A", thumbText: "Purr Pantry", textClass: "text-[clamp(32px,5vw,64px)] text-white/20" },
-    { title: "Dove #TheRealGrowth", category: "Campaign", double: false, color: "#E8E2D6", thumbText: "Dove Campaign", textClass: "text-lg text-smoke" },
-    { title: "Nothing Community Edition", category: "UI/UX", double: false, color: "#2C3E50", thumbText: "Nothing Widget", textClass: "text-lg text-white/30" },
+    { title: "Purr Pantry — Premium Cat Food Brand", category: "Branding", double: false, color: "#1A1A1A", thumbText: "Purr Pantry", textClass: "text-[clamp(32px,5vw,64px)] text-white/20", image: "/Purthumbnail.jpg" },
+    { title: "Dove #TheRealGrowth", category: "Campaign", double: false, color: "#E8E2D6", thumbText: "Dove Campaign", textClass: "text-lg text-smoke", image: "/dove_thumb.jpg" },
+    { title: "Nothing Community Edition", category: "UI/UX", double: false, color: "#2C3E50", thumbText: "Nothing Widget", textClass: "text-lg text-white/30", image: "/nothing_thumb.jpg" },
     { title: "Noise Luna Zen — Smartwatch", category: "Product Design", double: false, color: "#C0392B", thumbText: "Noise Luna", textClass: "text-lg text-white/50" },
     { title: "Typehaus — Font Browser", category: "Product / Dev", double: false, color: "#F0EBE0", thumbText: "Typehaus", textClass: "text-lg text-smoke" },
     { title: "SYSLOG — Audio Experience", category: "Interactive", double: false, color: "#1A1A2E", thumbText: "SYSLOG", textClass: "text-[32px] text-white/20" }
@@ -26,11 +26,13 @@ export default function Work() {
               <div className="cursor-pointer group h-full">
                 <div 
                   className={`rounded mb-3.5 overflow-hidden relative transition-transform duration-300 group-hover:scale-[1.01] ${work.double ? 'aspect-video' : 'aspect-4/3'}`}
-                  style={{ background: work.color }}
+                  style={{ background: work.image ? `url('${work.image}') center/cover no-repeat` : work.color }}
                 >
-                  <div className={`w-full h-full flex items-center justify-center font-display font-light ${work.textClass}`}>
-                    {work.thumbText}
-                  </div>
+                  {!work.image && (
+                    <div className={`w-full h-full flex items-center justify-center font-display font-light ${work.textClass}`}>
+                      {work.thumbText}
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-ink opacity-0 transition-opacity duration-300 flex items-center justify-center group-hover:opacity-85">
                     <span className="text-off-white text-xs tracking-[0.1em] uppercase">
                       {work.double ? 'View Case Study →' : 'View →'}

@@ -14,17 +14,25 @@ export default function About() {
       
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start">
         <Reveal delay={0.2} className="h-full">
-          <div className="aspect-square lg:aspect-[4/3] bg-parchment rounded relative flex items-end p-5 h-full">
-            <div className="bg-off-white px-4 py-2.5 rounded-sm text-xs text-ink">
+          <div 
+            className="aspect-square lg:aspect-[4/3] bg-parchment rounded relative flex items-end p-5 h-full bg-cover bg-center"
+            style={{ backgroundImage: "url('/me_thumb.jpg')" }}
+          >
+            <a 
+              href="https://instagram.com/hritikjasnani" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="bg-off-white px-4 py-2.5 rounded-sm text-xs text-ink cursor-pointer transition-transform duration-200 hover:scale-[1.02] hover:bg-white no-underline inline-block"
+            >
               Hritik Jasnani · @hritikjasnani
-            </div>
+            </a>
           </div>
         </Reveal>
         
         <div>
           <Reveal delay={0.1}>
             <p className="font-display text-3xl md:text-4xl font-light leading-[1.3] mb-7">
-              I think like an inventor.<br/>I design like a studio.
+              I think like an inventor.
             </p>
           </Reveal>
           <Reveal delay={0.2}>
