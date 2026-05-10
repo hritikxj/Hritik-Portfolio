@@ -1,3 +1,5 @@
+import Reveal from './Reveal';
+
 export default function Services() {
   const services = [
     { num: "01", name: "Brand Identity", desc: "Logo systems, visual identities, and brand guidelines that earn recognition — not just attention." },
@@ -11,21 +13,22 @@ export default function Services() {
   return (
     <section id="services" className="scroll-mt-16 py-10 md:py-16 lg:py-20">
       <div className="w-full px-5 md:px-12 lg:px-10">
-        <div className="flex justify-between items-baseline mb-12 pb-5 border-b-[0.5px] border-border-subtle">
-          <h2 className="font-display text-4xl md:text-5xl font-light text-ink">What I Do</h2>
-        <span className="text-[11px] text-smoke tracking-[0.1em]">03 / Services</span>
-      </div>
+        <Reveal>
+          <div className="flex justify-between items-baseline mb-12 pb-5 border-b-[0.5px] border-border-subtle">
+            <h2 className="font-display text-4xl md:text-5xl font-light text-ink">What I Do</h2>
+            <span className="text-[11px] text-smoke tracking-[0.1em]">03 / Services</span>
+          </div>
+        </Reveal>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[0.5px] bg-border-subtle border-[0.5px] border-border-subtle rounded overflow-hidden">
         {services.map((service, idx) => (
-          <div 
-            key={idx} 
-            className="p-6 md:p-8 lg:p-10 transition-colors duration-200 hover:bg-parchment bg-off-white"
-          >
+          <Reveal key={idx} delay={idx * 0.1}>
+            <div className="p-6 md:p-8 lg:p-10 transition-colors duration-200 hover:bg-parchment bg-off-white h-full">
               <div className="font-display text-4xl md:text-5xl font-light text-black/5 mb-4">{service.num}</div>
-            <div className="text-sm font-medium text-ink mb-2.5">{service.name}</div>
-            <div className="text-xs text-smoke leading-[1.7]">{service.desc}</div>
-          </div>
+              <div className="text-sm font-medium text-ink mb-2.5">{service.name}</div>
+              <div className="text-xs text-smoke leading-[1.7]">{service.desc}</div>
+            </div>
+          </Reveal>
         ))}
         </div>
       </div>
