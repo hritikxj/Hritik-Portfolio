@@ -122,6 +122,7 @@ export default function PurrPantryPage() {
                   src="/purr/sketches.jpg" 
                   alt="Purr Pantry Process Sketches" 
                   fill
+                  sizes="(max-width: 768px) 100vw, 75vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>

@@ -190,11 +190,16 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           </div>
 
           {/* Scroll indicator */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-            <span style={{ fontSize: '16px', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', fontFamily: 'sans-serif', fontWeight: 500 }}>
+          <div className="flex flex-col items-center self-center md:self-start w-fit gap-3">
+            <span style={{ fontSize: '15px', letterSpacing: '0.45em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 600, marginRight: '-0.45em' }}>
               Scroll
             </span>
-            <div style={{ width: '3px', height: '100px', background: 'linear-gradient(to bottom, rgba(255,255,255,0.8), transparent)', animation: 'introLinePulse 1.8s ease-in-out infinite', borderRadius: '3px' }} />
+            <div style={{ width: '2.5px', height: '90px', background: 'rgba(255, 255, 255, 0.22)', position: 'relative', overflow: 'hidden', marginBottom: '2px' }}>
+              <div className="intro-scroll-line" />
+            </div>
+            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
+              <path d="M1 1L8 8L15 1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         </div>
       </div>

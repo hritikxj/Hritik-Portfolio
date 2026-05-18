@@ -23,9 +23,7 @@
   }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+
 
 body {
   font-family: var(--font-body);
@@ -39,3 +37,33 @@ body {
   0%, 100% { opacity: 0.4; transform: scaleY(0.85) translateY(-4px); }
   50% { opacity: 1; transform: scaleY(1) translateY(0); }
 }
+
+@keyframes premiumScrollLine {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.intro-scroll-line {
+  display: block;
+  width: 2.5px;
+  height: 90px;
+  background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0.45));
+  animation: premiumScrollLine 2.2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+}
+
+
+
