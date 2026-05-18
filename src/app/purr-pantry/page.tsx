@@ -80,10 +80,10 @@ export default function PurrPantryPage() {
             </div>
             <div className="w-full md:w-3/4">
               <p className={`${cormorant.className} text-2xl md:text-[28px] leading-[1.5] text-[#2E1A0E] mb-6`}>
-                Purr Pantry occupies a specific whitespace: the intersection of culinary craft and veterinary science. Formulated by veterinary nutritionist Nadia Okafor, the brand required an identity that communicated absolute scientific credibility while retaining the warmth of a home-cooked meal.
+                Purr Pantry blends culinary craft with veterinary science. The brand needed an identity balancing scientific credibility with the warmth of a home-cooked meal.
               </p>
               <p className={`${cormorant.className} text-xl md:text-[22px] leading-[1.6] text-[#8A7660] italic`}>
-                Sourcing proteins straight from the Pacific Northwest—like wild coho salmon from the Columbia River—the design system needed to resonate with design-literate pet owners who demand transparency, without falling into the sterile trap of clinical pet food.
+                Inspired by its Pacific Northwest roots, the design appeals to modern pet owners who value transparency, avoiding the sterile feel of clinical pet food.
               </p>
             </div>
           </div>
