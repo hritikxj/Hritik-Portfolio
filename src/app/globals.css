@@ -35,3 +35,7 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
+@keyframes introLinePulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(0.85) translateY(-4px); }
+  50% { opacity: 1; transform: scaleY(1) translateY(0); }
+}

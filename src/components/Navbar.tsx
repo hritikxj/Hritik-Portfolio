@@ -1,15 +1,29 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [copied, setCopied] = useState(false);
+  const pathname = usePathname();
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const scrollTo = (id: string) => {
     setIsOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    if (pathname === '/') {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.href = `/#${id}`;
+    }
   };
 
   const handleHireMeClick = (e: React.MouseEvent) => {
@@ -29,7 +43,13 @@ export default function Navbar() {
   return (
     <nav className="border-b-[0.5px] border-border-subtle bg-off-white sticky top-0 z-50">
       <div className="w-full flex justify-between items-center px-5 md:px-12 lg:px-10 py-4">
-        <div className="font-display text-lg font-normal tracking-[0.02em]">Hritik Jasnani</div>
+        <Link
+          href="/"
+          onClick={handleLogoClick}
+          className="font-display text-lg font-normal tracking-[0.02em] text-ink no-underline hover:opacity-70 transition-opacity duration-200"
+        >
+          Hritik Jasnani
+        </Link>
         
         <ul className="hidden md:flex gap-8 list-none items-center">
           <li><button onClick={() => scrollTo('work')} className="text-xs text-smoke tracking-[0.08em] uppercase transition-colors duration-200 hover:text-ink cursor-pointer">Work</button></li>

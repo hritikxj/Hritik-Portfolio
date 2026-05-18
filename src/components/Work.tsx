@@ -36,7 +36,7 @@ export default function Work() {
                   )}
                   <div className="absolute inset-0 bg-ink opacity-0 transition-opacity duration-300 flex items-center justify-center group-hover:opacity-85">
                     <span className="text-off-white text-xs tracking-[0.1em] uppercase">
-                      {work.double ? 'View Case Study →' : 'View →'}
+                      {work.link ? (work.double ? 'View Case Study →' : 'View →') : 'Coming Soon'}
                     </span>
                   </div>
                 </div>
@@ -54,7 +54,7 @@ export default function Work() {
                     {CardContent}
                   </Link>
                 ) : (
-                  <div className="cursor-pointer group h-full">
+                  <div className="group h-full">
                     {CardContent}
                   </div>
                 )}
@@ -65,7 +65,7 @@ export default function Work() {
         </div>
       </section>
       
-      <div className="bg-parchment py-10 md:py-16 lg:py-20">
+      <div id="featured-case-study" className="scroll-mt-16 bg-parchment py-10 md:py-16 lg:py-20">
         <div className="w-full px-5 md:px-12 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
         <div>
           <Reveal delay={0.1}>
@@ -85,14 +85,18 @@ export default function Work() {
                 </span>
               ))}
             </div>
-            <Link href="/purr-pantry" className="inline-block bg-ink text-off-white px-8 py-3.5 font-body text-xs tracking-[0.08em] uppercase border-none cursor-pointer rounded-sm transition-colors duration-200 hover:bg-brand-red no-underline">
+            <Link href="/purr-pantry" className="relative z-10 inline-block bg-ink text-off-white px-8 py-3.5 font-body text-xs tracking-[0.08em] uppercase border-none cursor-pointer rounded-sm transition-colors duration-200 hover:bg-brand-red no-underline">
               Read Case Study →
             </Link>
           </Reveal>
         </div>
         <Reveal delay={0.4} className="h-full">
-          <div className="bg-ink rounded-md aspect-4/3 flex items-center justify-center h-full">
-            <span className="font-display text-5xl md:text-6xl font-light text-white/15">PP</span>
+          <div 
+            className="bg-ink rounded-md aspect-4/3 flex items-center justify-center h-full overflow-hidden relative shadow-sm"
+            style={{ background: "url('/Purthumbnail.jpg') center/cover no-repeat" }}
+          >
+            {/* Optional subtle overlay if you want to darken it slightly */}
+            <div className="absolute inset-0 bg-ink/5"></div>
           </div>
         </Reveal>
         </div>

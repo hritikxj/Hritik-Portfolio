@@ -9,9 +9,6 @@ export default function Contact() {
   const [showToast, setShowToast] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   const handleHireMeClick = () => {
     window.location.href = MAILTO;

@@ -10,15 +10,17 @@ import IntroScene from "@/components/IntroScene";
 
 export default function Home() {
   return (
-    <IntroScene>
-      <Navbar />
-      <Hero />
-      <Marquee />
-      <Work />
-      <About />
-      <Services />
-      <Contact />
-      <Footer />
-    </IntroScene>
+    <>
+      <IntroScene>
+        <Navbar />
+        <Hero />
+        <Marquee />
+        <Work />
+        <About />
+        <Services />
+        <Contact />
+        <Footer />
+      </IntroScene>
+    </>
   );
 }
