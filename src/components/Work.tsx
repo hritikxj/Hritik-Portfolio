@@ -1,8 +1,9 @@
 import Reveal from './Reveal';
+import Link from 'next/link';
 
 export default function Work() {
   const works = [
-    { title: "Purr Pantry — Premium Cat Food Brand", category: "Branding", double: false, color: "#1A1A1A", thumbText: "Purr Pantry", textClass: "text-[clamp(32px,5vw,64px)] text-white/20", image: "/Purthumbnail.jpg" },
+    { title: "Purr Pantry — Premium Cat Food Brand", category: "Branding", double: false, color: "#1A1A1A", thumbText: "Purr Pantry", textClass: "text-[clamp(32px,5vw,64px)] text-white/20", image: "/Purthumbnail.jpg", link: "/purr-pantry" },
     { title: "Dove #TheRealGrowth", category: "Campaign", double: false, color: "#E8E2D6", thumbText: "Dove Campaign", textClass: "text-lg text-smoke", image: "/dove_thumb.jpg" },
     { title: "Nothing Community Edition", category: "UI/UX", double: false, color: "#2C3E50", thumbText: "Nothing Widget", textClass: "text-lg text-white/30", image: "/nothing_thumb.jpg" },
     { title: "Noise Luna Zen — Smartwatch", category: "Product Design", double: false, color: "#C0392B", thumbText: "Noise Luna", textClass: "text-lg text-white/50" },
@@ -21,9 +22,9 @@ export default function Work() {
             </div>
           </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {works.map((work, idx) => (
-            <Reveal key={idx} delay={idx * 0.1} className={work.double ? 'md:col-span-2' : ''}>
-              <div className="cursor-pointer group h-full">
+          {works.map((work, idx) => {
+            const CardContent = (
+              <>
                 <div 
                   className={`rounded mb-3.5 overflow-hidden relative transition-transform duration-300 group-hover:scale-[1.01] ${work.double ? 'aspect-video' : 'aspect-4/3'}`}
                   style={{ background: work.image ? `url('${work.image}') center/cover no-repeat` : work.color }}
@@ -43,9 +44,23 @@ export default function Work() {
                   <span className="text-sm font-medium text-ink">{work.title}</span>
                   <span className="text-[10px] tracking-[0.1em] uppercase text-smoke">{work.category}</span>
                 </div>
-              </div>
-            </Reveal>
-          ))}
+              </>
+            );
+
+            return (
+              <Reveal key={idx} delay={idx * 0.1} className={work.double ? 'md:col-span-2' : ''}>
+                {work.link ? (
+                  <Link href={work.link} className="block cursor-pointer group h-full no-underline">
+                    {CardContent}
+                  </Link>
+                ) : (
+                  <div className="cursor-pointer group h-full">
+                    {CardContent}
+                  </div>
+                )}
+              </Reveal>
+            );
+          })}
           </div>
         </div>
       </section>
@@ -70,9 +85,9 @@ export default function Work() {
                 </span>
               ))}
             </div>
-            <button className="bg-ink text-off-white px-8 py-3.5 font-body text-xs tracking-[0.08em] uppercase border-none cursor-pointer rounded-sm transition-colors duration-200 hover:bg-brand-red">
+            <Link href="/purr-pantry" className="inline-block bg-ink text-off-white px-8 py-3.5 font-body text-xs tracking-[0.08em] uppercase border-none cursor-pointer rounded-sm transition-colors duration-200 hover:bg-brand-red no-underline">
               Read Case Study →
-            </button>
+            </Link>
           </Reveal>
         </div>
         <Reveal delay={0.4} className="h-full">
