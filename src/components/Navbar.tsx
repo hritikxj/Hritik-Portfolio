@@ -4,10 +4,26 @@ import { useState } from 'react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const scrollTo = (id: string) => {
     setIsOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleHireMeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsOpen(false);
+    window.location.href = "mailto:hritikjasnani.design@gmail.com?subject=Design%20Project%20Inquiry&body=Hi%20Hritik,%0A%0AI%20came%20across%20your%20work%20and%20I%20am%20interested%20in%20collaborating%20with%20you%20on%20a%20design%20project.%0A%0AHere%20is%20a%20brief%20overview%20of%20what%20I%20am%20looking%20for:%0A%0AProject%20Type:%20%0ATimeline:%20%0ABudget:%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards,%0A%5BYour%20Name%5D";
+    setShowToast(true);
+    setCopied(false);
+    setTimeout(() => setShowToast(false), 8000);
+  };
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText('hritikjasnani.design@gmail.com');
+    setCopied(true);
   };
 
   return (
@@ -19,11 +35,11 @@ export default function Navbar() {
           <li><button onClick={() => scrollTo('work')} className="text-xs text-smoke tracking-[0.08em] uppercase transition-colors duration-200 hover:text-ink cursor-pointer">Work</button></li>
           <li><button onClick={() => scrollTo('about')} className="text-xs text-smoke tracking-[0.08em] uppercase transition-colors duration-200 hover:text-ink cursor-pointer">About</button></li>
           <li><button onClick={() => scrollTo('services')} className="text-xs text-smoke tracking-[0.08em] uppercase transition-colors duration-200 hover:text-ink cursor-pointer">Services</button></li>
-          <li><button onClick={() => scrollTo('contact')} className="bg-ink text-off-white px-5 py-2 rounded-sm tracking-[0.06em] text-[11px] transition-colors duration-200 hover:bg-brand-red cursor-pointer">Hire Me →</button></li>
+          <li><button onClick={handleHireMeClick} className="bg-ink text-off-white px-5 py-2 rounded-sm tracking-[0.06em] text-[11px] transition-colors duration-200 hover:bg-brand-red cursor-pointer inline-block">Hire Me →</button></li>
         </ul>
 
         <div className="md:hidden flex items-center gap-4">
-          <button onClick={() => scrollTo('contact')} className="bg-ink text-off-white px-4 py-1.5 rounded-sm tracking-[0.06em] text-[10px] transition-colors duration-200 hover:bg-brand-red cursor-pointer">Hire Me</button>
+          <button onClick={handleHireMeClick} className="bg-ink text-off-white px-4 py-1.5 rounded-sm tracking-[0.06em] text-[10px] transition-colors duration-200 hover:bg-brand-red cursor-pointer inline-block">Hire Me</button>
           <button onClick={() => setIsOpen(!isOpen)} className="text-ink focus:outline-none p-1">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isOpen ? (
@@ -43,6 +59,18 @@ export default function Navbar() {
           <button onClick={() => scrollTo('about')} className="text-xs text-smoke text-left tracking-[0.08em] uppercase py-2">About</button>
           <button onClick={() => scrollTo('services')} className="text-xs text-smoke text-left tracking-[0.08em] uppercase py-2">Services</button>
           </div>
+        </div>
+      )}
+
+      {showToast && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] bg-ink text-off-white px-6 py-4 rounded shadow-2xl flex items-center gap-4 text-xs font-body animate-in slide-in-from-bottom-5 fade-in duration-300">
+          <span>
+            Opening mail app... If nothing happened, 
+            <button onClick={copyEmail} className="ml-2 underline text-brand-red hover:text-white transition-colors cursor-pointer bg-transparent border-none p-0 inline">
+              {copied ? "Copied!" : "click here to copy email"}
+            </button>
+          </span>
+          <button onClick={() => setShowToast(false)} className="ml-4 text-white/50 hover:text-white cursor-pointer bg-transparent border-none p-0 text-lg">✕</button>
         </div>
       )}
     </nav>

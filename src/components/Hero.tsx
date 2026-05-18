@@ -1,10 +1,27 @@
 'use client';
 
+import { useState } from 'react';
 import Reveal from './Reveal';
 
 export default function Hero() {
+  const [showToast, setShowToast] = useState(false);
+  const [copied, setCopied] = useState(false);
+
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleHireMeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.location.href = "mailto:hritikjasnani.design@gmail.com?subject=Design%20Project%20Inquiry&body=Hi%20Hritik,%0A%0AI%20came%20across%20your%20work%20and%20I%20am%20interested%20in%20collaborating%20with%20you%20on%20a%20design%20project.%0A%0AHere%20is%20a%20brief%20overview%20of%20what%20I%20am%20looking%20for:%0A%0AProject%20Type:%20%0ATimeline:%20%0ABudget:%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards,%0A%5BYour%20Name%5D";
+    setShowToast(true);
+    setCopied(false);
+    setTimeout(() => setShowToast(false), 8000);
+  };
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText('hritikjasnani.design@gmail.com');
+    setCopied(true);
   };
 
   return (
@@ -34,7 +51,7 @@ export default function Hero() {
             <button onClick={() => scrollTo('work')} className="bg-ink text-off-white px-8 py-3.5 font-body text-xs tracking-[0.08em] uppercase border-none cursor-pointer rounded-sm transition-colors duration-200 hover:bg-brand-red">
               View Work
             </button>
-            <button onClick={() => scrollTo('contact')} className="bg-transparent text-ink px-8 py-3.5 font-body text-xs tracking-[0.08em] uppercase border-[0.5px] border-border-subtle cursor-pointer rounded-sm transition-colors duration-200 hover:border-ink">
+            <button onClick={handleHireMeClick} className="bg-transparent text-ink px-8 py-3.5 font-body text-xs tracking-[0.08em] uppercase border-[0.5px] border-border-subtle cursor-pointer rounded-sm transition-colors duration-200 hover:border-ink inline-block">
               Hire Me →
             </button>
           </div>
@@ -71,6 +88,17 @@ export default function Hero() {
         </div>
       </Reveal>
       </div>
+      {showToast && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] bg-ink text-off-white px-6 py-4 rounded shadow-2xl flex items-center gap-4 text-xs font-body animate-in slide-in-from-bottom-5 fade-in duration-300">
+          <span>
+            Opening mail app... If nothing happened, 
+            <button onClick={copyEmail} className="ml-2 underline text-brand-red hover:text-white transition-colors cursor-pointer bg-transparent border-none p-0 inline">
+              {copied ? "Copied!" : "click here to copy email"}
+            </button>
+          </span>
+          <button onClick={() => setShowToast(false)} className="ml-4 text-white/50 hover:text-white cursor-pointer bg-transparent border-none p-0 text-lg">✕</button>
+        </div>
+      )}
     </section>
   );
 }

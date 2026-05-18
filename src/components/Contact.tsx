@@ -1,74 +1,104 @@
 'use client';
 
+import { useState } from 'react';
 import Reveal from './Reveal';
 
+const MAILTO = "mailto:hritikjasnani.design@gmail.com?subject=Design%20Project%20Inquiry&body=Hi%20Hritik,%0A%0AI%20came%20across%20your%20work%20and%20I%20am%20interested%20in%20collaborating%20with%20you%20on%20a%20design%20project.%0A%0AHere%20is%20a%20brief%20overview%20of%20what%20I%20am%20looking%20for:%0A%0AProject%20Type:%20%0ATimeline:%20%0ABudget:%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards,%0A%5BYour%20Name%5D";
+
 export default function Contact() {
+  const [showToast, setShowToast] = useState(false);
+  const [copied, setCopied] = useState(false);
+
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleHireMeClick = () => {
+    window.location.href = MAILTO;
+    setShowToast(true);
+    setCopied(false);
+    setTimeout(() => setShowToast(false), 8000);
+  };
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText('hritikjasnani.design@gmail.com');
+    setCopied(true);
+  };
+
   return (
     <>
-      <div className="bg-brand-red py-5">
-        <div className="w-full px-5 md:px-12 lg:px-10 flex flex-col sm:flex-row gap-4 items-center justify-between text-center sm:text-left">
-        <Reveal>
-          <span className="text-[13px] text-white/90 block">
-            <strong className="text-off-white font-medium">Currently taking limited projects</strong> — Q2 2025 bookings open. 2 slots remaining.
-          </span>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <button onClick={() => scrollTo('contact')} className="text-[11px] text-off-white tracking-[0.1em] uppercase border-b-[0.5px] border-white/40 pb-0.5 cursor-pointer bg-transparent">
-            Get in touch →
-          </button>
-        </Reveal>
-        </div>
-      </div>
+      {/* Contact Section */}
+      <section id="contact" className="scroll-mt-16 bg-ink">
+        <div className="w-full px-5 md:px-12 lg:px-10 pt-16 md:pt-24 pb-0">
 
-      <section id="contact" className="scroll-mt-16 py-10 md:py-16 lg:py-20 bg-ink">
-        <div className="w-full px-5 md:px-12 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
-        <div>
+          {/* Headline */}
           <Reveal delay={0.1}>
-            <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-light leading-[1.05] text-off-white mb-6">Let's work<br/>together.</h2>
+            <h2 className="font-display text-5xl md:text-6xl lg:text-[76px] font-light leading-[1.05] text-off-white mb-5 max-w-3xl">
+              Let&apos;s build something<br/>worth remembering.
+            </h2>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-[13px] text-white/40 leading-[1.8] mb-10">
-              Looking for a designer who thinks strategically and delivers with craft? I'm selective about projects — which means yours gets full attention.
+            <p className="text-[13px] text-white/40 leading-[1.8] max-w-sm mb-10">
+              I work with a small number of clients at a time — which means your project gets full attention.
             </p>
           </Reveal>
-          <div className="flex flex-col">
-            <Reveal delay={0.3}>
-              <a href="mailto:hritikjasnani.design@gmail.com?subject=Design%20Project%20Inquiry&body=Hi%20Hritik,%0A%0AI%20came%20across%20your%20work%20and%20I%20am%20interested%20in%20collaborating%20with%20you%20on%20a%20design%20project.%0A%0AHere%20is%20a%20brief%20overview%20of%20what%20I%20am%20looking%20for:%0A%0AProject%20Type:%20%0ATimeline:%20%0ABudget:%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards,%0A%5BYour%20Name%5D" className="flex justify-between items-center py-4.5 border-t-[0.5px] border-white/10 cursor-pointer transition-all duration-200 hover:pl-2 group no-underline">
-                <span className="text-[13px] text-white/50 tracking-[0.06em] uppercase">Email</span>
-                <div className="flex items-center">
-                  <span className="text-sm text-off-white mr-2">hritikjasnani@gmail.com</span>
-                  <span className="text-white/30 text-base transition-colors group-hover:text-off-white">↗</span>
-                </div>
-              </a>
-            </Reveal>
-            <Reveal delay={0.4}>
-              <a href="https://instagram.com/hritikjasnani" target="_blank" rel="noopener noreferrer" className="flex justify-between items-center py-4.5 border-t-[0.5px] border-white/10 cursor-pointer transition-all duration-200 hover:pl-2 group no-underline">
-                <span className="text-[13px] text-white/50 tracking-[0.06em] uppercase">Instagram</span>
-                <div className="flex items-center">
-                  <span className="text-sm text-off-white mr-2">@hritikjasnani</span>
-                  <span className="text-white/30 text-base transition-colors group-hover:text-off-white">↗</span>
-                </div>
-              </a>
-            </Reveal>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4">
-          <Reveal delay={0.2}><input className="bg-white/5 border-[0.5px] border-white/10 rounded-sm py-3.5 px-4 text-off-white font-body text-[13px] outline-none transition-colors duration-200 w-full placeholder:text-white/25 focus:border-white/30" type="text" placeholder="Your name" /></Reveal>
-          <Reveal delay={0.3}><input className="bg-white/5 border-[0.5px] border-white/10 rounded-sm py-3.5 px-4 text-off-white font-body text-[13px] outline-none transition-colors duration-200 w-full placeholder:text-white/25 focus:border-white/30" type="text" placeholder="Company / Project" /></Reveal>
-          <Reveal delay={0.4}><input className="bg-white/5 border-[0.5px] border-white/10 rounded-sm py-3.5 px-4 text-off-white font-body text-[13px] outline-none transition-colors duration-200 w-full placeholder:text-white/25 focus:border-white/30" type="text" placeholder="Budget range" /></Reveal>
-          <Reveal delay={0.5}><textarea className="bg-white/5 border-[0.5px] border-white/10 rounded-sm py-3.5 px-4 text-off-white font-body text-[13px] outline-none transition-colors duration-200 w-full placeholder:text-white/25 focus:border-white/30 resize-y min-h-[100px]" placeholder="Tell me about your project…"></textarea></Reveal>
-          <Reveal delay={0.6}>
-            <button className="bg-off-white text-ink border-none py-3.5 px-8 font-body text-xs tracking-[0.08em] uppercase cursor-pointer rounded-sm self-start transition-colors duration-200 hover:bg-parchment mt-2">
-              Send Enquiry →
+
+          {/* Primary CTA Button */}
+          <Reveal delay={0.3}>
+            <button
+              onClick={handleHireMeClick}
+              className="group inline-flex items-center gap-3 bg-off-white text-ink px-8 py-4 rounded-sm font-body text-sm tracking-[0.08em] uppercase cursor-pointer border-none transition-all duration-200 hover:bg-brand-red hover:text-off-white mb-16"
+            >
+              Start a Project
+              <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
             </button>
           </Reveal>
-          </div>
+
+          {/* Contact Links Row */}
+          <Reveal delay={0.4}>
+            <div className="flex flex-col sm:flex-row border-t-[0.5px] border-white/10">
+              <button
+                onClick={handleHireMeClick}
+                className="flex-1 flex justify-between items-center py-5 sm:pr-12 border-b-[0.5px] sm:border-b-0 sm:border-r-[0.5px] border-white/10 cursor-pointer hover:pl-2 transition-all duration-200 group bg-transparent text-left"
+              >
+                <span className="text-[11px] tracking-[0.12em] uppercase text-white/40">Email</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[13px] text-white/70 group-hover:text-off-white transition-colors">hritikjasnani.design@gmail.com</span>
+                  <span className="text-white/30 group-hover:text-off-white transition-colors text-base">↗</span>
+                </div>
+              </button>
+              <a
+                href="https://instagram.com/hritikjasnani"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex justify-between items-center py-5 sm:pl-12 cursor-pointer hover:pl-[3.5rem] transition-all duration-200 group no-underline"
+              >
+                <span className="text-[11px] tracking-[0.12em] uppercase text-white/40">Instagram</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[13px] text-white/70 group-hover:text-off-white transition-colors">@hritikjasnani</span>
+                  <span className="text-white/30 group-hover:text-off-white transition-colors text-base">↗</span>
+                </div>
+              </a>
+            </div>
+          </Reveal>
         </div>
       </section>
+
+      {/* Smart Toast */}
+      {showToast && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] bg-off-white text-ink px-6 py-4 rounded-sm shadow-2xl flex items-center gap-6 text-xs font-body min-w-[320px] max-w-[480px]">
+          <div className="flex-1">
+            <p className="font-medium text-ink mb-1">Opening mail app…</p>
+            <p className="text-smoke">
+              Nothing happened?{' '}
+              <button onClick={copyEmail} className="underline text-brand-red hover:text-ink transition-colors cursor-pointer bg-transparent border-none p-0 inline font-medium">
+                {copied ? '✓ Email copied!' : 'Copy email address'}
+              </button>
+            </p>
+          </div>
+          <button onClick={() => setShowToast(false)} className="text-smoke hover:text-ink cursor-pointer bg-transparent border-none p-0 text-lg shrink-0 transition-colors">✕</button>
+        </div>
+      )}
     </>
   );
 }
