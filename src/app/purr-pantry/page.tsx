@@ -43,7 +43,7 @@ export default function PurrPantryPage() {
 
   const handleBack = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (window.history.length > 2) {
+    if (window.history.length > 1) {
       router.back();
     } else {
       router.push('/');
@@ -117,10 +117,10 @@ export default function PurrPantryPage() {
                 Every strong identity begins on paper. The creative process focused on elegantly combining the dual 'P's of Purr Pantry. I aimed to craft a clever shape that rewards a second glance, avoiding any overt cartoonishness.
               </p>
               
-              <div className="w-full aspect-[4/3] relative rounded-3xl overflow-hidden shadow-xl bg-[#F5EAD7]">
-                <Image 
-                  src="/purr/sketches.jpg" 
-                  alt="Purr Pantry Process Sketches" 
+              <div className="group w-full aspect-[4/3] relative rounded-3xl overflow-hidden shadow-xl bg-[#F5EAD7]">
+                <Image
+                  src="/purr/sketches.jpg"
+                  alt="Purr Pantry Process Sketches"
                   fill
                   sizes="(max-width: 768px) 100vw, 75vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700"

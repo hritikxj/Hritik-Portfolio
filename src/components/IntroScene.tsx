@@ -1,29 +1,36 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { IntroContext } from '@/context/IntroContext';
 
 export default function IntroScene({ children }: { children: React.ReactNode }) {
   const spacerRef  = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const videoRef   = useRef<HTMLVideoElement>(null);
   const landingRef = useRef<HTMLDivElement>(null);
+  const introDoneRef = useRef(false);
+  const [introComplete, setIntroComplete] = useState(false);
 
   useEffect(() => {
-    // Loads a CDN script, resolving only when the window global is actually available
+    // Loads a CDN script, resolving only when the window global is actually available.
+    // The interval has a hard cap (250 × 20 ms = 5 s) so it cannot run forever.
     const loadScript = (src: string, globalName: string): Promise<void> =>
-      new Promise((resolve) => {
+      new Promise((resolve, reject) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((window as any)[globalName]) { resolve(); return; }
         const onReady = () => {
+          let attempts = 0;
           const interval = setInterval(() => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            if ((window as any)[globalName]) { clearInterval(interval); resolve(); }
+            if ((window as any)[globalName]) { clearInterval(interval); resolve(); return; }
+            if (++attempts > 250) { clearInterval(interval); reject(new Error(`${globalName} did not load`)); }
           }, 20);
         };
         if (document.querySelector(`script[src="${src}"]`)) { onReady(); return; }
         const s = document.createElement('script');
         s.src = src;
         s.onload = onReady;
+        s.onerror = () => reject(new Error(`Failed to load: ${src}`));
         document.head.appendChild(s);
       });
 
@@ -35,9 +42,43 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     let lastProgress = 0;
     let currentBlur = 0;
 
+    const markIntroDone = () => {
+      if (introDoneRef.current) return;
+      introDoneRef.current = true;
+      sessionStorage.setItem('intro-seen', '1');
+      setIntroComplete(true);
+    };
+
+    // Whether the user has already scrolled through the intro in this browser session
+    const wasSeenBefore = !!sessionStorage.getItem('intro-seen');
+
+    // For returning visitors: immediately show the landing while GSAP loads in the
+    // background.  The spacer is intentionally kept so ScrollTrigger can still
+    // drive the scroll-back-to-intro experience.
+    if (wasSeenBefore) {
+      markIntroDone();
+      const overlay = overlayRef.current;
+      const landing = landingRef.current;
+      if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+      if (landing) { landing.style.opacity = '1'; landing.style.pointerEvents = 'auto'; }
+    }
+
     const init = async () => {
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', 'gsap');
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', 'ScrollTrigger');
+      try {
+        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', 'gsap');
+        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', 'ScrollTrigger');
+      } catch {
+        // GSAP failed to load — last-resort fallback: collapse the spacer and
+        // show the landing so the page is still usable.
+        const overlay = overlayRef.current;
+        const landing = landingRef.current;
+        const spacer  = spacerRef.current;
+        if (overlay) { overlay.style.display = 'none'; }
+        if (landing) { landing.style.opacity = '1'; landing.style.pointerEvents = 'auto'; }
+        if (spacer)  { spacer.style.display = 'none'; }
+        markIntroDone();
+        return;
+      }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { gsap, ScrollTrigger } = window as any;
@@ -90,6 +131,10 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           overlay.style.pointerEvents = t > 0.5 ? 'none' : 'auto';
           landing.style.opacity       = String(Math.min(1, t));
           landing.style.pointerEvents = t > 0.5 ? 'auto' : 'none';
+
+          // Fire introComplete early enough that Reveal animations overlap
+          // with the landing fade-in rather than playing on a blank screen.
+          if (t >= 0.2) markIntroDone();
         } else {
           overlay.style.opacity       = '1';
           overlay.style.pointerEvents = 'auto';
@@ -103,6 +148,14 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           textEl.style.opacity = String(Math.max(0, 1 - p / 0.15));
         }
       };
+
+      // For returning visitors: jump scroll to the end of the spacer BEFORE
+      // creating the ScrollTrigger so that ScrollTrigger initialises at progress=1
+      // and calls updateState(1) immediately — no flash, correct visual state.
+      // Scrolling back up from here will scrub the intro in reverse as intended.
+      if (wasSeenBefore) {
+        window.scrollTo(0, spacer.offsetTop + spacer.offsetHeight);
+      }
 
       const setup = () => {
         // NO pin:true — GSAP only reads scroll, never touches the DOM structure.
@@ -118,24 +171,23 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           },
         });
 
-        // Force initial state in case scroll is already past the end (e.g. browser back navigation)
-        // ScrollTrigger onUpdate might not fire if initialized outside its active range
+        // Force initial state — covers both the fresh-visit (progress=0) and
+        // the returning-visitor (progress=1) cases immediately after setup.
         if (st && st.progress !== undefined) {
           updateState(st.progress);
         }
       };
 
-      // Run immediately so the fade logic always initializes correctly,
-      // even if video metadata is delayed (e.g. mobile data saver)
       setup();
 
-      // Next.js App Router bug mitigation: Manually scroll to hash if present on mount.
-      // This ensures "Back to Portfolio" (/#work) actually jumps to the work section.
+      // Next.js App Router bug mitigation: manually scroll to hash if present.
+      // For returning visitors the spacer-scroll above already positions us past
+      // the intro; the hash scroll then moves to the right section.
       if (window.location.hash) {
         setTimeout(() => {
           const el = document.querySelector(window.location.hash);
-          if (el) el.scrollIntoView();
-        }, 150);
+          if (el) el.scrollIntoView({ behavior: wasSeenBefore ? 'smooth' : 'auto' });
+        }, wasSeenBefore ? 80 : 150);
       }
     };
 
@@ -150,7 +202,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
   }, []);
 
   return (
-    <>
+    <IntroContext.Provider value={introComplete}>
       {/* 400vh spacer — creates scroll room without GSAP pin manipulation */}
       <div ref={spacerRef} style={{ height: '400vh', width: '100%', pointerEvents: 'none' }} />
 
@@ -208,6 +260,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       <div ref={landingRef} style={{ opacity: 0, willChange: 'opacity', pointerEvents: 'none' }}>
         {children}
       </div>
-    </>
+    </IntroContext.Provider>
   );
 }
