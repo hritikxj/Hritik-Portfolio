@@ -6,10 +6,11 @@ import About from "@/components/About";
 import Services from "@/components/Services";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import IntroScene from "@/components/IntroScene";
 
 export default function Home() {
   return (
-    <>
+    <IntroScene>
       <Navbar />
       <Hero />
       <Marquee />
@@ -18,7 +19,6 @@ export default function Home() {
       <Services />
       <Contact />
       <Footer />
-
-    </>
+    </IntroScene>
   );
 }
