@@ -125,7 +125,7 @@ export default function DoveCampaignPage() {
         
         {/* Specs Table */}
         <section className="mb-24 max-w-7xl mx-auto">
-          <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[#FAF7F0] border border-[#E8E2D6]/40 shadow-sm text-center sm:text-left">
+          <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[#FAF7F0] border border-[#E8E2D6]/40 shadow-sm text-center">
             <div>
               <span className="text-[9px] tracking-[0.2em] uppercase text-[#C5A059] block mb-1 font-semibold">Role</span>
               <span className="text-sm text-[#0A2240] font-medium font-sans">Brand Strategist</span>
@@ -136,10 +136,7 @@ export default function DoveCampaignPage() {
             </div>
             <div>
               <span className="text-[9px] tracking-[0.2em] uppercase text-[#C5A059] block mb-1 font-semibold">Type</span>
-              <span className="text-sm text-[#0A2240] font-medium flex items-center justify-center sm:justify-start gap-1.5 font-sans">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059] animate-pulse"></span>
-                Academic Project
-              </span>
+              <span className="text-sm text-[#0A2240] font-medium font-sans">Academic Project</span>
             </div>
           </div>
         </section>
