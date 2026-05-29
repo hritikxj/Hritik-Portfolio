@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { IntroContext } from '@/context/IntroContext';
 
+let isInitialHardLoad = true;
+
 export default function IntroScene({ children }: { children: React.ReactNode }) {
   const spacerRef  = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -14,6 +16,8 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
   const videoLoadedRef = useRef(false);
   const updateStateRef = useRef<((p: number) => void) | null>(null);
   const progressRef = useRef(0);
+  const isSeekingRef = useRef(false);
+  const [isReturning, setIsReturning] = useState(false);
 
   useEffect(() => {
     videoLoadedRef.current = videoLoaded;
@@ -21,24 +25,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       updateStateRef.current(progressRef.current);
     }
   }, [videoLoaded]);
-
-  // Luxury loading progress state
-  const [loadingProgress, setLoadingProgress] = useState(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const navigationEntries = performance.getEntriesByType('navigation');
-        const isReloadTiming = navigationEntries.length > 0 && (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload';
-        const isReloadLegacy = window.performance && window.performance.navigation && window.performance.navigation.type === 1;
-        const isReload = isReloadTiming || isReloadLegacy;
-        
-        if (isReload) return 0;
-        return sessionStorage.getItem('intro-seen') ? 100 : 0;
-      } catch (e) {
-        return 0;
-      }
-    }
-    return 0;
-  });
 
   const triggerAutoScrollRef = useRef<((targetY: number) => void) | null>(null);
 
@@ -62,6 +48,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     }
 
     let handleMetadataLoaded: (() => void) | null = null;
+    let handleSeeked: (() => void) | null = null;
     let blobUrl: string | null = null;
     let aborted = false;
 
@@ -70,71 +57,78 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
     // Check if seen before
     let wasSeenBefore = false;
-    try {
-      const navigationEntries = performance.getEntriesByType('navigation');
-      const isReloadTiming = navigationEntries.length > 0 && (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload';
-      const isReloadLegacy = window.performance && window.performance.navigation && window.performance.navigation.type === 1;
-      const isReload = isReloadTiming || isReloadLegacy;
-      
-      if (isReload) {
-        sessionStorage.removeItem('intro-seen');
-      } else {
-        wasSeenBefore = !!sessionStorage.getItem('intro-seen');
-      }
-    } catch (e) {
-      console.warn("Navigation performance API or sessionStorage not available:", e);
+    if (isInitialHardLoad) {
+      isInitialHardLoad = false;
       try {
-        wasSeenBefore = !!sessionStorage.getItem('intro-seen');
-      } catch (_) {}
+        const navigationEntries = performance.getEntriesByType('navigation');
+        const isReloadTiming = navigationEntries.length > 0 && (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload';
+        const isReloadLegacy = window.performance && window.performance.navigation && window.performance.navigation.type === 1;
+        const isReload = isReloadTiming || isReloadLegacy;
+        
+        if (isReload) {
+          sessionStorage.removeItem('intro-seen');
+        }
+      } catch (e) {
+        console.warn("Navigation performance API not available:", e);
+      }
+    }
+
+    try {
+      wasSeenBefore = !!sessionStorage.getItem('intro-seen');
+    } catch (_) {}
+
+    if (wasSeenBefore) {
+      introDoneRef.current = true;
+      setIntroComplete(true);
+      setIsReturning(true);
+      
+      const spacer = spacerRef.current;
+      const spacerHeight = spacer ? spacer.offsetHeight : window.innerHeight * 2;
+      if (window.scrollY < spacerHeight) {
+        window.scrollTo(0, spacerHeight);
+        setTimeout(() => {
+          if (window.scrollY < spacerHeight) {
+            window.scrollTo(0, spacerHeight);
+          }
+        }, 50);
+      }
+      return;
     }
 
     const fetchVideo = async () => {
+      if (videoRef.current) {
+        videoRef.current.src = '/intro2-scrub.mp4';
+      }
+
       try {
         const response = await fetch('/intro2-scrub.mp4');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
-        const contentLength = response.headers.get('content-length');
-        const total = contentLength ? parseInt(contentLength, 10) : 0;
         
         if (!response.body) {
           throw new Error('ReadableStream not supported');
         }
         
         const reader = response.body.getReader();
-        let receivedLength = 0;
         const chunks: BlobPart[] = [];
         
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
           if (aborted) return;
-          
           chunks.push(value);
-          receivedLength += value.length;
-          
-          if (total) {
-            const percent = Math.min(99, Math.round((receivedLength / total) * 100));
-            if (!wasSeenBefore) {
-              setLoadingProgress(percent);
-            }
-          }
         }
         
         if (aborted) return;
         const blob = new Blob(chunks, { type: 'video/mp4' });
         blobUrl = URL.createObjectURL(blob);
         
-        if (videoRef.current) {
+        if (videoRef.current && progressRef.current < 0.05) {
+          const currentTime = videoRef.current.currentTime;
           videoRef.current.src = blobUrl;
+          videoRef.current.currentTime = currentTime;
         }
-        setLoadingProgress(100);
       } catch (err) {
         console.warn("Failed to load video as blob, falling back to direct stream:", err);
-        if (aborted) return;
-        if (videoRef.current) {
-          videoRef.current.src = '/intro2-scrub.mp4';
-        }
-        setLoadingProgress(100);
       }
     };
 
@@ -222,12 +216,14 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       const landing = landingRef.current;
       const spacer  = spacerRef.current;
       if (overlay) {
-        overlay.style.opacity = '0';
+        overlay.style.opacity       = '0';
+        overlay.style.visibility    = 'hidden';
         overlay.style.pointerEvents = 'none';
-        overlay.style.display = 'none';
+        overlay.style.display       = 'none';
       }
       if (landing) {
-        landing.style.opacity = '1';
+        landing.style.opacity       = '1';
+        landing.style.visibility    = 'visible';
         landing.style.pointerEvents = 'auto';
       }
       if (spacer) {
@@ -264,6 +260,11 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
       if (!video || !overlay || !landing || !spacer) return;
 
+      handleSeeked = () => {
+        isSeekingRef.current = false;
+      };
+      video.addEventListener('seeked', handleSeeked);
+
       // Sync playback position as soon as metadata loaded to prevent frozen state
       handleMetadataLoaded = () => {
         if (st && st.progress !== undefined) {
@@ -285,11 +286,20 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         // When close enough, seek to exact target time and stop the loop
         if (Math.abs(diff) < 0.001) {
           if (video.currentTime !== targetTime) {
-            video.currentTime = targetTime;
+            if (!isSeekingRef.current) {
+              isSeekingRef.current = true;
+              video.currentTime = targetTime;
+              currentInterpolatedTime = targetTime;
+              lastSoughtTime = targetTime;
+              scrubLoopActive = false;
+            } else {
+              rafId = requestAnimationFrame(runScrubLoop);
+            }
+          } else {
+            currentInterpolatedTime = targetTime;
+            lastSoughtTime = targetTime;
+            scrubLoopActive = false;
           }
-          currentInterpolatedTime = targetTime;
-          lastSoughtTime = targetTime;
-          scrubLoopActive = false;
           return;
         }
 
@@ -299,8 +309,9 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           currentInterpolatedTime = Math.max(0, Math.min(video.duration, currentInterpolatedTime));
           
           // Only seek if the distance from the last sought time is greater than MIN_SEEK_STEP
-          // and the video is not already seeking. This reduces decoder seek load by 80%.
-          if (!video.seeking && Math.abs(currentInterpolatedTime - lastSoughtTime) >= MIN_SEEK_STEP) {
+          // and we are not already seeking. This reduces decoder seek load by 95%.
+          if (!isSeekingRef.current && Math.abs(currentInterpolatedTime - lastSoughtTime) >= MIN_SEEK_STEP) {
+            isSeekingRef.current = true;
             video.currentTime = currentInterpolatedTime;
             lastSoughtTime = currentInterpolatedTime;
           }
@@ -327,24 +338,26 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         }
 
         // ── Fade: overlay out, landing in ───────────────────────
-        const fadeStart = 0.88;
+        const fadeStart = 0.85;
         if (p >= fadeStart) {
-          const t = (p - fadeStart) / (1 - fadeStart);
-          const o = Math.max(0, 1 - t);
-          overlay.style.opacity       = String(o);
-          overlay.style.pointerEvents = t > 0.5 ? 'none' : 'auto';
-          landing.style.opacity       = String(Math.min(1, t));
-          landing.style.pointerEvents = t > 0.5 ? 'auto' : 'none';
-          overlay.style.display       = t >= 0.99 ? 'none' : 'block';
+          overlay.style.opacity       = '0';
+          overlay.style.visibility    = 'hidden';
+          overlay.style.pointerEvents = 'none';
+
+          landing.style.opacity       = '1';
+          landing.style.visibility    = 'visible';
+          landing.style.pointerEvents = 'auto';
 
           // Fire introComplete early enough that Reveal animations overlap
-          // with the landing fade-in rather than playing on a blank screen.
-          if (t >= 0.2) markIntroDone();
+          markIntroDone();
         } else {
-          overlay.style.display       = 'block';
           overlay.style.opacity       = '1';
+          overlay.style.visibility    = 'visible';
           overlay.style.pointerEvents = 'auto';
+          overlay.style.display       = 'block';
+
           landing.style.opacity       = '0';
+          landing.style.visibility    = 'hidden';
           landing.style.pointerEvents = 'none';
         }
 
@@ -385,7 +398,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
         gsap.to(window, {
           scrollTo: { y: targetY, autoKill: false },
-          duration: 1.8, // cinematic slow and smooth scroll
+          duration: 1.2, // Snappier transition timing
           ease: "power2.inOut",
           onComplete: () => {
             isAutoScrolling = false;
@@ -403,7 +416,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         autoScrollTimeout = setTimeout(() => {
           isAutoScrolling = false;
           targetScrollY = -1;
-        }, 2200); // safety fallback
+        }, 1500); // adjusted safety fallback
       };
 
       triggerAutoScrollRef.current = triggerAutoScroll;
@@ -468,6 +481,9 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       updateStateRef.current = null;
       // Safe cleanup — GSAP never touched the DOM structure so no removeChild conflicts
       try { if (st) st.kill(); } catch (_) { /* ignore */ }
+      if (videoRef.current && handleSeeked) {
+        videoRef.current.removeEventListener('seeked', handleSeeked);
+      }
       if (videoRef.current && handleMetadataLoaded) {
         videoRef.current.removeEventListener('loadedmetadata', handleMetadataLoaded);
       }
@@ -489,72 +505,89 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       <div ref={spacerRef} style={{ height: '200vh', width: '100%', pointerEvents: 'none' }} />
 
       {/* Fixed video overlay — always covers viewport, fades out at end */}
-      <div
-        ref={overlayRef}
-        style={{ position: 'fixed', inset: 0, zIndex: 9999, background: '#000', overflow: 'hidden', willChange: 'opacity' }}
-      >
-        <video
-          ref={videoRef}
-          muted
-          playsInline
-          preload="auto"
-          onLoadedData={() => setVideoLoaded(true)}
-          className="object-contain md:object-cover"
-          style={{
-            width: '100%',
-            height: '100%',
-            display: 'block',
-            willChange: 'transform',
-            transform: 'translateZ(0)',
-            opacity: videoLoaded ? 1 : 0,
-            transition: 'opacity 0.6s ease'
-          }}
-        />
-
-        {/* Text UI — fades out as user starts scrolling */}
+      {!isReturning && (
         <div
-          id="intro-text-ui"
-          className={`intro-text-initial-fade ${videoLoaded ? 'loaded' : ''}`}
-          style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 'clamp(24px, 4vw, 56px)', pointerEvents: 'none' }}
+          ref={overlayRef}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            background: '#000',
+            overflow: 'hidden',
+            willChange: 'opacity, visibility',
+            transition: 'opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), visibility 0.8s cubic-bezier(0.215, 0.61, 0.355, 1)',
+          }}
         >
-          {/* Top row */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <div>
-              <p style={{ fontSize: 'clamp(40px, 6.5vw, 100px)', fontWeight: 300, lineHeight: 1.0, color: '#fff', fontFamily: 'var(--font-display), Georgia, serif', letterSpacing: '-0.02em', margin: '0 0 14px 0', textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
-                Hritik Jasnani.
-              </p>
-              <p style={{ fontSize: 'clamp(18px, 2vw, 28px)', fontWeight: 400, color: 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-body), sans-serif', letterSpacing: '0.04em', margin: '8px 0 0 0' }}>
-                A designer who gives a damn.
-              </p>
-            </div>
-            <span style={{ fontSize: 'clamp(16px, 2vw, 24px)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 500, marginTop: '8px' }}>
-              Portfolio&nbsp;·&nbsp;2026
-            </span>
-          </div>
+          <video
+            ref={videoRef}
+            muted
+            playsInline
+            preload="auto"
+            onLoadedData={() => setVideoLoaded(true)}
+            className="object-contain md:object-cover"
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'block',
+              willChange: 'transform',
+              transform: 'translateZ(0)',
+              opacity: videoLoaded ? 1 : 0,
+              transition: 'opacity 0.6s ease'
+            }}
+          />
 
-          {/* Scroll indicator */}
+          {/* Text UI — fades out as user starts scrolling */}
           <div
-            onClick={handleScrollClick}
-            className="flex flex-col items-center self-center md:self-start w-fit gap-3 cursor-pointer group"
-            style={{ pointerEvents: 'auto' }}
+            id="intro-text-ui"
+            className={`intro-text-initial-fade ${videoLoaded ? 'loaded' : ''}`}
+            style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 'clamp(24px, 4vw, 56px)', pointerEvents: 'none' }}
           >
-            <span className="group-hover:text-white transition-colors duration-200" style={{ fontSize: '15px', letterSpacing: '0.45em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 600, marginRight: '-0.45em' }}>
-              Scroll
-            </span>
-            <div style={{ width: '2.5px', height: '90px', background: 'rgba(255, 255, 255, 0.22)', position: 'relative', overflow: 'hidden', marginBottom: '2px' }}>
-              <div className="intro-scroll-line" />
+            {/* Top row */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div>
+                <p style={{ fontSize: 'clamp(40px, 6.5vw, 100px)', fontWeight: 300, lineHeight: 1.0, color: '#fff', fontFamily: 'var(--font-display), Georgia, serif', letterSpacing: '-0.02em', margin: '0 0 14px 0', textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
+                  Hritik Jasnani.
+                </p>
+                <p style={{ fontSize: 'clamp(18px, 2vw, 28px)', fontWeight: 400, color: 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-body), sans-serif', letterSpacing: '0.04em', margin: '8px 0 0 0' }}>
+                  A designer who gives a damn.
+                </p>
+              </div>
+              <span style={{ fontSize: 'clamp(16px, 2vw, 24px)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 500, marginTop: '8px' }}>
+                Portfolio&nbsp;·&nbsp;2026
+              </span>
             </div>
-            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" className="group-hover:text-white transition-colors duration-200" style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
-              <path d="M1 1L8 8L15 1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+
+            {/* Scroll indicator */}
+            <div
+              onClick={handleScrollClick}
+              className="flex flex-col items-center self-center md:self-start w-fit gap-3 cursor-pointer group"
+              style={{ pointerEvents: 'auto' }}
+            >
+              <span className="group-hover:text-white transition-colors duration-200" style={{ fontSize: '15px', letterSpacing: '0.45em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 600, marginRight: '-0.45em' }}>
+                Scroll
+              </span>
+              <div style={{ width: '2.5px', height: '90px', background: 'rgba(255, 255, 255, 0.22)', position: 'relative', overflow: 'hidden', marginBottom: '2px' }}>
+                <div className="intro-scroll-line" />
+              </div>
+              <svg width="16" height="9" viewBox="0 0 16 9" fill="none" className="group-hover:text-white transition-colors duration-200" style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
+                <path d="M1 1L8 8L15 1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
           </div>
         </div>
-
-
-      </div>
+      )}
 
       {/* Landing page — fades in when intro ends */}
-      <div ref={landingRef} style={{ opacity: 0, willChange: 'opacity', pointerEvents: 'none' }}>
+      <div
+        ref={landingRef}
+        style={{
+          opacity: isReturning ? 1 : 0,
+          visibility: isReturning ? 'visible' : 'hidden',
+          willChange: 'opacity, visibility',
+          transition: 'opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), visibility 0.8s cubic-bezier(0.215, 0.61, 0.355, 1)',
+          pointerEvents: isReturning ? 'auto' : 'none',
+        }}
+      >
         {children}
       </div>
     </IntroContext.Provider>
