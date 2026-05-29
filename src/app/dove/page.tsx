@@ -238,7 +238,7 @@ export default function DoveCampaignPage() {
             <div className="lg:col-span-7 lg:sticky lg:top-28 flex flex-col gap-4 w-full">
               {/* Slide Wrapper with aspect ratio */}
               <div 
-                className="group relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-md border border-[#E8E2D6]/40 cursor-zoom-in bg-[#FAF7F0]"
+                className="group relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-md border border-[#E8E2D6]/40 cursor-zoom-in bg-white"
                 onClick={() => setIsLightboxOpen(true)}
               >
                 {/* Images with transition */}
@@ -257,7 +257,7 @@ export default function DoveCampaignPage() {
                         src={`/dove/dove-slide-${idx + 2}.png`}
                         alt={`Slide for ${pillar.title}`}
                         fill
-                        className="object-cover"
+                        className="object-contain"
                         sizes="(max-width: 1024px) 100vw, 60vw"
                         priority={idx === 0}
                       />
