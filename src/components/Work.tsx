@@ -73,53 +73,6 @@ export default function Work() {
           </div>
         </div>
       </section>
-      
-      <div id="featured-case-study" className="scroll-mt-16 bg-parchment py-10 md:py-16 lg:py-20">
-        <div className="w-full px-5 md:px-12 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
-        <div>
-          <Reveal delay={0.1}>
-            <p className="text-[10px] tracking-[0.12em] uppercase text-smoke mb-5">Featured Case Study</p>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light leading-[1.1] mb-6">Purr Pantry<br/>Brand Identity</h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="text-sm text-smoke leading-[1.8] mb-8">
-              A full brand identity system for a premium cat food brand — logo, color, packaging, social templates, and a 17-slide Behance case study, built end-to-end.
-            </p>
-          </Reveal>
-          <Reveal delay={0.3}>
-            <div className="flex gap-2 flex-wrap mb-8">
-              {['Strategy', 'Logo Design', 'Packaging', 'Social'].map(tag => (
-                <span key={tag} className="text-[10px] tracking-[0.08em] uppercase px-3.5 py-1.5 border-[0.5px] border-border-subtle rounded-sm text-smoke">
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <Link
-              href="/purr-pantry"
-              onClick={() => {
-                try {
-                  sessionStorage.setItem('portfolio-scroll-y', window.scrollY.toString());
-                } catch (e) {
-                  console.warn(e);
-                }
-              }}
-              className="relative z-10 inline-block bg-ink text-off-white px-8 py-3.5 font-body text-xs tracking-[0.08em] uppercase border-none cursor-pointer rounded-sm transition-colors duration-200 hover:bg-brand-red no-underline"
-            >
-              Read Case Study →
-            </Link>
-          </Reveal>
-        </div>
-        <Reveal delay={0.4} className="h-full">
-          <div 
-            className="bg-ink rounded-md aspect-4/3 flex items-center justify-center h-full overflow-hidden relative shadow-sm"
-            style={{ background: "url('/Purthumbnail.jpg') center/cover no-repeat" }}
-          >
-            {/* Optional subtle overlay if you want to darken it slightly */}
-            <div className="absolute inset-0 bg-ink/5"></div>
-          </div>
-        </Reveal>
-        </div>
-      </div>
     </>
   );
 }
