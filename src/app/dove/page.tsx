@@ -147,7 +147,7 @@ export default function DoveCampaignPage() {
         <hr className="border-t-[0.5px] border-[#E8E2D6] mb-24 max-w-6xl mx-auto" />
 
         {/* Section 01: Strategic Foundation (Split-screen interactive timeline and slide viewer) */}
-        <section className="mb-32 max-w-6xl mx-auto">
+        <section className="mb-32 max-w-7xl mx-auto">
           <div className="mb-12 text-center">
             <span className="text-[11px] tracking-[0.4em] uppercase text-[#C5A059] mb-3 block font-semibold">01 — Strategic Foundation</span>
             <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#0A2240] font-light leading-tight mb-4`}>
@@ -158,7 +158,7 @@ export default function DoveCampaignPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             
             {/* Mobile/Tablet Pill Selector */}
             <div className="flex lg:hidden overflow-x-auto pb-4 gap-2 scrollbar-none border-b border-[#E8E2D6]/30 mb-2 w-full select-none">
@@ -181,53 +181,44 @@ export default function DoveCampaignPage() {
             </div>
 
             {/* Desktop Timeline (Left Column) */}
-            <div className="hidden lg:flex lg:col-span-5 flex-col relative pl-4 border-l-[1px] border-[#E8E2D6]/60 select-none">
+            <div className="hidden lg:flex lg:col-span-4 flex-col relative pl-6 border-l-[1px] border-[#E8E2D6]/60 select-none py-2">
               {strategyPillars.map((pillar, idx) => {
                 const isActive = activeIndex === idx;
                 return (
                   <div
                     key={pillar.num}
-                    className="relative pb-8 last:pb-0 cursor-pointer group"
+                    className="relative pb-10 last:pb-0 cursor-pointer group"
                     onClick={() => setActiveIndex(idx)}
                     onMouseEnter={() => setActiveIndex(idx)}
                   >
                     {/* Active Line indicator overlay */}
                     {isActive && (
-                      <div className="absolute -left-[1px] top-0 bottom-0 w-[2px] bg-[#C5A059] transition-all duration-300" />
+                      <div className="absolute -left-[25px] top-0 bottom-0 w-[2px] bg-[#C5A059] transition-all duration-300" />
                     )}
                     
                     {/* Stepper Node dot */}
-                    <div className={`absolute -left-[5px] top-[14px] w-2.5 h-2.5 rounded-full border border-[#FDFCF9] transition-all duration-300 ${
+                    <div className={`absolute -left-[29px] top-[18px] w-2.5 h-2.5 rounded-full border border-[#FDFCF9] transition-all duration-300 ${
                       isActive ? 'bg-[#C5A059] scale-125' : 'bg-[#E8E2D6] group-hover:bg-[#C5A059]/60'
                     }`} />
 
-                    <div className="pl-6 transition-all duration-300">
-                      <div className="flex items-baseline gap-2">
-                        <span className={`${cormorant.className} text-xl transition-colors duration-300 ${isActive ? 'text-[#C5A059]' : 'text-[#4B5E7D]/60'}`}>
+                    <div className="pl-4 transition-all duration-300">
+                      <div className="flex items-baseline gap-3">
+                        <span className={`${cormorant.className} text-2xl md:text-3xl transition-all duration-300 ${isActive ? 'text-[#C5A059] font-medium' : 'text-[#4B5E7D]/50'}`}>
                           {pillar.num}
                         </span>
-                        <h3 className={`${cormorant.className} text-2xl transition-colors duration-300 font-medium ${
-                          isActive ? 'text-[#0A2240]' : 'text-[#4B5E7D]/70 group-hover:text-[#0A2240]'
+                        <h3 className={`${cormorant.className} text-3xl md:text-4xl transition-all duration-300 leading-tight ${
+                          isActive ? 'text-[#0A2240] font-medium' : 'text-[#4B5E7D]/60 group-hover:text-[#0A2240]'
                         }`}>
                           {pillar.title}
                         </h3>
                       </div>
                       
                       {/* Subtitle */}
-                      <span className={`text-[9px] tracking-[0.15em] uppercase font-semibold transition-colors duration-300 mt-0.5 block ${
+                      <span className={`text-[10px] md:text-[11px] tracking-[0.2em] uppercase font-semibold transition-all duration-300 mt-1 block ${
                         isActive ? 'text-[#C5A059]' : 'text-[#4B5E7D]/40'
                       }`}>
                         {pillar.subtitle}
                       </span>
-
-                      {/* Expandable description */}
-                      <div className={`transition-all duration-500 ease-in-out overflow-hidden ${
-                        isActive ? 'max-h-48 opacity-100 mt-3' : 'max-h-0 opacity-0'
-                      }`}>
-                        <p className="text-xs text-[#4B5E7D] leading-relaxed font-light font-sans max-w-sm">
-                          {pillar.description}
-                        </p>
-                      </div>
                     </div>
                   </div>
                 );
@@ -235,7 +226,7 @@ export default function DoveCampaignPage() {
             </div>
 
             {/* Slide & Info Viewer (Right Column) */}
-            <div className="lg:col-span-7 lg:sticky lg:top-28 flex flex-col gap-4 w-full">
+            <div className="lg:col-span-8 lg:sticky lg:top-28 flex flex-col gap-4 w-full">
               {/* Slide Wrapper with aspect ratio */}
               <div 
                 className="group relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-md border border-[#E8E2D6]/40 cursor-zoom-in bg-white"
@@ -258,7 +249,7 @@ export default function DoveCampaignPage() {
                         alt={`Slide for ${pillar.title}`}
                         fill
                         className="object-contain"
-                        sizes="(max-width: 1024px) 100vw, 60vw"
+                        sizes="(max-width: 1024px) 100vw, 70vw"
                         priority={idx === 0}
                       />
                     </div>
@@ -276,19 +267,6 @@ export default function DoveCampaignPage() {
                     </span>
                   </div>
                 </div>
-              </div>
-
-              {/* Mobile/Tablet Description (visible under slide on mobile) */}
-              <div className="block lg:hidden mt-2 bg-[#FAF7F0] border border-[#E8E2D6]/40 p-6 rounded-2xl shadow-sm">
-                <span className="text-[9px] tracking-[0.15em] uppercase text-[#C5A059] font-semibold mb-2 block font-mono">
-                  {strategyPillars[activeIndex].subtitle}
-                </span>
-                <h3 className={`${cormorant.className} text-2xl text-[#0A2240] font-normal mb-3`}>
-                  {strategyPillars[activeIndex].title}
-                </h3>
-                <p className="text-xs text-[#4B5E7D] leading-relaxed font-light font-sans">
-                  {strategyPillars[activeIndex].description}
-                </p>
               </div>
 
               {/* Pagination Meta indicator */}
@@ -556,9 +534,6 @@ export default function DoveCampaignPage() {
             <span className={`${cormorant.className} text-xl md:text-2xl font-light text-white`}>
               {strategyPillars[activeIndex].num} — {strategyPillars[activeIndex].title}
             </span>
-            <p className="text-xs text-white/60 font-sans leading-relaxed max-w-md hidden md:block">
-              {strategyPillars[activeIndex].description}
-            </p>
             <span className="text-[9px] tracking-[0.2em] uppercase text-[#C5A059] font-semibold mt-1">
               Use ← / → Arrow Keys · Esc to Close
             </span>
