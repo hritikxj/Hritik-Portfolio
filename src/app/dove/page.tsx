@@ -124,7 +124,7 @@ export default function DoveCampaignPage() {
       <main className="max-w-7xl mx-auto px-5 md:px-12 lg:px-10">
         
         {/* Specs Table */}
-        <section className="mb-24 max-w-6xl mx-auto">
+        <section className="mb-24 max-w-7xl mx-auto">
           <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[#FAF7F0] border border-[#E8E2D6]/40 shadow-sm text-center sm:text-left">
             <div>
               <span className="text-[9px] tracking-[0.2em] uppercase text-[#C5A059] block mb-1 font-semibold">Role</span>
@@ -144,7 +144,7 @@ export default function DoveCampaignPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E8E2D6] mb-24 max-w-6xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[#E8E2D6] mb-24 max-w-7xl mx-auto" />
 
         {/* Section 01: Strategic Foundation (Split-screen interactive timeline and slide viewer) */}
         <section className="mb-32 max-w-7xl mx-auto">
@@ -279,10 +279,10 @@ export default function DoveCampaignPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E8E2D6] mb-24 max-w-6xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[#E8E2D6] mb-24 max-w-7xl mx-auto" />
 
         {/* Section 02: Touchpoints & Digital Activation */}
-        <section className="mb-32 max-w-6xl mx-auto">
+        <section className="mb-32 max-w-7xl mx-auto">
           <div className="mb-12 text-center">
             <span className="text-[11px] tracking-[0.4em] uppercase text-[#C5A059] mb-3 block font-semibold">02 — Campaign Touchpoints</span>
             <h2 className={`${cormorant.className} text-4xl md:text-5xl text-[#0A2240] font-light leading-tight mb-4`}>
@@ -325,11 +325,11 @@ export default function DoveCampaignPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E8E2D6] mb-24 max-w-6xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[#E8E2D6] mb-24 max-w-7xl mx-auto" />
 
         {/* Section 03: Creative Deliverables & Posters (Card dimensions fixed) */}
         <section className="mb-32">
-          <div className="max-w-6xl mx-auto mb-16 text-center">
+          <div className="max-w-7xl mx-auto mb-16 text-center">
             <span className="text-[11px] tracking-[0.4em] uppercase text-[#C5A059] mb-3 block font-semibold">03 — Creative Assets</span>
             <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#0A2240] font-light leading-tight mb-4`}>
               Visual Delivery
@@ -379,7 +379,7 @@ export default function DoveCampaignPage() {
             </div>
 
             {/* Grid 3: Slide 12 (Illustrations details) & Slide 15 (Mirror Card Mockup) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-7xl mx-auto">
               <Image 
                 src="/dove/dove-slide-12.png" 
                 alt="Identity illustrations detail" 
@@ -408,7 +408,7 @@ export default function DoveCampaignPage() {
             </div>
 
             {/* Grid 4: Slide 17 & Slide 18 (Mirror details and packaging) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-7xl mx-auto">
               <Image 
                 src="/dove/dove-slide-17.png" 
                 alt="Unfiltered mirror details" 
@@ -428,10 +428,10 @@ export default function DoveCampaignPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E8E2D6] mb-24 max-w-6xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[#E8E2D6] mb-24 max-w-7xl mx-auto" />
 
         {/* Section 04: Outcome & Reflection */}
-        <section className="mb-24 max-w-6xl mx-auto">
+        <section className="mb-24 max-w-7xl mx-auto">
           <div className="mb-12 text-center">
             <span className="text-[11px] tracking-[0.4em] uppercase text-[#C5A059] mb-3 block font-semibold">04 — Outcomes</span>
             <h2 className={`${cormorant.className} text-4xl md:text-5xl text-[#0A2240] font-light leading-tight mb-4`}>

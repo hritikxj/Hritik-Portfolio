@@ -73,7 +73,7 @@ export default function NothingCommunityEditionPage() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-5 md:px-12 lg:px-10">
+      <main className="max-w-7xl mx-auto px-5 md:px-12 lg:px-10">
         
         {/* Project Context */}
         <section className="mb-32 relative z-10">
