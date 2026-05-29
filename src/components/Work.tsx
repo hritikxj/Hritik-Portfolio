@@ -1,3 +1,5 @@
+'use client';
+
 import Reveal from './Reveal';
 import Link from 'next/link';
 
@@ -50,7 +52,17 @@ export default function Work() {
             return (
               <Reveal key={idx} delay={idx * 0.1} className={work.double ? 'md:col-span-2' : ''}>
                 {work.link ? (
-                  <Link href={work.link} className="block cursor-pointer group h-full no-underline">
+                  <Link
+                    href={work.link}
+                    onClick={() => {
+                      try {
+                        sessionStorage.setItem('portfolio-scroll-y', window.scrollY.toString());
+                      } catch (e) {
+                        console.warn(e);
+                      }
+                    }}
+                    className="block cursor-pointer group h-full no-underline"
+                  >
                     {CardContent}
                   </Link>
                 ) : (
@@ -85,7 +97,17 @@ export default function Work() {
                 </span>
               ))}
             </div>
-            <Link href="/purr-pantry" className="relative z-10 inline-block bg-ink text-off-white px-8 py-3.5 font-body text-xs tracking-[0.08em] uppercase border-none cursor-pointer rounded-sm transition-colors duration-200 hover:bg-brand-red no-underline">
+            <Link
+              href="/purr-pantry"
+              onClick={() => {
+                try {
+                  sessionStorage.setItem('portfolio-scroll-y', window.scrollY.toString());
+                } catch (e) {
+                  console.warn(e);
+                }
+              }}
+              className="relative z-10 inline-block bg-ink text-off-white px-8 py-3.5 font-body text-xs tracking-[0.08em] uppercase border-none cursor-pointer rounded-sm transition-colors duration-200 hover:bg-brand-red no-underline"
+            >
               Read Case Study →
             </Link>
           </Reveal>

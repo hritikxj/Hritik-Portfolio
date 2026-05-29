@@ -81,10 +81,33 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       introDoneRef.current = true;
       setIntroComplete(true);
       setIsReturning(true);
-      
+
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'auto';
+      }
+
+      let savedScrollY: number | null = null;
+      try {
+        const saved = sessionStorage.getItem('portfolio-scroll-y');
+        if (saved) {
+          savedScrollY = parseInt(saved, 10);
+          sessionStorage.removeItem('portfolio-scroll-y');
+        }
+      } catch (_) {}
+
       const spacer = spacerRef.current;
       const spacerHeight = spacer ? spacer.offsetHeight : window.innerHeight * 2;
-      if (window.scrollY < spacerHeight) {
+
+      if (savedScrollY !== null && !isNaN(savedScrollY)) {
+        window.scrollTo(0, savedScrollY);
+        // Force scroll alignment in case Next.js routing delays paint
+        setTimeout(() => {
+          if (savedScrollY !== null) window.scrollTo(0, savedScrollY);
+        }, 20);
+        setTimeout(() => {
+          if (savedScrollY !== null) window.scrollTo(0, savedScrollY);
+        }, 80);
+      } else if (window.scrollY < spacerHeight) {
         window.scrollTo(0, spacerHeight);
         setTimeout(() => {
           if (window.scrollY < spacerHeight) {
