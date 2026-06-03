@@ -9,14 +9,14 @@ export default function Marquee() {
       <div className="flex shrink-0 gap-0 whitespace-nowrap animate-[marquee_25s_linear_infinite]">
         {items.map((item, i) => (
           <span key={`1-${i}`} className="text-[11px] tracking-[0.12em] uppercase text-white/50 px-8 flex items-center">
-            {item}<span className="text-brand-red px-2">·</span>
+            {item}
           </span>
         ))}
       </div>
       <div className="flex shrink-0 gap-0 whitespace-nowrap animate-[marquee_25s_linear_infinite]" aria-hidden="true">
         {items.map((item, i) => (
           <span key={`2-${i}`} className="text-[11px] tracking-[0.12em] uppercase text-white/50 px-8 flex items-center">
-            {item}<span className="text-brand-red px-2">·</span>
+            {item}
           </span>
         ))}
       </div>

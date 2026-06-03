@@ -237,21 +237,24 @@ export default function NothingCommunityEditionPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
             {[
-              { name: "Pure Black", hex: "#000000", bg: "bg-[#000000]", text: "text-white", role: "Stark Contrast", desc: "Maximum contrast canvas for ambient displays." },
-              { name: "Nothing Ink", hex: "#111110", bg: "bg-[#111110]", text: "text-[#FAFAF8]", role: "Base Canvas", desc: "The primary background context, soft and low-emission." },
-              { name: "Glyph Red", hex: "#C0392B", bg: "bg-[#C0392B]", text: "text-white", role: "Indicator Accent", desc: "High-priority accent for active and completed states." },
-              { name: "Mid Grey", hex: "#888888", bg: "bg-[#888888]", text: "text-black", role: "Secondary Label", desc: "Secondary typography and grid alignment rules." },
-              { name: "Off-White", hex: "#FAFAF8", bg: "bg-[#FAFAF8]", text: "text-[#111110]", role: "Primary Text", desc: "High-readability contrast for primary system text." }
+              { name: "Pure Black", hex: "#000000", text: "text-white", role: "Stark Contrast", desc: "Maximum contrast canvas for ambient displays." },
+              { name: "Nothing Ink", hex: "#111110", text: "text-[#FAFAF8]", role: "Base Canvas", desc: "The primary background context, soft and low-emission." },
+              { name: "Glyph Red", hex: "#C0392B", text: "text-white", role: "Indicator Accent", desc: "High-priority accent for active and completed states." },
+              { name: "Mid Grey", hex: "#888888", text: "text-[#111110]", role: "Secondary Label", desc: "Secondary typography and grid alignment rules." },
+              { name: "Off-White", hex: "#FAFAF8", text: "text-[#111110]", role: "Primary Text", desc: "High-readability contrast for primary system text." }
             ].map((swatch, idx) => (
-              <div key={idx} className="bg-[#161615] border border-white/5 rounded-2xl p-6 flex flex-col justify-between h-[220px] shadow-md hover:border-white/10 transition-colors duration-300">
+              <div 
+                key={idx} 
+                className={`border border-white/5 rounded-2xl p-6 flex flex-col justify-between h-[220px] shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-lg ${swatch.text}`}
+                style={{ backgroundColor: swatch.hex }}
+              >
                 <div className="flex justify-between items-start">
-                  <span className="text-[9px] font-mono tracking-[0.2em] text-[#C0392B] uppercase font-bold">{swatch.role}</span>
-                  <div className={`w-6 h-6 rounded-full ${swatch.bg} border border-white/10`} />
+                  <span className="text-[9px] font-mono tracking-[0.2em] uppercase font-bold opacity-60">{swatch.role}</span>
                 </div>
                 <div>
-                  <div className="text-white text-sm font-semibold tracking-wide mb-0.5">{swatch.name}</div>
-                  <div className="text-xs font-mono text-[#9E9C98] mb-3">{swatch.hex}</div>
-                  <p className="text-[11px] text-[#9E9C98] leading-[1.5] font-light">{swatch.desc}</p>
+                  <div className="text-sm font-semibold tracking-wide mb-0.5">{swatch.name}</div>
+                  <div className="text-xs font-mono opacity-50 mb-3">{swatch.hex}</div>
+                  <p className="text-[11px] leading-[1.5] font-light opacity-80">{swatch.desc}</p>
                 </div>
               </div>
             ))}

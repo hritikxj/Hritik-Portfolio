@@ -494,8 +494,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
             if (self.direction === 1 && currentScroll > downThreshold && currentScroll < upThreshold) {
               triggerAutoScroll(spacerHeight);
-            } else if (self.direction === -1 && currentScroll < upThreshold && currentScroll > downThreshold) {
-              triggerAutoScroll(0);
             }
           },
         });

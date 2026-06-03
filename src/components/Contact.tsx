@@ -16,11 +16,6 @@ export default function Contact() {
             Let&apos;s build something<br/>worth remembering.
           </h2>
         </Reveal>
-        <Reveal delay={0.2}>
-          <p className="text-[13px] text-white/40 leading-[1.8] max-w-sm mb-10">
-            I work with a small number of clients at a time — which means your project gets full attention.
-          </p>
-        </Reveal>
 
         {/* Primary CTA Button */}
         <Reveal delay={0.3}>

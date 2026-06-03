@@ -42,18 +42,6 @@ export default function Hero() {
             </button>
           </div>
         </Reveal>
-        <Reveal delay={0.5}>
-          <div className="flex flex-wrap gap-10 md:gap-16 lg:gap-24 mt-8 pt-8 border-t-[0.5px] border-border-subtle w-full">
-            <div>
-              <span className="font-display text-3xl md:text-4xl font-light text-ink block">17K</span>
-              <span className="text-[11px] text-smoke tracking-[0.06em]">Instagram Followers</span>
-            </div>
-            <div>
-              <span className="font-display text-3xl md:text-4xl font-light text-ink block">4+</span>
-              <span className="text-[11px] text-smoke tracking-[0.06em]">Years Designing</span>
-            </div>
-          </div>
-        </Reveal>
       </div>
       <Reveal delay={0.3} className="h-full">
         <div className="grid grid-cols-2 grid-rows-[1.75fr_1fr] gap-2 md:gap-3 h-[clamp(350px,50vh,500px)]">
