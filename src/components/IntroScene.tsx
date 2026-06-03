@@ -65,6 +65,9 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     };
     window.addEventListener('resize', handleOrientationResize);
 
+    const isMobileDevice = /iPad|iPhone|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
+    const videoSrc = isMobileDevice ? '/intro2-scrub-mobile.mp4' : '/intro2-scrub.mp4';
+
     let handleMetadataLoaded: (() => void) | null = null;
     let handleSeeked: (() => void) | null = null;
     let blobUrl: string | null = null;
@@ -147,7 +150,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
     const fetchVideo = async () => {
       if (videoRef.current) {
-        videoRef.current.src = '/intro2-scrub.mp4';
+        videoRef.current.src = videoSrc;
         videoRef.current.load();
         // Warm up decoder for mobile iOS/Safari support
         videoRef.current.play().then(() => {
@@ -156,7 +159,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       }
 
       try {
-        const response = await fetch('/intro2-scrub.mp4');
+        const response = await fetch(videoSrc);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         if (!response.body) {
@@ -372,25 +375,35 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
       const isMobile = /iPad|iPhone|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
       const MIN_SEEK_STEP = isMobile ? 0.08 : 0.03; // Seek less frequently on mobile to prevent decoder lag
+      let lastSeekTimestamp = 0;
 
       const runScrubLoop = () => {
         if (!scrubLoopActive || !videoRef.current) return;
 
         const video = videoRef.current;
+
+        // If we are currently seeking, wait for the seeked event to fire.
+        // We add a safety timeout (250ms) to prevent freezing if seeked event is lost.
+        if (isSeekingRef.current) {
+          if (performance.now() - lastSeekTimestamp > 250) {
+            isSeekingRef.current = false;
+          } else {
+            rafId = requestAnimationFrame(runScrubLoop);
+            return;
+          }
+        }
+
         const diff = targetTime - currentInterpolatedTime;
 
         // When close enough, seek to exact target time and stop the loop
         if (Math.abs(diff) < 0.001) {
           if (video.currentTime !== targetTime) {
-            if (!isSeekingRef.current) {
-              isSeekingRef.current = true;
-              video.currentTime = targetTime;
-              currentInterpolatedTime = targetTime;
-              lastSoughtTime = targetTime;
-              scrubLoopActive = false;
-            } else {
-              rafId = requestAnimationFrame(runScrubLoop);
-            }
+            isSeekingRef.current = true;
+            lastSeekTimestamp = performance.now();
+            video.currentTime = targetTime;
+            currentInterpolatedTime = targetTime;
+            lastSoughtTime = targetTime;
+            scrubLoopActive = false;
           } else {
             currentInterpolatedTime = targetTime;
             lastSoughtTime = targetTime;
@@ -399,15 +412,15 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           return;
         }
 
+        // Interpolation only advances when not seeking, ensuring synchrony with decoder speed
         currentInterpolatedTime += diff * 0.12;
 
         if (video.duration) {
           currentInterpolatedTime = Math.max(0, Math.min(video.duration, currentInterpolatedTime));
           
-          // Only seek if the distance from the last sought time is greater than MIN_SEEK_STEP
-          // and we are not already seeking. This reduces decoder seek load by 95%.
-          if (!isSeekingRef.current && Math.abs(currentInterpolatedTime - lastSoughtTime) >= MIN_SEEK_STEP) {
+          if (Math.abs(currentInterpolatedTime - lastSoughtTime) >= MIN_SEEK_STEP) {
             isSeekingRef.current = true;
+            lastSeekTimestamp = performance.now();
             video.currentTime = currentInterpolatedTime;
             lastSoughtTime = currentInterpolatedTime;
           }
