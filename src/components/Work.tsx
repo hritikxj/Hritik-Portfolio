@@ -8,6 +8,7 @@ export default function Work() {
     { title: "Purr Pantry — Premium Cat Food Brand", category: "Branding", double: false, color: "#1A1A1A", thumbText: "Purr Pantry", textClass: "text-[clamp(32px,5vw,64px)] text-white/20", image: "/Purthumbnail.jpg", link: "/purr-pantry" },
     { title: "Dove #TheRealGrowth", category: "Campaign", double: false, color: "#E8E2D6", thumbText: "Dove Campaign", textClass: "text-lg text-smoke", image: "/dove_thumb.jpg", link: "/dove" },
     { title: "Nothing Community Edition", category: "UI/UX", double: false, color: "#2C3E50", thumbText: "Nothing Widget", textClass: "text-lg text-white/30", image: "/nothing_thumb.jpg", link: "/nothing" },
+    { title: "Dash — Ultra-Fast Electronics Delivery", category: "Branding", double: false, color: "#FF6B35", thumbText: "DASH", textClass: "text-lg text-white/30", image: "/dash/dash-slide-1.png", link: "/dash" },
   ];
 
   return (
