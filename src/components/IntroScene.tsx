@@ -227,26 +227,48 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     let autoScrollTimeout: ReturnType<typeof setTimeout> | null = null;
     let targetScrollY = -1;
 
-    let isUserScrollingActive = false;
-    let userScrollTimeout: ReturnType<typeof setTimeout> | null = null;
+    let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
 
-    const handleUserScrollActivity = (e?: Event) => {
-      if (e && e.type === 'keydown') {
-        const ke = e as KeyboardEvent;
-        const scrollKeys = ['ArrowUp', 'ArrowDown', 'Space', 'PageUp', 'PageDown', 'Home', 'End'];
-        if (!scrollKeys.includes(ke.code)) return;
+    const handleScrollEnd = () => {
+      if (isAutoScrolling) return;
+
+      const currentScroll = window.scrollY;
+      const spacer = spacerRef.current;
+      if (!spacer) return;
+      const spacerHeight = spacer.offsetHeight;
+
+      if (currentScroll > 0 && currentScroll < spacerHeight) {
+        // If they scrolled past 40% of the spacer, snap to landing (spacerHeight).
+        // Otherwise snap back to intro (0).
+        if (currentScroll < spacerHeight * 0.40) {
+          if (triggerAutoScrollRef.current) {
+            triggerAutoScrollRef.current(0);
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        } else {
+          if (triggerAutoScrollRef.current) {
+            triggerAutoScrollRef.current(spacerHeight);
+          } else {
+            window.scrollTo({ top: spacerHeight, behavior: 'smooth' });
+          }
+        }
       }
-      isUserScrollingActive = true;
-      if (userScrollTimeout) clearTimeout(userScrollTimeout);
-      userScrollTimeout = setTimeout(() => {
-        isUserScrollingActive = false;
-      }, 150);
     };
 
-    window.addEventListener('wheel', handleUserScrollActivity, { passive: true });
-    window.addEventListener('touchstart', handleUserScrollActivity, { passive: true });
-    window.addEventListener('touchmove', handleUserScrollActivity, { passive: true });
-    window.addEventListener('keydown', handleUserScrollActivity, { passive: true });
+    const handleScrollActivity = () => {
+      if (isAutoScrolling) return;
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(handleScrollEnd, 150);
+    };
+
+    window.addEventListener('wheel', handleScrollActivity, { passive: true });
+    window.addEventListener('touchstart', handleScrollActivity, { passive: true });
+    window.addEventListener('touchmove', handleScrollActivity, { passive: true });
+    window.addEventListener('keydown', handleScrollActivity, { passive: true });
+    window.addEventListener('scroll', handleScrollActivity, { passive: true });
+    window.addEventListener('touchend', handleScrollActivity, { passive: true });
+    window.addEventListener('touchcancel', handleScrollActivity, { passive: true });
 
     // Block scrolling inputs during active transitions to prevent momentum fighting GSAP
     const preventScroll = (e: Event) => {
@@ -510,21 +532,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           scrub: true,
           onUpdate: (self: { progress: number; direction: number }) => {
             updateState(self.progress);
-
-            if (!isUserScrollingActive || isAutoScrolling) return;
-
-            const currentScroll = window.scrollY;
-            const spacerHeight = spacer.offsetHeight;
-            
-            // Thresholds: 3% from top or 3% from bottom of spacer
-            const downThreshold = spacerHeight * 0.03;
-            const upThreshold = spacerHeight * 0.97;
-
-            if (self.direction === 1 && currentScroll > downThreshold && currentScroll < upThreshold) {
-              triggerAutoScroll(spacerHeight);
-            } else if (self.direction === -1 && currentScroll < upThreshold && currentScroll > downThreshold) {
-              triggerAutoScroll(0);
-            }
           },
         });
 
@@ -568,11 +575,14 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       if (rafId) cancelAnimationFrame(rafId);
       if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
       window.removeEventListener('resize', handleOrientationResize);
-      window.removeEventListener('wheel', handleUserScrollActivity);
-      window.removeEventListener('touchstart', handleUserScrollActivity);
-      window.removeEventListener('touchmove', handleUserScrollActivity);
-      window.removeEventListener('keydown', handleUserScrollActivity);
-      if (userScrollTimeout) clearTimeout(userScrollTimeout);
+      window.removeEventListener('wheel', handleScrollActivity);
+      window.removeEventListener('touchstart', handleScrollActivity);
+      window.removeEventListener('touchmove', handleScrollActivity);
+      window.removeEventListener('keydown', handleScrollActivity);
+      window.removeEventListener('scroll', handleScrollActivity);
+      window.removeEventListener('touchend', handleScrollActivity);
+      window.removeEventListener('touchcancel', handleScrollActivity);
+      if (scrollTimeout) clearTimeout(scrollTimeout);
       window.removeEventListener('wheel', preventScroll);
       window.removeEventListener('touchmove', preventScroll);
       window.removeEventListener('keydown', preventKeys);
