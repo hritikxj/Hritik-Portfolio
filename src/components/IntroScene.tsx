@@ -47,27 +47,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       window.history.scrollRestoration = 'manual';
     }
 
-    // Lock spacer height to absolute pixels on mount to prevent mobile address bar resize jank
-    const handleResize = () => {
-      const spacer = spacerRef.current;
-      if (spacer) {
-        spacer.style.height = `${window.innerHeight * 2}px`;
-      }
-    };
-    handleResize();
-
-    let lastWidth = window.innerWidth;
-    const handleOrientationResize = () => {
-      if (window.innerWidth !== lastWidth) {
-        lastWidth = window.innerWidth;
-        handleResize();
-      }
-    };
-    window.addEventListener('resize', handleOrientationResize);
-
-    const isMobileDevice = /iPad|iPhone|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
-    const videoSrc = isMobileDevice ? '/intro2-scrub-mobile.mp4' : '/intro2-scrub.mp4';
-
     let handleMetadataLoaded: (() => void) | null = null;
     let handleSeeked: (() => void) | null = null;
     let blobUrl: string | null = null;
@@ -150,16 +129,12 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
     const fetchVideo = async () => {
       if (videoRef.current) {
-        videoRef.current.src = videoSrc;
+        videoRef.current.src = '/intro2-scrub.mp4';
         videoRef.current.load();
-        // Warm up decoder for mobile iOS/Safari support
-        videoRef.current.play().then(() => {
-          if (videoRef.current) videoRef.current.pause();
-        }).catch(() => { /* autoplay block ignore */ });
       }
 
       try {
-        const response = await fetch(videoSrc);
+        const response = await fetch('/intro2-scrub.mp4');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         if (!response.body) {
@@ -187,10 +162,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
             videoRef.current.src = blobUrl;
             videoRef.current.load();
             videoRef.current.currentTime = currentTime;
-            // Warm up decoder again for the new source
-            videoRef.current.play().then(() => {
-              if (videoRef.current) videoRef.current.pause();
-            }).catch(() => { /* autoplay block ignore */ });
           }
         }
       } catch (err) {
@@ -230,48 +201,26 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     let autoScrollTimeout: ReturnType<typeof setTimeout> | null = null;
     let targetScrollY = -1;
 
-    let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
+    let isUserScrollingActive = false;
+    let userScrollTimeout: ReturnType<typeof setTimeout> | null = null;
 
-    const handleScrollEnd = () => {
-      if (isAutoScrolling) return;
-
-      const currentScroll = window.scrollY;
-      const spacer = spacerRef.current;
-      if (!spacer) return;
-      const spacerHeight = spacer.offsetHeight;
-
-      if (currentScroll > 0 && currentScroll < spacerHeight) {
-        // If they scrolled past 40% of the spacer, snap to landing (spacerHeight).
-        // Otherwise snap back to intro (0).
-        if (currentScroll < spacerHeight * 0.40) {
-          if (triggerAutoScrollRef.current) {
-            triggerAutoScrollRef.current(0);
-          } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        } else {
-          if (triggerAutoScrollRef.current) {
-            triggerAutoScrollRef.current(spacerHeight);
-          } else {
-            window.scrollTo({ top: spacerHeight, behavior: 'smooth' });
-          }
-        }
+    const handleUserScrollActivity = (e?: Event) => {
+      if (e && e.type === 'keydown') {
+        const ke = e as KeyboardEvent;
+        const scrollKeys = ['ArrowUp', 'ArrowDown', 'Space', 'PageUp', 'PageDown', 'Home', 'End'];
+        if (!scrollKeys.includes(ke.code)) return;
       }
+      isUserScrollingActive = true;
+      if (userScrollTimeout) clearTimeout(userScrollTimeout);
+      userScrollTimeout = setTimeout(() => {
+        isUserScrollingActive = false;
+      }, 150);
     };
 
-    const handleScrollActivity = () => {
-      if (isAutoScrolling) return;
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(handleScrollEnd, 150);
-    };
-
-    window.addEventListener('wheel', handleScrollActivity, { passive: true });
-    window.addEventListener('touchstart', handleScrollActivity, { passive: true });
-    window.addEventListener('touchmove', handleScrollActivity, { passive: true });
-    window.addEventListener('keydown', handleScrollActivity, { passive: true });
-    window.addEventListener('scroll', handleScrollActivity, { passive: true });
-    window.addEventListener('touchend', handleScrollActivity, { passive: true });
-    window.addEventListener('touchcancel', handleScrollActivity, { passive: true });
+    window.addEventListener('wheel', handleUserScrollActivity, { passive: true });
+    window.addEventListener('touchstart', handleUserScrollActivity, { passive: true });
+    window.addEventListener('touchmove', handleUserScrollActivity, { passive: true });
+    window.addEventListener('keydown', handleUserScrollActivity, { passive: true });
 
     // Block scrolling inputs during active transitions to prevent momentum fighting GSAP
     const preventScroll = (e: Event) => {
@@ -351,7 +300,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { gsap, ScrollTrigger, ScrollToPlugin } = window as any;
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-      ScrollTrigger.config({ ignoreMobileResize: true });
 
       const video   = videoRef.current;
       const overlay = overlayRef.current;
@@ -373,37 +321,26 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       };
       video.addEventListener('loadedmetadata', handleMetadataLoaded);
 
-      const isMobile = /iPad|iPhone|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
-      const MIN_SEEK_STEP = isMobile ? 0.08 : 0.03; // Seek less frequently on mobile to prevent decoder lag
-      let lastSeekTimestamp = 0;
+      const MIN_SEEK_STEP = 0.03; // ~30fps equivalent time step to avoid decoder overhead
 
       const runScrubLoop = () => {
         if (!scrubLoopActive || !videoRef.current) return;
 
         const video = videoRef.current;
-
-        // If we are currently seeking, wait for the seeked event to fire.
-        // We add a safety timeout (250ms) to prevent freezing if seeked event is lost.
-        if (isSeekingRef.current) {
-          if (performance.now() - lastSeekTimestamp > 250) {
-            isSeekingRef.current = false;
-          } else {
-            rafId = requestAnimationFrame(runScrubLoop);
-            return;
-          }
-        }
-
         const diff = targetTime - currentInterpolatedTime;
 
         // When close enough, seek to exact target time and stop the loop
         if (Math.abs(diff) < 0.001) {
           if (video.currentTime !== targetTime) {
-            isSeekingRef.current = true;
-            lastSeekTimestamp = performance.now();
-            video.currentTime = targetTime;
-            currentInterpolatedTime = targetTime;
-            lastSoughtTime = targetTime;
-            scrubLoopActive = false;
+            if (!isSeekingRef.current) {
+              isSeekingRef.current = true;
+              video.currentTime = targetTime;
+              currentInterpolatedTime = targetTime;
+              lastSoughtTime = targetTime;
+              scrubLoopActive = false;
+            } else {
+              rafId = requestAnimationFrame(runScrubLoop);
+            }
           } else {
             currentInterpolatedTime = targetTime;
             lastSoughtTime = targetTime;
@@ -412,15 +349,15 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           return;
         }
 
-        // Interpolation only advances when not seeking, ensuring synchrony with decoder speed
         currentInterpolatedTime += diff * 0.12;
 
         if (video.duration) {
           currentInterpolatedTime = Math.max(0, Math.min(video.duration, currentInterpolatedTime));
           
-          if (Math.abs(currentInterpolatedTime - lastSoughtTime) >= MIN_SEEK_STEP) {
+          // Only seek if the distance from the last sought time is greater than MIN_SEEK_STEP
+          // and we are not already seeking. This reduces decoder seek load by 95%.
+          if (!isSeekingRef.current && Math.abs(currentInterpolatedTime - lastSoughtTime) >= MIN_SEEK_STEP) {
             isSeekingRef.current = true;
-            lastSeekTimestamp = performance.now();
             video.currentTime = currentInterpolatedTime;
             lastSoughtTime = currentInterpolatedTime;
           }
@@ -545,6 +482,21 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           scrub: true,
           onUpdate: (self: { progress: number; direction: number }) => {
             updateState(self.progress);
+
+            if (!isUserScrollingActive || isAutoScrolling) return;
+
+            const currentScroll = window.scrollY;
+            const spacerHeight = spacer.offsetHeight;
+            
+            // Thresholds: 3% from top or 3% from bottom of spacer
+            const downThreshold = spacerHeight * 0.03;
+            const upThreshold = spacerHeight * 0.97;
+
+            if (self.direction === 1 && currentScroll > downThreshold && currentScroll < upThreshold) {
+              triggerAutoScroll(spacerHeight);
+            } else if (self.direction === -1 && currentScroll < upThreshold && currentScroll > downThreshold) {
+              triggerAutoScroll(0);
+            }
           },
         });
 
@@ -587,15 +539,11 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       }
       if (rafId) cancelAnimationFrame(rafId);
       if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
-      window.removeEventListener('resize', handleOrientationResize);
-      window.removeEventListener('wheel', handleScrollActivity);
-      window.removeEventListener('touchstart', handleScrollActivity);
-      window.removeEventListener('touchmove', handleScrollActivity);
-      window.removeEventListener('keydown', handleScrollActivity);
-      window.removeEventListener('scroll', handleScrollActivity);
-      window.removeEventListener('touchend', handleScrollActivity);
-      window.removeEventListener('touchcancel', handleScrollActivity);
-      if (scrollTimeout) clearTimeout(scrollTimeout);
+      window.removeEventListener('wheel', handleUserScrollActivity);
+      window.removeEventListener('touchstart', handleUserScrollActivity);
+      window.removeEventListener('touchmove', handleUserScrollActivity);
+      window.removeEventListener('keydown', handleUserScrollActivity);
+      if (userScrollTimeout) clearTimeout(userScrollTimeout);
       window.removeEventListener('wheel', preventScroll);
       window.removeEventListener('touchmove', preventScroll);
       window.removeEventListener('keydown', preventKeys);
