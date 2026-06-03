@@ -18,7 +18,7 @@ const jost = Jost({
   display: 'swap',
 });
 
-function PurrLogo({ className, color1, color2, strokeWidth = 18 }: { className?: string, color1: string, color2: string, strokeWidth?: number }) {
+function PurrLogo({ className, color1, strokeWidth = 18 }: { className?: string, color1: string, strokeWidth?: number }) {
   return (
     <svg viewBox="0 0 408 408" className={className} style={{ overflow: 'visible' }} fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M191.448 151.416C191.442 151.393 191.436 151.373 191.429 151.352C182.374 141.338 169.332 134.999 154.806 134.838C154.616 134.835 154.428 134.834 154.239 134.834C143.491 134.834 133.534 138.217 125.372 143.977C122.853 145.754 120.505 147.758 118.358 149.959" stroke={color1} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className="transition-colors duration-500"/>
@@ -54,9 +54,9 @@ export default function PurrPantryPage() {
     <div className={`min-h-screen bg-[#FAF6EE] text-[#1A1208] ${jost.className} selection:bg-[#C4611A] selection:text-white pb-20`}>
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FAF6EE]/90 backdrop-blur-sm border-b-[0.5px] border-[#D4C4AA]">
-        <a href="/" onClick={handleBack} className="text-[#1A1208] hover:text-[#C4611A] transition-colors uppercase tracking-[0.2em] text-xs font-medium">
+        <Link href="/" onClick={handleBack} className="text-[#1A1208] hover:text-[#C4611A] transition-colors uppercase tracking-[0.2em] text-xs font-medium">
           ← Back to Portfolio
-        </a>
+        </Link>
         <div className={`uppercase tracking-[0.3em] text-[10px] text-[#C4611A] ${jost.className}`}>
           Brand Identity
         </div>
@@ -114,7 +114,7 @@ export default function PurrPantryPage() {
             </div>
             <div className="w-full md:w-3/4">
               <p className={`${cormorant.className} text-xl md:text-2xl leading-[1.6] text-[#2E1A0E] mb-12`}>
-                Every strong identity begins on paper. The creative process focused on elegantly combining the dual 'P's of Purr Pantry. I aimed to craft a clever shape that rewards a second glance, avoiding any overt cartoonishness.
+                Every strong identity begins on paper. The creative process focused on elegantly combining the dual &apos;P&apos;s of Purr Pantry. I aimed to craft a clever shape that rewards a second glance, avoiding any overt cartoonishness.
               </p>
               
               <div className="group w-full aspect-[4/3] relative rounded-3xl overflow-hidden shadow-xl bg-[#F5EAD7]">
@@ -156,7 +156,6 @@ export default function PurrPantryPage() {
               <PurrLogo 
                 className="w-64 md:w-96 lg:w-[480px] h-auto relative z-10 transition-transform duration-700 ease-out group-hover:scale-105" 
                 color1="#FFF8F0" 
-                color2="#F5EAD7" 
               />
             </div>
             
@@ -169,7 +168,6 @@ export default function PurrPantryPage() {
                 <PurrLogo 
                   className="w-32 md:w-40 h-auto transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-translate-y-1" 
                   color1="#F5EAD7" 
-                  color2="#C4611A" 
                 />
               </div>
               
@@ -180,7 +178,6 @@ export default function PurrPantryPage() {
                 <PurrLogo 
                   className="w-32 md:w-40 h-auto transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-translate-y-1" 
                   color1="#1A1208" 
-                  color2="#C4611A" 
                 />
               </div>
 
@@ -191,7 +188,6 @@ export default function PurrPantryPage() {
                 <PurrLogo 
                   className="w-32 md:w-40 h-auto transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-translate-y-1" 
                   color1="#2E1A0E" 
-                  color2="#C4611A" 
                 />
               </div>
             </div>
@@ -294,7 +290,7 @@ export default function PurrPantryPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-8 border-[0.5px] border-[#D4C4AA] rounded-xl hover:shadow-md transition-shadow">
               <p className="text-[10px] tracking-[0.3em] text-[#C4611A] uppercase mb-4 font-medium">Dominant</p>
-              <p className={`${cormorant.className} italic text-[#1A1208] text-xl leading-[1.6]`}>Parchment and Cream together form 70% of every surface. This is the brand's breathing room — warm, tactile, quiet.</p>
+              <p className={`${cormorant.className} italic text-[#1A1208] text-xl leading-[1.6]`}>Parchment and Cream together form 70% of every surface. This is the brand&apos;s breathing room — warm, tactile, quiet.</p>
             </div>
             <div className="bg-white p-8 border-[0.5px] border-[#D4C4AA] rounded-xl hover:shadow-md transition-shadow">
               <p className="text-[10px] tracking-[0.3em] text-[#C4611A] uppercase mb-4 font-medium">Structural</p>

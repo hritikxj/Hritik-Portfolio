@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 
@@ -92,9 +93,9 @@ export default function DoveCampaignPage() {
     <div className={`min-h-screen bg-[#FDFCF9] text-[#0A2240] ${jost.className} selection:bg-[#C5A059] selection:text-white pb-20`}>
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FDFCF9]/95 backdrop-blur-sm border-b-[0.5px] border-[#E8E2D6]">
-        <a href="/" onClick={handleBack} className="text-[#0A2240] hover:text-[#C5A059] transition-colors uppercase tracking-[0.2em] text-xs font-semibold no-underline">
+        <Link href="/" onClick={handleBack} className="text-[#0A2240] hover:text-[#C5A059] transition-colors uppercase tracking-[0.2em] text-xs font-semibold no-underline">
           ← Back to Portfolio
-        </a>
+        </Link>
         <div className={`uppercase tracking-[0.3em] text-[10px] text-[#C5A059] ${jost.className} font-semibold`}>
           Brand Campaign
         </div>
@@ -435,7 +436,7 @@ export default function DoveCampaignPage() {
               Quiet Self-Acceptance
             </h2>
             <p className="text-sm text-[#4B5E7D] font-light max-w-2xl mx-auto mb-12">
-              Challenging physical stigmas in India without aggressive confrontation, utilizing Dove's trusted brand tone to support personal choice and drive authenticity.
+              Challenging physical stigmas in India without aggressive confrontation, utilizing Dove&apos;s trusted brand tone to support personal choice and drive authenticity.
             </p>
           </div>
           

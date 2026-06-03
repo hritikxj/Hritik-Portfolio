@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 
@@ -44,9 +45,9 @@ export default function NothingCommunityEditionPage() {
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#111110]/95 backdrop-blur-sm border-b-[0.5px] border-white/10">
-        <a href="/" onClick={handleBack} className="text-[#FAFAF8] hover:text-[#C0392B] transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
+        <Link href="/" onClick={handleBack} className="text-[#FAFAF8] hover:text-[#C0392B] transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
           ← Back to Portfolio
-        </a>
+        </Link>
         <div className={`uppercase tracking-[0.3em] text-[10px] text-[#C0392B] ${jost.className} font-medium`}>
           UI/UX Design
         </div>
@@ -110,7 +111,7 @@ export default function NothingCommunityEditionPage() {
                 Ambient utility meeting physical minimalism.
               </p>
               <p className={`${jost.className} text-sm text-[#9E9C98] leading-[1.9] mb-6 font-light`}>
-                A minimalist to-do widget designed for the Nothing Community Edition, utilizing dot-based progress tracking to align with Nothing's transparent and understated hardware aesthetic. The interface balances core utility with geometric simplicity.
+                A minimalist to-do widget designed for the Nothing Community Edition, utilizing dot-based progress tracking to align with Nothing&apos;s transparent and understated hardware aesthetic. The interface balances core utility with geometric simplicity.
               </p>
               <p className={`${cormorant.className} italic text-white/60 text-lg md:text-xl leading-relaxed`}>
                 Selected as a featured submission in the official Software showcase category, April 2025.
@@ -130,7 +131,7 @@ export default function NothingCommunityEditionPage() {
             </div>
             <div className="w-full lg:w-3/4">
               <p className={`${cormorant.className} text-xl md:text-2xl leading-[1.6] text-white/80 mb-12`}>
-                Strict grid constraints and dot-matrix typography scaling ensure the widget UI integrates with the device's default operating system layout.
+                Strict grid constraints and dot-matrix typography scaling ensure the widget UI integrates with the device&apos;s default operating system layout.
               </p>
               
               <div className="group w-full rounded-2xl overflow-hidden shadow-xl bg-[#161615]/50 border border-white/5">
@@ -193,7 +194,7 @@ export default function NothingCommunityEditionPage() {
             </div>
             <div className="w-full lg:w-3/4">
               <p className={`${cormorant.className} text-xl md:text-2xl leading-[1.6] text-white/80`}>
-                Testing system legibility in context. The digital interface mirrors the physical dot-pattern architecture of Nothing Phone's glyphs, bridging interface logic with industrial product design.
+                Testing system legibility in context. The digital interface mirrors the physical dot-pattern architecture of Nothing Phone&apos;s glyphs, bridging interface logic with industrial product design.
               </p>
             </div>
           </div>

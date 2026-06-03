@@ -17,7 +17,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
   const updateStateRef = useRef<((p: number) => void) | null>(null);
   const progressRef = useRef(0);
   const isSeekingRef = useRef(false);
-  const [isReturning, setIsReturning] = useState(false);
 
   useEffect(() => {
     videoLoadedRef.current = videoLoaded;
@@ -43,9 +42,28 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
   };
 
   useEffect(() => {
+    const videoEl = videoRef.current;
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
+
+    // Lock spacer height to absolute pixels on mount to prevent mobile address bar resize jank
+    const handleResize = () => {
+      const spacer = spacerRef.current;
+      if (spacer) {
+        spacer.style.height = `${window.innerHeight * 2}px`;
+      }
+    };
+    handleResize();
+
+    let lastWidth = window.innerWidth;
+    const handleOrientationResize = () => {
+      if (window.innerWidth !== lastWidth) {
+        lastWidth = window.innerWidth;
+        handleResize();
+      }
+    };
+    window.addEventListener('resize', handleOrientationResize);
 
     let handleMetadataLoaded: (() => void) | null = null;
     let handleSeeked: (() => void) | null = null;
@@ -57,6 +75,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
     // Check if seen before
     let wasSeenBefore = false;
+    let savedScrollY: number | null = null;
     if (isInitialHardLoad) {
       isInitialHardLoad = false;
       try {
@@ -75,25 +94,34 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
     try {
       wasSeenBefore = !!sessionStorage.getItem('intro-seen');
-    } catch (_) {}
+    } catch { /* ignore */ }
+
+    if (!wasSeenBefore) {
+      const landing = landingRef.current;
+      if (landing) {
+        landing.style.opacity = '0';
+        landing.style.visibility = 'hidden';
+        landing.style.pointerEvents = 'none';
+      }
+    }
 
     if (wasSeenBefore) {
       introDoneRef.current = true;
-      setIntroComplete(true);
-      setIsReturning(true);
+      setTimeout(() => {
+        setIntroComplete(true);
+      }, 0);
 
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'auto';
       }
 
-      let savedScrollY: number | null = null;
       try {
         const saved = sessionStorage.getItem('portfolio-scroll-y');
         if (saved) {
           savedScrollY = parseInt(saved, 10);
           sessionStorage.removeItem('portfolio-scroll-y');
         }
-      } catch (_) {}
+      } catch { /* ignore */ }
 
       const spacer = spacerRef.current;
       const spacerHeight = spacer ? spacer.offsetHeight : window.innerHeight * 2;
@@ -115,12 +143,16 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           }
         }, 50);
       }
-      return;
     }
 
     const fetchVideo = async () => {
       if (videoRef.current) {
         videoRef.current.src = '/intro2-scrub.mp4';
+        videoRef.current.load();
+        // Warm up decoder for mobile iOS/Safari support
+        videoRef.current.play().then(() => {
+          if (videoRef.current) videoRef.current.pause();
+        }).catch(() => { /* autoplay block ignore */ });
       }
 
       try {
@@ -145,10 +177,18 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         const blob = new Blob(chunks, { type: 'video/mp4' });
         blobUrl = URL.createObjectURL(blob);
         
-        if (videoRef.current && progressRef.current < 0.05) {
-          const currentTime = videoRef.current.currentTime;
-          videoRef.current.src = blobUrl;
-          videoRef.current.currentTime = currentTime;
+        if (videoRef.current) {
+          const isOverlayHidden = progressRef.current >= 0.85;
+          if (progressRef.current < 0.05 || isOverlayHidden) {
+            const currentTime = videoRef.current.currentTime;
+            videoRef.current.src = blobUrl;
+            videoRef.current.load();
+            videoRef.current.currentTime = currentTime;
+            // Warm up decoder again for the new source
+            videoRef.current.play().then(() => {
+              if (videoRef.current) videoRef.current.pause();
+            }).catch(() => { /* autoplay block ignore */ });
+          }
         }
       } catch (err) {
         console.warn("Failed to load video as blob, falling back to direct stream:", err);
@@ -184,19 +224,29 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     let rafId = 0;
     let targetTime = 0;
     let lastSoughtTime = 0;
-    let autoScrollTimeout: any = null;
+    let autoScrollTimeout: ReturnType<typeof setTimeout> | null = null;
     let targetScrollY = -1;
 
-    let hasUserInteracted = false;
-    const enableAutoScroll = () => {
-      hasUserInteracted = true;
-      window.removeEventListener('wheel', enableAutoScroll);
-      window.removeEventListener('touchstart', enableAutoScroll);
-      window.removeEventListener('keydown', enableAutoScroll);
+    let isUserScrollingActive = false;
+    let userScrollTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const handleUserScrollActivity = (e?: Event) => {
+      if (e && e.type === 'keydown') {
+        const ke = e as KeyboardEvent;
+        const scrollKeys = ['ArrowUp', 'ArrowDown', 'Space', 'PageUp', 'PageDown', 'Home', 'End'];
+        if (!scrollKeys.includes(ke.code)) return;
+      }
+      isUserScrollingActive = true;
+      if (userScrollTimeout) clearTimeout(userScrollTimeout);
+      userScrollTimeout = setTimeout(() => {
+        isUserScrollingActive = false;
+      }, 150);
     };
-    window.addEventListener('wheel', enableAutoScroll, { passive: true });
-    window.addEventListener('touchstart', enableAutoScroll, { passive: true });
-    window.addEventListener('keydown', enableAutoScroll, { passive: true });
+
+    window.addEventListener('wheel', handleUserScrollActivity, { passive: true });
+    window.addEventListener('touchstart', handleUserScrollActivity, { passive: true });
+    window.addEventListener('touchmove', handleUserScrollActivity, { passive: true });
+    window.addEventListener('keydown', handleUserScrollActivity, { passive: true });
 
     // Block scrolling inputs during active transitions to prevent momentum fighting GSAP
     const preventScroll = (e: Event) => {
@@ -242,7 +292,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         overlay.style.opacity       = '0';
         overlay.style.visibility    = 'hidden';
         overlay.style.pointerEvents = 'none';
-        overlay.style.display       = 'none';
       }
       if (landing) {
         landing.style.opacity       = '1';
@@ -250,7 +299,9 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         landing.style.pointerEvents = 'auto';
       }
       if (spacer) {
-        window.scrollTo(0, spacer.offsetTop + spacer.offsetHeight);
+        if (savedScrollY === null || isNaN(savedScrollY)) {
+          window.scrollTo(0, spacer.offsetTop + spacer.offsetHeight);
+        }
       }
     }
 
@@ -275,6 +326,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { gsap, ScrollTrigger, ScrollToPlugin } = window as any;
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+      ScrollTrigger.config({ ignoreMobileResize: true });
 
       const video   = videoRef.current;
       const overlay = overlayRef.current;
@@ -296,9 +348,8 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       };
       video.addEventListener('loadedmetadata', handleMetadataLoaded);
 
-      const isMobile = window.matchMedia('(max-width: 768px)').matches;
-
-      const MIN_SEEK_STEP = 0.03; // ~30fps equivalent time step to avoid decoder overhead
+      const isMobile = /iPad|iPhone|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
+      const MIN_SEEK_STEP = isMobile ? 0.08 : 0.03; // Seek less frequently on mobile to prevent decoder lag
 
       const runScrubLoop = () => {
         if (!scrubLoopActive || !videoRef.current) return;
@@ -362,26 +413,40 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
         // ── Fade: overlay out, landing in ───────────────────────
         const fadeStart = 0.85;
-        if (p >= fadeStart) {
-          overlay.style.opacity       = '0';
-          overlay.style.visibility    = 'hidden';
+        const fadeEnd = 0.98;
+
+        if (p <= fadeStart) {
+          overlay.style.opacity = '1';
+          overlay.style.visibility = 'visible';
+          overlay.style.pointerEvents = 'auto';
+
+          landing.style.opacity = '0';
+          landing.style.visibility = 'hidden';
+          landing.style.pointerEvents = 'none';
+        } else if (p >= fadeEnd) {
+          overlay.style.opacity = '0';
+          overlay.style.visibility = 'hidden';
           overlay.style.pointerEvents = 'none';
 
-          landing.style.opacity       = '1';
-          landing.style.visibility    = 'visible';
+          landing.style.opacity = '1';
+          landing.style.visibility = 'visible';
           landing.style.pointerEvents = 'auto';
 
           // Fire introComplete early enough that Reveal animations overlap
           markIntroDone();
         } else {
-          overlay.style.opacity       = '1';
-          overlay.style.visibility    = 'visible';
-          overlay.style.pointerEvents = 'auto';
-          overlay.style.display       = 'block';
+          // Linear interpolation between fadeStart and fadeEnd
+          const t = (p - fadeStart) / (fadeEnd - fadeStart);
+          // Apply cubic ease-in-out for premium organic feel
+          const easedT = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-          landing.style.opacity       = '0';
-          landing.style.visibility    = 'hidden';
-          landing.style.pointerEvents = 'none';
+          overlay.style.opacity = String(1 - easedT);
+          overlay.style.visibility = 'visible';
+          overlay.style.pointerEvents = easedT < 0.5 ? 'auto' : 'none';
+
+          landing.style.opacity = String(easedT);
+          landing.style.visibility = 'visible';
+          landing.style.pointerEvents = easedT >= 0.5 ? 'auto' : 'none';
         }
 
         // ── Fade text UI early ──────────────────────────────────
@@ -400,18 +465,8 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
       updateStateRef.current = updateState;
 
-      // For returning visitors: jump scroll to the end of the spacer BEFORE
-      // creating the ScrollTrigger so that ScrollTrigger initialises at progress=1
-      // and calls updateState(1) immediately — no flash, correct visual state.
-      // Scrolling back up from here will scrub the intro in reverse as intended.
-      if (wasSeenBefore) {
-        window.scrollTo(0, spacer.offsetTop + spacer.offsetHeight);
-        setTimeout(() => {
-          if (window.scrollY < spacer.offsetTop + spacer.offsetHeight) {
-            window.scrollTo(0, spacer.offsetTop + spacer.offsetHeight);
-          }
-        }, 50);
-      }
+      // For returning visitors, the scroll position was already set on mount,
+      // so we let the ScrollTrigger initialize naturally at the current scroll position.
 
       const triggerAutoScroll = (targetY: number) => {
         if (isAutoScrolling && targetScrollY === targetY) return;
@@ -456,7 +511,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           onUpdate: (self: { progress: number; direction: number }) => {
             updateState(self.progress);
 
-            if (!hasUserInteracted || isAutoScrolling) return;
+            if (!isUserScrollingActive || isAutoScrolling) return;
 
             const currentScroll = window.scrollY;
             const spacerHeight = spacer.offsetHeight;
@@ -503,18 +558,21 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       aborted = true;
       updateStateRef.current = null;
       // Safe cleanup — GSAP never touched the DOM structure so no removeChild conflicts
-      try { if (st) st.kill(); } catch (_) { /* ignore */ }
-      if (videoRef.current && handleSeeked) {
-        videoRef.current.removeEventListener('seeked', handleSeeked);
+      try { if (st) st.kill(); } catch { /* ignore */ }
+      if (videoEl && handleSeeked) {
+        videoEl.removeEventListener('seeked', handleSeeked);
       }
-      if (videoRef.current && handleMetadataLoaded) {
-        videoRef.current.removeEventListener('loadedmetadata', handleMetadataLoaded);
+      if (videoEl && handleMetadataLoaded) {
+        videoEl.removeEventListener('loadedmetadata', handleMetadataLoaded);
       }
       if (rafId) cancelAnimationFrame(rafId);
       if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
-      window.removeEventListener('wheel', enableAutoScroll);
-      window.removeEventListener('touchstart', enableAutoScroll);
-      window.removeEventListener('keydown', enableAutoScroll);
+      window.removeEventListener('resize', handleOrientationResize);
+      window.removeEventListener('wheel', handleUserScrollActivity);
+      window.removeEventListener('touchstart', handleUserScrollActivity);
+      window.removeEventListener('touchmove', handleUserScrollActivity);
+      window.removeEventListener('keydown', handleUserScrollActivity);
+      if (userScrollTimeout) clearTimeout(userScrollTimeout);
       window.removeEventListener('wheel', preventScroll);
       window.removeEventListener('touchmove', preventScroll);
       window.removeEventListener('keydown', preventKeys);
@@ -528,87 +586,81 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       <div ref={spacerRef} style={{ height: '200vh', width: '100%', pointerEvents: 'none' }} />
 
       {/* Fixed video overlay — always covers viewport, fades out at end */}
-      {!isReturning && (
-        <div
-          ref={overlayRef}
+      <div
+        ref={overlayRef}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          background: '#000',
+          overflow: 'hidden',
+          willChange: 'opacity, visibility',
+        }}
+      >
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          preload="auto"
+          onLoadedData={() => setVideoLoaded(true)}
+          className="object-contain md:object-cover"
           style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 9999,
-            background: '#000',
-            overflow: 'hidden',
-            willChange: 'opacity, visibility',
-            transition: 'opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), visibility 0.8s cubic-bezier(0.215, 0.61, 0.355, 1)',
+            width: '100%',
+            height: '100%',
+            display: 'block',
+            willChange: 'transform',
+            transform: 'translateZ(0)',
+            opacity: videoLoaded ? 1 : 0,
+            transition: 'opacity 0.6s ease'
           }}
+        />
+
+        {/* Text UI — fades out as user starts scrolling */}
+        <div
+          id="intro-text-ui"
+          className={`intro-text-initial-fade ${videoLoaded ? 'loaded' : ''}`}
+          style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 'clamp(24px, 4vw, 56px)', pointerEvents: 'none' }}
         >
-          <video
-            ref={videoRef}
-            muted
-            playsInline
-            preload="auto"
-            onLoadedData={() => setVideoLoaded(true)}
-            className="object-contain md:object-cover"
-            style={{
-              width: '100%',
-              height: '100%',
-              display: 'block',
-              willChange: 'transform',
-              transform: 'translateZ(0)',
-              opacity: videoLoaded ? 1 : 0,
-              transition: 'opacity 0.6s ease'
-            }}
-          />
+          {/* Top row */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <p style={{ fontSize: 'clamp(40px, 6.5vw, 100px)', fontWeight: 300, lineHeight: 1.0, color: '#fff', fontFamily: 'var(--font-display), Georgia, serif', letterSpacing: '-0.02em', margin: '0 0 14px 0', textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
+                Hritik Jasnani.
+              </p>
+              <p style={{ fontSize: 'clamp(18px, 2vw, 28px)', fontWeight: 400, color: 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-body), sans-serif', letterSpacing: '0.04em', margin: '8px 0 0 0' }}>
+                A designer who gives a damn.
+              </p>
+            </div>
+            <span style={{ fontSize: 'clamp(16px, 2vw, 24px)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 500, marginTop: '8px' }}>
+              Portfolio&nbsp;·&nbsp;2026
+            </span>
+          </div>
 
-          {/* Text UI — fades out as user starts scrolling */}
+          {/* Scroll indicator */}
           <div
-            id="intro-text-ui"
-            className={`intro-text-initial-fade ${videoLoaded ? 'loaded' : ''}`}
-            style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 'clamp(24px, 4vw, 56px)', pointerEvents: 'none' }}
+            onClick={handleScrollClick}
+            className="flex flex-col items-center self-center md:self-start w-fit gap-3 cursor-pointer group"
+            style={{ pointerEvents: 'auto' }}
           >
-            {/* Top row */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div>
-                <p style={{ fontSize: 'clamp(40px, 6.5vw, 100px)', fontWeight: 300, lineHeight: 1.0, color: '#fff', fontFamily: 'var(--font-display), Georgia, serif', letterSpacing: '-0.02em', margin: '0 0 14px 0', textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
-                  Hritik Jasnani.
-                </p>
-                <p style={{ fontSize: 'clamp(18px, 2vw, 28px)', fontWeight: 400, color: 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-body), sans-serif', letterSpacing: '0.04em', margin: '8px 0 0 0' }}>
-                  A designer who gives a damn.
-                </p>
-              </div>
-              <span style={{ fontSize: 'clamp(16px, 2vw, 24px)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 500, marginTop: '8px' }}>
-                Portfolio&nbsp;·&nbsp;2026
-              </span>
+            <span className="group-hover:text-white transition-colors duration-200" style={{ fontSize: '15px', letterSpacing: '0.45em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 600, marginRight: '-0.45em' }}>
+              Scroll
+            </span>
+            <div style={{ width: '2.5px', height: '90px', background: 'rgba(255, 255, 255, 0.22)', position: 'relative', overflow: 'hidden', marginBottom: '2px' }}>
+              <div className="intro-scroll-line" />
             </div>
-
-            {/* Scroll indicator */}
-            <div
-              onClick={handleScrollClick}
-              className="flex flex-col items-center self-center md:self-start w-fit gap-3 cursor-pointer group"
-              style={{ pointerEvents: 'auto' }}
-            >
-              <span className="group-hover:text-white transition-colors duration-200" style={{ fontSize: '15px', letterSpacing: '0.45em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 600, marginRight: '-0.45em' }}>
-                Scroll
-              </span>
-              <div style={{ width: '2.5px', height: '90px', background: 'rgba(255, 255, 255, 0.22)', position: 'relative', overflow: 'hidden', marginBottom: '2px' }}>
-                <div className="intro-scroll-line" />
-              </div>
-              <svg width="16" height="9" viewBox="0 0 16 9" fill="none" className="group-hover:text-white transition-colors duration-200" style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
-                <path d="M1 1L8 8L15 1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
+            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" className="group-hover:text-white transition-colors duration-200" style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
+              <path d="M1 1L8 8L15 1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Landing page — fades in when intro ends */}
       <div
         ref={landingRef}
+        className="landing-initial-state"
         style={{
-          opacity: isReturning ? 1 : 0,
-          visibility: isReturning ? 'visible' : 'hidden',
           willChange: 'opacity, visibility',
-          transition: 'opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), visibility 0.8s cubic-bezier(0.215, 0.61, 0.355, 1)',
-          pointerEvents: isReturning ? 'auto' : 'none',
         }}
       >
         {children}

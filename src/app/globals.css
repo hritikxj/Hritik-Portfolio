@@ -74,5 +74,12 @@ body {
   transition: opacity 0.8s ease;
 }
 
+.landing-initial-state {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+
 
 
