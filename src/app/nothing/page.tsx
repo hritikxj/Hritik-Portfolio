@@ -58,11 +58,11 @@ export default function NothingCommunityEditionPage() {
         <h1 className={`${cormorant.className} text-6xl md:text-8xl lg:text-[110px] font-light tracking-wide text-white mb-6 leading-none`}>
           NOTHING
         </h1>
-        <p className={`${cormorant.className} italic text-[#9E9C98] text-xl md:text-2xl max-w-3xl mb-16`}>
+        <p className={`${cormorant.className} italic text-[#9E9C98] text-xl md:text-2xl max-w-3xl mb-8`}>
           Community Edition · To-Do Widget · 2025
         </p>
         
-        <div className="w-full mb-32 rounded-2xl overflow-hidden shadow-2xl bg-[#161615]/50 border border-white/5">
+        <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-2xl bg-[#161615]/50 border border-white/5">
           <Image 
             src="/nothing/nothing-hero.png" 
             alt="Nothing Community Edition Hero" 
@@ -77,7 +77,7 @@ export default function NothingCommunityEditionPage() {
       <main className="max-w-7xl mx-auto px-5 md:px-12 lg:px-10">
         
         {/* Project Context */}
-        <section className="mb-32 relative z-10">
+        <section className="mb-12 relative z-10">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
             <div className="w-full lg:w-1/4 shrink-0">
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#C0392B] mb-3 font-medium">01 — The Brief</p>
@@ -85,7 +85,7 @@ export default function NothingCommunityEditionPage() {
             </div>
             <div className="w-full lg:w-3/4">
               {/* Specs Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 sm:p-8 rounded-2xl bg-[#161615]/80 backdrop-blur-md border border-white/5 mb-12 shadow-lg">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 sm:p-8 rounded-2xl bg-[#161615]/80 backdrop-blur-md border border-white/5 mb-6 shadow-lg">
                 <div>
                   <span className="text-[9px] tracking-[0.2em] uppercase text-[#C0392B] block mb-1 font-mono">Role</span>
                   <span className="text-sm text-white font-medium">UI/UX Designer</span>
@@ -120,10 +120,10 @@ export default function NothingCommunityEditionPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-white/10 mb-24" />
+        <hr className="border-t-[0.5px] border-white/10 my-10" />
 
         {/* Design System & Visual Grid */}
-        <section className="mb-32 relative z-10">
+        <section className="mb-12 relative z-10">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
             <div className="w-full lg:w-1/4 shrink-0">
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#C0392B] mb-3 font-medium">02 — The Grid</p>
@@ -147,11 +147,11 @@ export default function NothingCommunityEditionPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-white/10 mb-24" />
+        <hr className="border-t-[0.5px] border-white/10 my-10" />
 
         {/* Interface States */}
-        <section className="mb-32 relative z-10">
-          <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <section className="mb-12 relative z-10">
+          <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#C0392B] mb-3 font-medium">03 — The Interface</p>
               <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-white font-light`}>Widget States</h2>
@@ -183,11 +183,11 @@ export default function NothingCommunityEditionPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-white/10 mb-24" />
+        <hr className="border-t-[0.5px] border-white/10 my-10" />
 
         {/* Integration and Device Mockups */}
-        <section className="mb-32 relative z-10">
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start mb-12">
+        <section className="mb-12 relative z-10">
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start mb-6">
             <div className="w-full lg:w-1/4 shrink-0">
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#C0392B] mb-3 font-medium">04 — Physicality</p>
               <h2 className={`${cormorant.className} text-4xl md:text-5xl text-white font-light`}>Hardware Integration</h2>
@@ -221,11 +221,11 @@ export default function NothingCommunityEditionPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-white/10 mb-24" />
+        <hr className="border-t-[0.5px] border-white/10 my-10" />
 
         {/* Design Tokens palette */}
-        <section className="mb-24 relative z-10">
-          <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <section className="mb-12 relative z-10">
+          <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#C0392B] mb-3 font-medium">05 — System Tokens</p>
               <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-white font-light`}>Aesthetic Rules</h2>
@@ -263,7 +263,7 @@ export default function NothingCommunityEditionPage() {
 
       </main>
 
-      <footer className="text-center mt-40 mb-12 px-5 md:px-12 lg:px-10 relative z-10">
+      <footer className="text-center mt-20 mb-12 px-5 md:px-12 lg:px-10 relative z-10">
         <p className="text-[11px] tracking-[0.3em] text-[#9E9C98] uppercase">
           © {new Date().getFullYear()} Nothing Community Edition · UI/UX Design
         </p>

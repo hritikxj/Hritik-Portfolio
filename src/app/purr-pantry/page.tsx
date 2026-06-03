@@ -71,7 +71,7 @@ export default function PurrPantryPage() {
           Logo · Colour · Typography
         </p>
         
-        <div className="w-full mb-32 rounded-xl overflow-hidden shadow-2xl bg-[#F5EAD7]">
+        <div className="w-full mb-12 rounded-xl overflow-hidden shadow-2xl bg-[#F5EAD7]">
           <Image 
             src="/purr/starting-page.jpg" 
             alt="Purr Pantry Starting Page" 
@@ -86,7 +86,7 @@ export default function PurrPantryPage() {
       <main className="max-w-7xl mx-auto px-5 md:px-12 lg:px-10">
         
         {/* Brand Context */}
-        <section className="mb-32">
+        <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             <div className="w-full md:w-1/4 shrink-0">
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#C4611A] mb-3">00 — The Brief</p>
@@ -106,14 +106,14 @@ export default function PurrPantryPage() {
         <hr className="border-t-[0.5px] border-[#D4C4AA] mb-24" />
 
         {/* Concept Exploration */}
-        <section className="mb-32">
+        <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             <div className="w-full md:w-1/4 shrink-0">
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#C4611A] mb-3">01 — The Concept</p>
               <h2 className={`${cormorant.className} text-3xl md:text-4xl text-[#1A1208]`}>Process & Exploration</h2>
             </div>
             <div className="w-full md:w-3/4">
-              <p className={`${cormorant.className} text-xl md:text-2xl leading-[1.6] text-[#2E1A0E] mb-12`}>
+              <p className={`${cormorant.className} text-xl md:text-2xl leading-[1.6] text-[#2E1A0E] mb-6`}>
                 Every strong identity begins on paper. The creative process focused on elegantly combining the dual &apos;P&apos;s of Purr Pantry. I aimed to craft a clever shape that rewards a second glance, avoiding any overt cartoonishness.
               </p>
               
@@ -130,11 +130,11 @@ export default function PurrPantryPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#D4C4AA] mb-24" />
+        <hr className="border-t-[0.5px] border-[#D4C4AA] my-10" />
 
         {/* Logo Variations */}
-        <section className="mb-32">
-          <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <section className="mb-12">
+          <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#C4611A] mb-3">02 — Mark & Logo</p>
               <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#1A1208]`}>Logo Variations</h2>
@@ -194,11 +194,11 @@ export default function PurrPantryPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#D4C4AA] mb-24" />
+        <hr className="border-t-[0.5px] border-[#D4C4AA] my-10" />
 
         {/* Colour Palette */}
-        <section className="mb-32">
-          <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <section className="mb-12">
+          <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#C4611A] mb-3">03 — Colour</p>
               <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#1A1208]`}>The Palette</h2>
@@ -303,11 +303,11 @@ export default function PurrPantryPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#D4C4AA] mb-24" />
+        <hr className="border-t-[0.5px] border-[#D4C4AA] my-10" />
 
         {/* Typography */}
-        <section className="mb-24">
-          <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <section className="mb-12">
+          <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#C4611A] mb-3">04 — Typography</p>
               <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#1A1208]`}>Type System</h2>
@@ -340,7 +340,7 @@ export default function PurrPantryPage() {
 
       </main>
       
-      <footer className="text-center mt-40 mb-12 px-5 md:px-12 lg:px-10">
+      <footer className="text-center mt-20 mb-12 px-5 md:px-12 lg:px-10">
         <p className="text-[11px] tracking-[0.3em] text-[#8A7660] uppercase">
           © {new Date().getFullYear()} Purr Pantry · Brand Identity
         </p>

@@ -55,12 +55,12 @@ export default function DashBrandGuidelinesPage() {
         <h1 className={`${montserrat.className} text-6xl md:text-8xl lg:text-[110px] font-extrabold tracking-tight text-[#1A1A1A] mb-6 leading-none`}>
           DASH
         </h1>
-        <p className={`${cormorant.className} italic text-[#666666] text-xl md:text-2xl max-w-3xl mb-16`}>
+        <p className={`${cormorant.className} italic text-[#666666] text-xl md:text-2xl max-w-3xl mb-8`}>
           Brand Guidelines · Ultra-Fast Electronics Delivery · 2026
         </p>
         
         {/* Cover Slide (Slide 1) */}
-        <div className="w-full mb-24 rounded-2xl overflow-hidden shadow-2xl border border-[#E5E0D5]/50 bg-white">
+        <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-2xl border border-[#E5E0D5]/50 bg-white">
           <Image 
             src="/dash/dash-slide-1.png" 
             alt="Dash Brand Identity Cover Slide" 
@@ -75,7 +75,7 @@ export default function DashBrandGuidelinesPage() {
       <main className="max-w-7xl mx-auto px-5 md:px-12 lg:px-10">
         
         {/* Specs Table */}
-        <section className="mb-20 max-w-7xl mx-auto">
+        <section className="mb-12 max-w-7xl mx-auto">
           <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[#F5F2EA] border border-[#E5E0D5]/40 shadow-sm text-center">
             <div>
               <span className="text-[9px] tracking-[0.2em] uppercase text-[#FF6B35] block mb-1 font-semibold">Role</span>
@@ -92,10 +92,10 @@ export default function DashBrandGuidelinesPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E5E0D5] mb-20 max-w-7xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[#E5E0D5] my-10 max-w-7xl mx-auto" />
 
         {/* Project Context */}
-        <section className="mb-24">
+        <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             <div className="w-full md:w-1/4 shrink-0">
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#FF6B35] mb-3 font-semibold">Brief & Vision</p>
@@ -112,7 +112,7 @@ export default function DashBrandGuidelinesPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E5E0D5] mb-24 max-w-7xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[#E5E0D5] my-10 max-w-7xl mx-auto" />
 
         {/* Stacked Slides (Slides 2 to 23, skipping slide 17 which is the mascot close-up) */}
         <section className="flex flex-col gap-8 md:gap-12 lg:gap-16 mb-12">
@@ -138,11 +138,11 @@ export default function DashBrandGuidelinesPage() {
           })}
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E5E0D5] mb-24 max-w-7xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[#E5E0D5] my-10 max-w-7xl mx-auto" />
 
         {/* Mascot Section */}
-        <section className="mb-32">
-          <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start mb-16">
+        <section className="mb-12">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start mb-6">
             <div className="w-full md:w-1/4 shrink-0">
               <p className="text-[11px] tracking-[0.4em] uppercase text-[#FF6B35] mb-3 font-semibold">05 — Mascot System</p>
               <h2 className={`${cormorant.className} text-3xl md:text-4xl text-[#1A1A1A] font-light`}>Chigma Boy</h2>
@@ -183,10 +183,10 @@ export default function DashBrandGuidelinesPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E5E0D5] mb-24 max-w-7xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[#E5E0D5] my-10 max-w-7xl mx-auto" />
 
         {/* Brand Application Mockups Bento Grid (Slides 24 to 28) */}
-        <section className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6 mb-32">
+        <section className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6 mb-12">
           {/* Slide 26 (Vertical mockup, spans 2 rows on the left) */}
           <div className="md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden shadow-xl border border-[#E5E0D5]/40 bg-white aspect-[3/4] md:aspect-auto relative">
             <Image
@@ -245,7 +245,7 @@ export default function DashBrandGuidelinesPage() {
 
       </main>
 
-      <footer className="text-center mt-40 mb-12 px-5 md:px-12 lg:px-10">
+      <footer className="text-center mt-20 mb-12 px-5 md:px-12 lg:px-10">
         <p className="text-[11px] tracking-[0.3em] text-[#666666] uppercase">
           © {new Date().getFullYear()} DASH India · Brand Identity Guidelines
         </p>
