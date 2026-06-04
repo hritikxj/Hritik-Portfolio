@@ -19,7 +19,6 @@ export default function Work() {
           <Reveal>
             <div className="flex justify-between items-baseline mb-12 pb-5 border-b-[0.5px] border-border-subtle">
               <h2 className="font-display text-4xl md:text-5xl font-light text-ink">Selected Work</h2>
-              <span className="text-[11px] text-smoke tracking-[0.1em]">01 / Work</span>
             </div>
           </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">

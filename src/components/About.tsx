@@ -8,7 +8,6 @@ export default function About() {
         <Reveal>
           <div className="flex justify-between items-baseline mb-12 pb-5 border-b-[0.5px] border-border-subtle">
             <h2 className="font-display text-4xl md:text-5xl font-light text-ink">About</h2>
-            <span className="text-[11px] text-smoke tracking-[0.1em]">02 / About</span>
           </div>
         </Reveal>
 

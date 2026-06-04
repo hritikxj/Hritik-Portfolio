@@ -17,7 +17,7 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "Hritik Jasnani - Portfolio",
-  description: "Portfolio of Hritik Jasnani, Multidisciplinary designer bridging editorial precision with conceptual depth.",
+  description: "Portfolio of Hritik Jasnani, Multidisciplinary designer Based in India, working globally.",
 };
 
 export default function RootLayout({

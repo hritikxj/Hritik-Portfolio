@@ -29,7 +29,7 @@ export default function Hero() {
         <Reveal delay={0.3}>
           <p className="text-sm text-smoke max-w-[320px] leading-[1.8] mb-10">
             <span className="text-ink font-medium">Graphic Design · Branding · Illustration · UI/UX</span><br /><br />
-            Multidisciplinary designer bridging editorial precision with conceptual depth. Based in India, working globally.
+            Multidisciplinary designer Based in India, working globally.
           </p>
         </Reveal>
         <Reveal delay={0.4}>
