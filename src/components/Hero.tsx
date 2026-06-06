@@ -35,7 +35,7 @@ export default function Hero() {
               onClick={() => scrollTo('work')}
             >
               <Image
-                src="/brand_identity_hero_dark.jpg"
+                src="/brand_identity_hero.jpg"
                 alt="Brand Identity Thumbnail"
                 fill
                 className="object-cover"
