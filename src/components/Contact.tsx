@@ -21,7 +21,7 @@ export default function Contact() {
         <Reveal delay={0.3}>
           <button
             onClick={handleHireMeClick}
-            className="group inline-flex items-center gap-3 bg-off-white text-ink px-8 py-4 rounded-sm font-body text-sm tracking-[0.08em] uppercase cursor-pointer border-none transition-all duration-200 hover:bg-brand-red hover:text-off-white mb-16"
+            className="group inline-flex items-center gap-3 bg-brand-red text-off-white px-8 py-4 rounded-sm font-body text-sm tracking-[0.08em] uppercase cursor-pointer border-none transition-all duration-200 hover:bg-off-white hover:text-ink mb-16"
           >
             Start a Project
             <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>

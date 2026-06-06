@@ -11,7 +11,7 @@ export default function Services() {
   ];
 
   return (
-    <section id="services" className="scroll-mt-16 py-10 md:py-16 lg:py-20">
+    <section id="services" className="scroll-mt-16 py-12 md:py-16">
       <div className="w-full px-5 md:px-12 lg:px-10">
         <Reveal>
           <div className="flex justify-between items-baseline mb-12 pb-5 border-b-[0.5px] border-border-subtle">

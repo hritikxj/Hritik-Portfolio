@@ -71,34 +71,6 @@ export default function Work() {
       image: "/nothing_thumb.jpg",
       link: "/nothing"
     },
-    {
-      title: "Solace — Mental Health Companion",
-      category: "UI/UX",
-      section: "UI/UX",
-      double: false,
-      color: "#8E9AA6",
-      thumbText: "Solace App",
-      textClass: "text-[clamp(24px,4vw,48px)] text-white/20",
-      description: "A sleek, glassmorphic mobile application interface concept for mindfulness, meditation guides, and habit tracking analytics.",
-      role: "UI/UX Designer",
-      year: "2025",
-      image: null,
-      link: null
-    },
-    {
-      title: "Zenith — Fintech Dashboard",
-      category: "UI/UX",
-      section: "UI/UX",
-      double: false,
-      color: "#1E1E1E",
-      thumbText: "Zenith",
-      textClass: "text-[clamp(24px,4vw,48px)] text-white/20",
-      description: "A high-density financial analytics dashboard designed for institutional investors, balancing complex interactive charts with minimal dark aesthetics.",
-      role: "Product Designer",
-      year: "2026",
-      image: null,
-      link: null
-    }
   ];
 
   const illustrations = [
@@ -336,18 +308,18 @@ export default function Work() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.02
+        staggerChildren: 0.014
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0, y: 13 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.35,
+        duration: 0.25,
         ease: [0.16, 1, 0.3, 1] as const // premium easeOutExpo
       }
     }
@@ -357,27 +329,27 @@ export default function Work() {
 
   return (
     <>
-      <section id="work" className="scroll-mt-16 py-10 md:py-16 lg:py-20">
+      <section id="work" className="scroll-mt-16 py-12 md:py-16">
         <div className="w-full px-5 md:px-12 lg:px-10">
           <Reveal>
             <div className="flex flex-col gap-5 mb-12 pb-5 border-b-[0.5px] border-border-subtle">
-              <h2 className="font-display text-4xl md:text-5xl font-light text-ink">Selected Work</h2>
+              <h2 className="font-display text-4xl md:text-5xl font-light text-ink">The Work</h2>
 
               {/* Category Filter Tabs */}
-              <div className="flex items-center gap-1 p-1 bg-parchment/60 border border-border-subtle rounded-full w-fit select-none overflow-x-auto scrollbar-none">
+              <div className="flex items-center gap-1 p-1 bg-parchment/60 border border-border-subtle rounded-full w-full md:w-fit select-none scrollbar-none">
                 {categories.map((cat) => {
                   const isActive = activeCategory === cat;
                   return (
                     <button
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
-                      className="relative px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase cursor-pointer whitespace-nowrap select-none focus:outline-none"
+                      className="relative flex-1 md:flex-none px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase cursor-pointer whitespace-nowrap select-none focus:outline-none"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       {isActive && (
                         <motion.div
                           layoutId="active-pill"
-                          className="absolute inset-0 bg-ink rounded-full"
+                          className="absolute inset-0 bg-brand-red rounded-full"
                           transition={{ type: "spring", stiffness: 380, damping: 30 }}
                         />
                       )}
@@ -399,7 +371,7 @@ export default function Work() {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                exit="hidden"
+                exit={{ opacity: 0, y: -6, transition: { duration: 0.1, ease: "easeIn" } }}
                 className="grid grid-cols-1 md:grid-cols-12 gap-6 w-full items-start"
               >
 
@@ -471,10 +443,9 @@ export default function Work() {
               <motion.div
                 key="regular-works-grid"
                 layout
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.22 }}
+                initial={{ opacity: 0, y: 13 }}
+                animate={{ opacity: 1, y: 0, transition: { duration: 0.22 } }}
+                exit={{ opacity: 0, y: -6, transition: { duration: 0.1, ease: "easeIn" } }}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
               >
                 <AnimatePresence mode="popLayout">
@@ -517,10 +488,10 @@ export default function Work() {
                       <motion.div
                         key={work.title}
                         layout
-                        initial={{ opacity: 0, y: 15 }}
+                        initial={{ opacity: 0, y: 13 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.22, ease: "easeInOut", delay: idx * 0.015 }}
+                        exit={{ opacity: 0, scale: 0.97 }}
+                        transition={{ duration: 0.15, ease: "easeInOut", delay: idx * 0.011 }}
                         className={work.double ? 'md:col-span-2' : ''}
                       >
                         {work.link ? (
@@ -615,17 +586,17 @@ export default function Work() {
                     </h3>
 
                     <p className="text-xs text-smoke leading-relaxed mb-6 font-light">
-                      {selectedProject.description || "Project details and visual assets are currently being curated for this showcase."}
+                      {('description' in selectedProject && selectedProject.description) || "Project details and visual assets are currently being curated for this showcase."}
                     </p>
 
                     <div className="grid grid-cols-2 gap-4 border-t border-border-subtle pt-5">
                       <div>
                         <span className="text-[9px] tracking-[0.1em] uppercase text-smoke block mb-0.5">Role</span>
-                        <span className="text-xs text-ink font-medium">{selectedProject.role || "Designer"}</span>
+                        <span className="text-xs text-ink font-medium">{('role' in selectedProject && selectedProject.role) || "Designer"}</span>
                       </div>
                       <div>
                         <span className="text-[9px] tracking-[0.1em] uppercase text-smoke block mb-0.5">Year</span>
-                        <span className="text-xs text-ink font-medium">{selectedProject.year || "2026"}</span>
+                        <span className="text-xs text-ink font-medium">{('year' in selectedProject && selectedProject.year) || "2026"}</span>
                       </div>
                     </div>
                   </div>
