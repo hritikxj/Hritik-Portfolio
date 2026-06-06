@@ -376,64 +376,64 @@ export default function Work() {
               >
 
                 {/* Row 1: Comic Strip & Process (Landscape - 6 cols each) */}
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[0])} className="col-span-12 md:col-span-6 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[0].image} alt={illustrations[0].title} width={1410} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
                 </motion.div>
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[1])} className="col-span-12 md:col-span-6 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[1].image} alt={illustrations[1].title} width={1410} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
                 </motion.div>
 
                 {/* Row 2: Poster Print Series (Portrait - 6 cols each) */}
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[2])} className="col-span-12 md:col-span-6 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[2].image} alt={illustrations[2].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
                 </motion.div>
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[3])} className="col-span-12 md:col-span-6 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[3].image} alt={illustrations[3].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
                 </motion.div>
 
                 {/* Row 3: Ghalib Section (Left stacked, Right 2x2 grid) */}
                 {/* Stacked Ghalib Art & Cover on Left (4 cols) */}
                 <motion.div className="col-span-12 md:col-span-4 flex flex-col gap-6 w-full">
-                  <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[4])} className="cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                  <motion.div variants={itemVariants} className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                     <Image src={illustrations[4].image} alt={illustrations[4].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 33vw" />
                   </motion.div>
-                  <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[5])} className="cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                  <motion.div variants={itemVariants} className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                     <Image src={illustrations[5].image} alt={illustrations[5].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 33vw" />
                   </motion.div>
                 </motion.div>
                 {/* 2x2 Mockup Grid on Right (8 cols) */}
                 <motion.div className="col-span-12 md:col-span-8 grid grid-cols-2 gap-6 w-full">
                   {illustrations.slice(6, 10).map((item) => (
-                    <motion.div key={item.id} variants={itemVariants} onClick={() => setSelectedProject(item)} className="cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                    <motion.div key={item.id} variants={itemVariants} className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                       <Image src={item.image} alt={item.title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 33vw" />
                     </motion.div>
                   ))}
                 </motion.div>
 
                 {/* Row 4: Ajji Kairuchi (Full Width - 12 cols) */}
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[10])} className="col-span-12 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[10].image} alt={illustrations[10].title} width={1200} height={1000} className="w-full h-auto object-contain block" sizes="100vw" />
                 </motion.div>
 
                 {/* Row 5: Vaibhav Caricature & Vaibhav Presentation Photo (Portrait - 4 cols, Landscape - 8 cols) */}
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[11])} className="col-span-12 md:col-span-4 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 md:col-span-4 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[11].image} alt={illustrations[11].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 33vw" />
                 </motion.div>
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[12])} className="col-span-12 md:col-span-8 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 md:col-span-8 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[12].image} alt={illustrations[12].title} width={1500} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 66vw" />
                 </motion.div>
 
                 {/* Row 6: Coffee Branding (4-column row to keep Neon Signage sharp and compact) */}
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[13])} className="col-span-12 md:col-span-3 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[13].image} alt={illustrations[13].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
                 </motion.div>
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[14])} className="col-span-12 md:col-span-3 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[14].image} alt={illustrations[14].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
                 </motion.div>
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[15])} className="col-span-12 md:col-span-3 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[15].image} alt={illustrations[15].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
                 </motion.div>
-                <motion.div variants={itemVariants} onClick={() => setSelectedProject(illustrations[16])} className="col-span-12 md:col-span-3 cursor-pointer overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <motion.div variants={itemVariants} className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[16].image} alt={illustrations[16].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
                 </motion.div>
 
