@@ -1,6 +1,7 @@
 'use client';
 
 import Reveal from './Reveal';
+import Image from 'next/image';
 import { useHireMe } from './HireMeProvider';
 
 export default function Hero() {
@@ -46,18 +47,79 @@ export default function Hero() {
       <Reveal delay={0.3} className="h-full">
         <div className="grid grid-cols-2 grid-rows-[1.75fr_1fr] gap-2 md:gap-3 h-[clamp(350px,50vh,500px)]">
           <div
-            className="row-span-2 rounded bg-cover bg-center overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer"
-            style={{ backgroundImage: "url('purpan.png')" }}
+            className="row-span-2 rounded overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer"
+            onClick={() => scrollTo('work')}
           >
-            <div>
+            <Image
+              src="/purpan.png"
+              alt="Brand Identity Thumbnail"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 50vw, 33vw"
+              priority
+            />
+            <div className="relative z-10">
               <div className="font-display text-2xl md:text-3xl font-light text-off-white leading-[1.1]">Brand<br />Identity</div>
             </div>
           </div>
-          <div className="bg-[#E8E2D6] rounded overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
-            <span className="text-[10px] tracking-[0.1em] uppercase text-smoke bg-off-white px-2.5 py-1 rounded-sm">Illustration</span>
+          <div className="bg-[#E8E2D6] rounded overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer h-full" onClick={() => scrollTo('work')}>
+            <div className="absolute inset-0 grid grid-cols-2 gap-1 p-1">
+              <div className="relative h-full w-full rounded-sm overflow-hidden">
+                <Image
+                  src="/Illustration section/3 samurai.jpg"
+                  alt="Samurai Illustration"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 25vw, 15vw"
+                />
+              </div>
+              <div className="grid grid-rows-2 gap-1 h-full w-full">
+                <div className="relative rounded-sm overflow-hidden">
+                  <Image
+                    src="/Illustration section/2 banaras illustration.jpg"
+                    alt="Banaras Illustration"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 25vw, 15vw"
+                  />
+                </div>
+                <div className="relative rounded-sm overflow-hidden">
+                  <Image
+                    src="/Illustration section/5 ajji kairuchi brand illustration for their packaging.jpg"
+                    alt="Ajji Kairuchi Illustration"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 25vw, 15vw"
+                  />
+                </div>
+              </div>
+            </div>
+            <span className="text-[10px] tracking-[0.1em] uppercase text-smoke bg-off-white px-2.5 py-1 rounded-sm relative z-10">Illustration</span>
           </div>
-          <div className="bg-brand-red rounded overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
-            <span className="text-[10px] tracking-[0.1em] uppercase text-white/80 bg-black/20 px-2.5 py-1 rounded-sm">UI/UX</span>
+          <div className="bg-[#111110] rounded overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer" onClick={() => scrollTo('work')}>
+            <div className="absolute inset-0 grid grid-cols-2 gap-[1px]">
+              <div className="relative h-full w-full overflow-hidden bg-[#D1D1D1]">
+                <Image
+                  src="/nothing/nothing-details-2.png"
+                  alt="Nothing UI/UX Light Mode"
+                  fill
+                  className="object-cover"
+                  style={{ objectPosition: '30% 30%', transform: 'scale(2.8)', transformOrigin: '30% 30%' }}
+                  sizes="(max-width: 768px) 25vw, 15vw"
+                />
+              </div>
+              <div className="relative h-full w-full overflow-hidden bg-[#111110]">
+                <Image
+                  src="/nothing/nothing-details-2.png"
+                  alt="Nothing UI/UX Dark Mode"
+                  fill
+                  className="object-cover"
+                  style={{ objectPosition: '70% 30%', transform: 'scale(2.8)', transformOrigin: '70% 30%' }}
+                  sizes="(max-width: 768px) 25vw, 15vw"
+                />
+              </div>
+            </div>
+            <span className="text-[10px] tracking-[0.1em] uppercase text-white/80 bg-black/20 px-2.5 py-1 rounded-sm relative z-10">UI/UX</span>
           </div>
         </div>
       </Reveal>
