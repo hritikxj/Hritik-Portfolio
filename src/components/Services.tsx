@@ -23,7 +23,6 @@ export default function Services() {
         {services.map((service, idx) => (
           <Reveal key={idx} delay={idx * 0.1}>
             <div className="p-6 md:p-8 lg:p-10 transition-colors duration-200 hover:bg-parchment bg-off-white h-full">
-              <div className="font-display text-4xl md:text-5xl font-light text-black/5 mb-4">{service.num}</div>
               <div className="text-sm font-medium text-ink mb-2.5">{service.name}</div>
               <div className="text-xs text-smoke leading-[1.7]">{service.desc}</div>
             </div>
