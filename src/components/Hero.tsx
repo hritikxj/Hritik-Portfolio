@@ -29,9 +29,9 @@ export default function Hero() {
 
         {/* Right column — image grid, stretches to match left column height */}
         <Reveal delay={0.3} className="h-full">
-          <div className="grid grid-cols-2 grid-rows-[1.75fr_1fr] gap-2 md:gap-3 h-[280px] md:h-[320px] lg:h-full">
+          <div className="grid grid-cols-2 gap-2 md:gap-3 h-[280px] md:h-[320px] lg:h-full">
             <div
-              className="row-span-2 rounded overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer"
+              className="rounded overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer h-full"
               onClick={() => scrollTo('work')}
             >
               <Image
@@ -60,22 +60,7 @@ export default function Hero() {
               {/* Subtle dark gradient overlay to ensure text contrast */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-10" />
               <div className="relative z-20">
-                <div className="font-display text-lg md:text-xl font-light text-off-white leading-[1.1]">Illustration</div>
-              </div>
-            </div>
-            <div className="bg-[#111110] rounded overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer" onClick={() => scrollTo('work')}>
-              <Image
-                src="/uiux_hero_v2.jpg"
-                alt="UI/UX Thumbnail"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 50vw, 33vw"
-                priority
-              />
-              {/* Subtle dark gradient overlay to ensure text contrast */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-10" />
-              <div className="relative z-20">
-                <div className="font-display text-lg md:text-xl font-light text-off-white leading-[1.1]">UI/UX</div>
+                <div className="font-display text-2xl md:text-3xl font-light text-off-white leading-[1.1]">Illustration</div>
               </div>
             </div>
           </div>
