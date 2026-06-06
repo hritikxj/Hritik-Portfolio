@@ -560,8 +560,11 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 'clamp(24px, 4vw, 56px)', pointerEvents: 'none' }}
         >
           {/* Top row */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
             <div>
+              <span style={{ display: 'block', fontSize: 'clamp(14px, 1.8vw, 18px)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 500, marginBottom: '16px' }}>
+                Portfolio&nbsp;·&nbsp;2026
+              </span>
               <p style={{ fontSize: 'clamp(40px, 6.5vw, 100px)', fontWeight: 300, lineHeight: 1.0, color: '#fff', fontFamily: 'var(--font-display), Georgia, serif', letterSpacing: '-0.02em', margin: '0 0 14px 0', textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
                 Hritik Jasnani.
               </p>
@@ -569,9 +572,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
                 A designer who gives a damn.
               </p>
             </div>
-            <span style={{ fontSize: 'clamp(16px, 2vw, 24px)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 500, marginTop: '8px' }}>
-              Portfolio&nbsp;·&nbsp;2026
-            </span>
           </div>
 
           {/* Scroll / Loading indicator */}
