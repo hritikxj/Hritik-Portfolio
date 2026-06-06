@@ -1,4 +1,5 @@
 import Reveal from './Reveal';
+import Image from 'next/image';
 
 export default function About() {
 
@@ -13,15 +14,19 @@ export default function About() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start">
           <Reveal delay={0.2} className="h-full">
-            <div
-              className="aspect-square lg:aspect-[4/3] bg-parchment rounded relative flex items-end p-5 h-full bg-cover bg-center"
-              style={{ backgroundImage: "url('/me_thumb.jpg')" }}
-            >
+            <div className="aspect-square lg:aspect-[4/3] bg-parchment rounded relative flex items-end p-5 h-full overflow-hidden">
+              <Image
+                src="/me_thumb.jpg"
+                alt="Hritik Jasnani profile picture"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 40vw"
+              />
               <a
                 href="https://instagram.com/hritikjasnani"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-off-white px-4 py-2.5 rounded-sm text-xs text-ink cursor-pointer transition-transform duration-200 hover:scale-[1.02] hover:bg-white no-underline inline-block"
+                className="bg-off-white px-4 py-2.5 rounded-sm text-xs text-ink cursor-pointer transition-transform duration-200 hover:scale-[1.02] hover:bg-white no-underline inline-block relative z-10"
               >
                 Hritik Jasnani · @hritikjasnani
               </a>

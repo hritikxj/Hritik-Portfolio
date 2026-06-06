@@ -13,6 +13,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
   const introDoneRef = useRef(false);
   const [introComplete, setIntroComplete] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const videoLoadedRef = useRef(false);
   const updateStateRef = useRef<((p: number) => void) | null>(null);
   const progressRef = useRef(0);
@@ -52,9 +53,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     let blobUrl: string | null = null;
     let aborted = false;
 
-    // Symmetrical Auto-scroll indicator flags
-    let isAutoScrolling = false;
-
     // Check if seen before
     let wasSeenBefore = false;
     let savedScrollY: number | null = null;
@@ -78,6 +76,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       wasSeenBefore = !!sessionStorage.getItem('intro-seen');
     } catch { /* ignore */ }
 
+    // First-time visitor initialization
     if (!wasSeenBefore) {
       const landing = landingRef.current;
       if (landing) {
@@ -87,16 +86,33 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       }
     }
 
+    // Returning visitor optimization
     if (wasSeenBefore) {
       introDoneRef.current = true;
-      setTimeout(() => {
-        setIntroComplete(true);
-      }, 0);
+      setIntroComplete(true);
 
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'auto';
       }
 
+      // Collapse the spacer completely so the page behaves like a normal site
+      const spacer = spacerRef.current;
+      const overlay = overlayRef.current;
+      const landing = landingRef.current;
+      
+      if (spacer) {
+        spacer.style.height = '0px';
+      }
+      if (overlay) {
+        overlay.style.display = 'none';
+      }
+      if (landing) {
+        landing.style.opacity = '1';
+        landing.style.visibility = 'visible';
+        landing.style.pointerEvents = 'auto';
+      }
+
+      // Restore scroll position adjusted by the collapsed spacer (2 * window.innerHeight)
       try {
         const saved = sessionStorage.getItem('portfolio-scroll-y');
         if (saved) {
@@ -105,37 +121,35 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         }
       } catch { /* ignore */ }
 
-      const spacer = spacerRef.current;
-      const spacerHeight = spacer ? spacer.offsetHeight : window.innerHeight * 2;
-
       if (savedScrollY !== null && !isNaN(savedScrollY)) {
-        window.scrollTo(0, savedScrollY);
-        // Force scroll alignment in case Next.js routing delays paint
+        const estimatedSpacerHeight = window.innerHeight * 2;
+        const adjustedScrollY = Math.max(0, savedScrollY - estimatedSpacerHeight);
+        window.scrollTo(0, adjustedScrollY);
         setTimeout(() => {
-          if (savedScrollY !== null) window.scrollTo(0, savedScrollY);
+          window.scrollTo(0, adjustedScrollY);
         }, 20);
         setTimeout(() => {
-          if (savedScrollY !== null) window.scrollTo(0, savedScrollY);
+          window.scrollTo(0, adjustedScrollY);
         }, 80);
-      } else if (window.scrollY < spacerHeight) {
-        window.scrollTo(0, spacerHeight);
-        setTimeout(() => {
-          if (window.scrollY < spacerHeight) {
-            window.scrollTo(0, spacerHeight);
-          }
-        }, 50);
+      } else {
+        window.scrollTo(0, 0);
       }
+
+      // Returning visitors skip the rest of the GSAP setup and video fetch completely!
+      return;
     }
 
+    // First-time visitors: fetch video and set up ScrollTrigger
     const fetchVideo = async () => {
-      if (videoRef.current) {
-        videoRef.current.src = '/intro2-scrub.mp4';
-        videoRef.current.load();
-      }
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const videoSrc = isMobile ? '/intro2-scrub-mobile.mp4' : '/intro2-scrub.mp4';
 
       try {
-        const response = await fetch('/intro2-scrub.mp4');
+        const response = await fetch(videoSrc);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const contentLength = response.headers.get('content-length');
+        const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
         
         if (!response.body) {
           throw new Error('ReadableStream not supported');
@@ -143,12 +157,19 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         
         const reader = response.body.getReader();
         const chunks: BlobPart[] = [];
+        let loadedBytes = 0;
         
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
           if (aborted) return;
           chunks.push(value);
+          loadedBytes += value.length;
+          
+          if (totalBytes > 0) {
+            const percent = Math.round((loadedBytes / totalBytes) * 100);
+            setLoadingProgress(percent);
+          }
         }
         
         if (aborted) return;
@@ -156,31 +177,26 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         blobUrl = URL.createObjectURL(blob);
         
         if (videoRef.current) {
-          const isOverlayHidden = progressRef.current >= 0.85;
-          if (progressRef.current < 0.05 || isOverlayHidden) {
-            const currentTime = videoRef.current.currentTime;
-            videoRef.current.src = blobUrl;
-            videoRef.current.load();
-            videoRef.current.currentTime = currentTime;
-          }
+          videoRef.current.src = blobUrl;
+          videoRef.current.load();
         }
       } catch (err) {
         console.warn("Failed to load video as blob, falling back to direct stream:", err);
+        if (videoRef.current) {
+          videoRef.current.src = videoSrc;
+          videoRef.current.load();
+        }
       }
     };
 
     fetchVideo();
 
-    // Loads a CDN script, resolving only when the window global is actually available.
-    // The interval has a hard cap (250 × 20 ms = 5 s) so it cannot run forever.
     const loadScript = (src: string, globalName: string): Promise<void> =>
       new Promise((resolve, reject) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((window as any)[globalName]) { resolve(); return; }
         const onReady = () => {
           let attempts = 0;
           const interval = setInterval(() => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if ((window as any)[globalName]) { clearInterval(interval); resolve(); return; }
             if (++attempts > 250) { clearInterval(interval); reject(new Error(`${globalName} did not load`)); }
           }, 20);
@@ -198,8 +214,12 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     let rafId = 0;
     let targetTime = 0;
     let lastSoughtTime = 0;
+    let currentInterpolatedTime = 0;
+    let scrubLoopActive = false;
+
     let autoScrollTimeout: ReturnType<typeof setTimeout> | null = null;
     let targetScrollY = -1;
+    let isAutoScrolling = false;
 
     let isUserScrollingActive = false;
     let userScrollTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -240,9 +260,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     window.addEventListener('touchmove', preventScroll, { passive: false });
     window.addEventListener('keydown', preventKeys, { passive: false });
 
-    let currentInterpolatedTime = 0;
-    let scrubLoopActive = false;
-
     const markIntroDone = () => {
       if (introDoneRef.current) return;
       introDoneRef.current = true;
@@ -254,39 +271,13 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       setIntroComplete(true);
     };
 
-    // For returning visitors: immediately show the landing while GSAP loads in the
-    // background. The spacer is intentionally kept so ScrollTrigger can still
-    // drive the scroll-back-to-intro experience.
-    if (wasSeenBefore) {
-      markIntroDone();
-      const overlay = overlayRef.current;
-      const landing = landingRef.current;
-      const spacer  = spacerRef.current;
-      if (overlay) {
-        overlay.style.opacity       = '0';
-        overlay.style.visibility    = 'hidden';
-        overlay.style.pointerEvents = 'none';
-      }
-      if (landing) {
-        landing.style.opacity       = '1';
-        landing.style.visibility    = 'visible';
-        landing.style.pointerEvents = 'auto';
-      }
-      if (spacer) {
-        if (savedScrollY === null || isNaN(savedScrollY)) {
-          window.scrollTo(0, spacer.offsetTop + spacer.offsetHeight);
-        }
-      }
-    }
-
     const init = async () => {
       try {
         await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', 'gsap');
         await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', 'ScrollTrigger');
         await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js', 'ScrollToPlugin');
       } catch {
-        // GSAP failed to load — last-resort fallback: collapse the spacer and
-        // show the landing so the page is still usable.
+        // GSAP failed to load — fallback
         const overlay = overlayRef.current;
         const landing = landingRef.current;
         const spacer  = spacerRef.current;
@@ -297,7 +288,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         return;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { gsap, ScrollTrigger, ScrollToPlugin } = window as any;
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -313,7 +303,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       };
       video.addEventListener('seeked', handleSeeked);
 
-      // Sync playback position as soon as metadata loaded to prevent frozen state
       handleMetadataLoaded = () => {
         if (st && st.progress !== undefined) {
           updateState(st.progress);
@@ -321,7 +310,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       };
       video.addEventListener('loadedmetadata', handleMetadataLoaded);
 
-      const MIN_SEEK_STEP = 0.03; // ~30fps equivalent time step to avoid decoder overhead
+      const MIN_SEEK_STEP = 0.03;
 
       const runScrubLoop = () => {
         if (!scrubLoopActive || !videoRef.current) return;
@@ -329,7 +318,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         const video = videoRef.current;
         const diff = targetTime - currentInterpolatedTime;
 
-        // When close enough, seek to exact target time and stop the loop
         if (Math.abs(diff) < 0.001) {
           if (video.currentTime !== targetTime) {
             if (!isSeekingRef.current) {
@@ -354,8 +342,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         if (video.duration) {
           currentInterpolatedTime = Math.max(0, Math.min(video.duration, currentInterpolatedTime));
           
-          // Only seek if the distance from the last sought time is greater than MIN_SEEK_STEP
-          // and we are not already seeking. This reduces decoder seek load by 95%.
           if (!isSeekingRef.current && Math.abs(currentInterpolatedTime - lastSoughtTime) >= MIN_SEEK_STEP) {
             isSeekingRef.current = true;
             video.currentTime = currentInterpolatedTime;
@@ -369,7 +355,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       const updateState = (p: number) => {
         progressRef.current = p;
 
-        // ── Video scrub ─────────────────────────────────────────
         if (video.duration) {
           targetTime = p * video.duration;
           
@@ -383,7 +368,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           }
         }
 
-        // ── Fade: overlay out, landing in ───────────────────────
         const fadeStart = 0.85;
         const fadeEnd = 0.98;
 
@@ -404,12 +388,9 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           landing.style.visibility = 'visible';
           landing.style.pointerEvents = 'auto';
 
-          // Fire introComplete early enough that Reveal animations overlap
           markIntroDone();
         } else {
-          // Linear interpolation between fadeStart and fadeEnd
           const t = (p - fadeStart) / (fadeEnd - fadeStart);
-          // Apply cubic ease-in-out for premium organic feel
           const easedT = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
           overlay.style.opacity = String(1 - easedT);
@@ -421,11 +402,10 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           landing.style.pointerEvents = easedT >= 0.5 ? 'auto' : 'none';
         }
 
-        // ── Fade text UI early ──────────────────────────────────
         const textEl = document.getElementById('intro-text-ui');
         if (textEl) {
           if (!videoLoadedRef.current) {
-            textEl.style.opacity = '0';
+            textEl.style.opacity = '1';
           } else {
             if (p > 0.001) {
               textEl.classList.remove('intro-text-initial-fade', 'loaded');
@@ -437,9 +417,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
       updateStateRef.current = updateState;
 
-      // For returning visitors, the scroll position was already set on mount,
-      // so we let the ScrollTrigger initialize naturally at the current scroll position.
-
       const triggerAutoScroll = (targetY: number) => {
         if (isAutoScrolling && targetScrollY === targetY) return;
 
@@ -448,7 +425,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
         gsap.to(window, {
           scrollTo: { y: targetY, autoKill: false },
-          duration: 1.2, // Snappier transition timing
+          duration: 1.2,
           ease: "power2.inOut",
           onComplete: () => {
             isAutoScrolling = false;
@@ -466,19 +443,16 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         autoScrollTimeout = setTimeout(() => {
           isAutoScrolling = false;
           targetScrollY = -1;
-        }, 1500); // adjusted safety fallback
+        }, 1500);
       };
 
       triggerAutoScrollRef.current = triggerAutoScroll;
 
       const setup = () => {
-        // NO pin:true — GSAP only reads scroll, never touches the DOM structure.
-        // The spacer div (200vh) creates all the scroll space we need.
-        // The video overlay is position:fixed and handles its own visual placement.
         st = ScrollTrigger.create({
           trigger: spacer,
           start: 'top top',
-          end: 'bottom top', // when bottom of 200vh spacer scrolls past the top
+          end: 'bottom top',
           scrub: true,
           onUpdate: (self: { progress: number; direction: number }) => {
             updateState(self.progress);
@@ -488,18 +462,17 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
             const currentScroll = window.scrollY;
             const spacerHeight = spacer.offsetHeight;
             
-            // Thresholds: 3% from top or 3% from bottom of spacer
             const downThreshold = spacerHeight * 0.03;
             const upThreshold = spacerHeight * 0.97;
 
             if (self.direction === 1 && currentScroll > downThreshold && currentScroll < upThreshold) {
               triggerAutoScroll(spacerHeight);
+            } else if (self.direction === -1 && currentScroll > downThreshold && currentScroll < upThreshold) {
+              triggerAutoScroll(0);
             }
           },
         });
 
-        // Force initial state — covers both the fresh-visit (progress=0) and
-        // the returning-visitor (progress=1) cases immediately after setup.
         if (st && st.progress !== undefined) {
           updateState(st.progress);
         }
@@ -507,18 +480,15 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
       setup();
 
-      // Next.js App Router bug mitigation: manually scroll to hash if present.
-      // For returning visitors the spacer-scroll above already positions us past
-      // the intro; the hash scroll then moves to the right section.
       if (window.location.hash) {
         setTimeout(() => {
           try {
             const el = document.querySelector(window.location.hash);
-            if (el) el.scrollIntoView({ behavior: wasSeenBefore ? 'smooth' : 'auto' });
+            if (el) el.scrollIntoView({ behavior: 'auto' });
           } catch (e) {
             console.error("Invalid hash selector:", e);
           }
-        }, wasSeenBefore ? 80 : 150);
+        }, 150);
       }
     };
 
@@ -527,7 +497,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     return () => {
       aborted = true;
       updateStateRef.current = null;
-      // Safe cleanup — GSAP never touched the DOM structure so no removeChild conflicts
       try { if (st) st.kill(); } catch { /* ignore */ }
       if (videoEl && handleSeeked) {
         videoEl.removeEventListener('seeked', handleSeeked);
@@ -605,22 +574,33 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
             </span>
           </div>
 
-          {/* Scroll indicator */}
-          <div
-            onClick={handleScrollClick}
-            className="flex flex-col items-center self-center md:self-start w-fit gap-3 cursor-pointer group"
-            style={{ pointerEvents: 'auto' }}
-          >
-            <span className="group-hover:text-white transition-colors duration-200" style={{ fontSize: '15px', letterSpacing: '0.45em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 600, marginRight: '-0.45em' }}>
-              Scroll
-            </span>
-            <div style={{ width: '2.5px', height: '90px', background: 'rgba(255, 255, 255, 0.22)', position: 'relative', overflow: 'hidden', marginBottom: '2px' }}>
-              <div className="intro-scroll-line" />
+          {/* Scroll / Loading indicator */}
+          {!videoLoaded ? (
+            <div className="flex flex-col items-center md:items-start self-center md:self-start w-fit gap-3 select-none">
+              <span style={{ fontSize: '12px', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 600 }}>
+                Loading {loadingProgress}%
+              </span>
+              <div style={{ width: '120px', height: '1.5px', background: 'rgba(255, 255, 255, 0.12)', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${loadingProgress}%`, background: '#fff', transition: 'width 0.1s ease' }} />
+              </div>
             </div>
-            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" className="group-hover:text-white transition-colors duration-200" style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
-              <path d="M1 1L8 8L15 1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
+          ) : (
+            <div
+              onClick={handleScrollClick}
+              className="flex flex-col items-center self-center md:self-start w-fit gap-3 cursor-pointer group"
+              style={{ pointerEvents: 'auto' }}
+            >
+              <span className="group-hover:text-white transition-colors duration-200" style={{ fontSize: '15px', letterSpacing: '0.45em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 600, marginRight: '-0.45em' }}>
+                Scroll
+              </span>
+              <div style={{ width: '2.5px', height: '90px', background: 'rgba(255, 255, 255, 0.22)', position: 'relative', overflow: 'hidden', marginBottom: '2px' }}>
+                <div className="intro-scroll-line" />
+              </div>
+              <svg width="16" height="9" viewBox="0 0 16 9" fill="none" className="group-hover:text-white transition-colors duration-200" style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
+                <path d="M1 1L8 8L15 1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          )}
         </div>
       </div>
 
