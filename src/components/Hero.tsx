@@ -16,8 +16,8 @@ export default function Hero() {
         <div className="flex flex-col justify-center">
           <Reveal delay={0.2}>
             <h1 className="font-display text-5xl md:text-6xl lg:text-[68px] font-light leading-[1.05] tracking-[-0.01em] mb-6">
-              I design brands and<br />experiences people<br />
-              <em className="italic text-brand-red">remember.</em>
+              I design brands and<br />
+              <em className="italic text-brand-red">experiences.</em>
             </h1>
           </Reveal>
           <Reveal delay={0.3}>
