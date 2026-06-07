@@ -1,17 +1,12 @@
 'use client';
 
 import Reveal from './Reveal';
-import Image from 'next/image';
 
 export default function Hero() {
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section className="pt-10 md:pt-14 pb-12 md:pb-14 border-b-[0.5px] border-border-subtle">
-      <div className="w-full px-5 md:px-12 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+      <div className="w-full px-5 md:px-12 lg:px-10 max-w-4xl">
         {/* Left column — text */}
         <div className="flex flex-col justify-center">
           <Reveal delay={0.2}>
@@ -26,45 +21,6 @@ export default function Hero() {
             </p>
           </Reveal>
         </div>
-
-        {/* Right column — image grid, stretches to match left column height */}
-        <Reveal delay={0.3} className="h-full">
-          <div className="grid grid-cols-2 gap-2 md:gap-3 h-[280px] md:h-[320px] lg:h-full">
-            <div
-              className="rounded overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer h-full"
-              onClick={() => scrollTo('work')}
-            >
-              <Image
-                src="/brand_identity_hero.jpg"
-                alt="Brand Identity Thumbnail"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 50vw, 33vw"
-                priority
-              />
-              {/* Subtle dark gradient overlay to ensure text contrast */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-10" />
-              <div className="relative z-20">
-                <div className="font-display text-2xl md:text-3xl font-light text-off-white leading-[1.1]">Brand<br />Identity</div>
-              </div>
-            </div>
-            <div className="bg-[#E8E2D6] rounded overflow-hidden relative flex items-end p-4 transition-transform duration-300 hover:scale-[1.02] cursor-pointer h-full" onClick={() => scrollTo('work')}>
-              <Image
-                src="/illustration_hero_v3.jpg"
-                alt="Illustration Thumbnail"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 50vw, 33vw"
-                priority
-              />
-              {/* Subtle dark gradient overlay to ensure text contrast */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-10" />
-              <div className="relative z-20">
-                <div className="font-display text-2xl md:text-3xl font-light text-off-white leading-[1.1]">Illustration</div>
-              </div>
-            </div>
-          </div>
-        </Reveal>
       </div>
     </section>
   );
