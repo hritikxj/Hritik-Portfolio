@@ -6,9 +6,9 @@ import { IntroContext } from '@/context/IntroContext';
 let isInitialHardLoad = true;
 
 export default function IntroScene({ children }: { children: React.ReactNode }) {
-  const spacerRef  = useRef<HTMLDivElement>(null);
+  const spacerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const videoRef   = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const landingRef = useRef<HTMLDivElement>(null);
   const introDoneRef = useRef(false);
   const [introComplete, setIntroComplete] = useState(false);
@@ -63,7 +63,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         const isReloadTiming = navigationEntries.length > 0 && (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload';
         const isReloadLegacy = window.performance && window.performance.navigation && window.performance.navigation.type === 1;
         const isReload = isReloadTiming || isReloadLegacy;
-        
+
         if (isReload) {
           sessionStorage.removeItem('intro-seen');
         }
@@ -99,7 +99,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       const spacer = spacerRef.current;
       const overlay = overlayRef.current;
       const landing = landingRef.current;
-      
+
       if (spacer) {
         spacer.style.height = '0px';
       }
@@ -147,35 +147,35 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       try {
         const response = await fetch(videoSrc);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
+
         const contentLength = response.headers.get('content-length');
         const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
-        
+
         if (!response.body) {
           throw new Error('ReadableStream not supported');
         }
-        
+
         const reader = response.body.getReader();
         const chunks: BlobPart[] = [];
         let loadedBytes = 0;
-        
+
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
           if (aborted) return;
           chunks.push(value);
           loadedBytes += value.length;
-          
+
           if (totalBytes > 0) {
             const percent = Math.round((loadedBytes / totalBytes) * 100);
             setLoadingProgress(percent);
           }
         }
-        
+
         if (aborted) return;
         const blob = new Blob(chunks, { type: 'video/mp4' });
         blobUrl = URL.createObjectURL(blob);
-        
+
         if (videoRef.current) {
           videoRef.current.src = blobUrl;
           videoRef.current.load();
@@ -280,10 +280,10 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         // GSAP failed to load — fallback
         const overlay = overlayRef.current;
         const landing = landingRef.current;
-        const spacer  = spacerRef.current;
+        const spacer = spacerRef.current;
         if (overlay) { overlay.style.display = 'none'; }
         if (landing) { landing.style.opacity = '1'; landing.style.pointerEvents = 'auto'; }
-        if (spacer)  { spacer.style.display = 'none'; }
+        if (spacer) { spacer.style.display = 'none'; }
         markIntroDone();
         return;
       }
@@ -291,10 +291,10 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       const { gsap, ScrollTrigger, ScrollToPlugin } = window as any;
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-      const video   = videoRef.current;
+      const video = videoRef.current;
       const overlay = overlayRef.current;
       const landing = landingRef.current;
-      const spacer  = spacerRef.current;
+      const spacer = spacerRef.current;
 
       if (!video || !overlay || !landing || !spacer) return;
 
@@ -341,7 +341,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
         if (video.duration) {
           currentInterpolatedTime = Math.max(0, Math.min(video.duration, currentInterpolatedTime));
-          
+
           if (!isSeekingRef.current && Math.abs(currentInterpolatedTime - lastSoughtTime) >= MIN_SEEK_STEP) {
             isSeekingRef.current = true;
             video.currentTime = currentInterpolatedTime;
@@ -357,7 +357,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
         if (video.duration) {
           targetTime = p * video.duration;
-          
+
           if (currentInterpolatedTime === 0 && p > 0) {
             currentInterpolatedTime = video.currentTime;
           }
@@ -461,7 +461,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
             const currentScroll = window.scrollY;
             const spacerHeight = spacer.offsetHeight;
-            
+
             const downThreshold = spacerHeight * 0.03;
             const upThreshold = spacerHeight * 0.97;
 
@@ -560,11 +560,8 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 'clamp(24px, 4vw, 56px)', pointerEvents: 'none' }}
         >
           {/* Top row */}
-          <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <span style={{ display: 'block', fontSize: 'clamp(14px, 1.8vw, 18px)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 500, marginBottom: '16px' }}>
-                Portfolio&nbsp;·&nbsp;2026
-              </span>
               <p style={{ fontSize: 'clamp(40px, 6.5vw, 100px)', fontWeight: 300, lineHeight: 1.0, color: '#fff', fontFamily: 'var(--font-display), Georgia, serif', letterSpacing: '-0.02em', margin: '0 0 14px 0', textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
                 Hritik Jasnani.
               </p>
@@ -572,6 +569,9 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
                 A designer who gives a damn.
               </p>
             </div>
+            <span style={{ fontSize: 'clamp(16px, 2vw, 24px)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 500, marginTop: '8px' }}>
+              Portfolio&nbsp;·&nbsp;2026
+            </span>
           </div>
 
           {/* Scroll / Loading indicator */}
