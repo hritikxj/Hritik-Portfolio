@@ -50,7 +50,7 @@ export default function About() {
                 Driven by a childhood ambition to become a scientist. I found design — a field where thinking and making are the same act.
               </p>
               <p className="text-sm text-smoke leading-[1.9] mb-5">
-                I share my design process and work with a community of over <span className="text-brand-red font-medium">17k+ followers on Instagram</span>, translating digital engagement into real-world project insights.
+                I share my design process and work with a community of over <span className="text-brand-red font-medium">17k+ followers on Instagram</span>.
               </p>
             </Reveal>
           </div>
