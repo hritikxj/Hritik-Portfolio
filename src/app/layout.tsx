@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import HireMeProvider from "@/components/HireMeProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -30,7 +31,10 @@ export default function RootLayout({
       lang="en"
       className={`${dmSans.variable} ${cormorant.variable}`}
     >
-      <body><HireMeProvider>{children}</HireMeProvider></body>
+      <body>
+        <HireMeProvider>{children}</HireMeProvider>
+        <SpeedInsights />
+      </body>
     </html>
   );
 }
