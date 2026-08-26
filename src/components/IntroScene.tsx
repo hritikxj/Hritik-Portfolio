@@ -98,6 +98,22 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       wasSeenBefore = !!sessionStorage.getItem('intro-seen');
     } catch { /* ignore */ }
 
+    // A project card stores the home-page position before navigating away. On
+    // return, keep the intro spacer and ScrollTrigger alive so scrolling back
+    // toward the top can scrub the video in reverse.
+    if (wasSeenBefore) {
+      try {
+        const saved = sessionStorage.getItem('portfolio-scroll-y');
+        if (saved !== null) {
+          const parsedScrollY = Number.parseInt(saved, 10);
+          if (!Number.isNaN(parsedScrollY)) savedScrollY = parsedScrollY;
+          sessionStorage.removeItem('portfolio-scroll-y');
+        }
+      } catch { /* ignore */ }
+    }
+
+    const isProjectReturn = wasSeenBefore && savedScrollY !== null;
+
     // First-time visitor initialization
     if (!wasSeenBefore) {
       const landing = landingRef.current;
@@ -109,7 +125,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     }
 
     // Returning visitor optimization
-    if (wasSeenBefore) {
+    if (wasSeenBefore && !isProjectReturn) {
       introDoneRef.current = true;
       queueMicrotask(() => {
         if (!aborted) setIntroComplete(true);
@@ -136,32 +152,23 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         landing.style.pointerEvents = 'auto';
       }
 
-      // Restore scroll position adjusted by the collapsed spacer (2 * window.innerHeight)
-      try {
-        const saved = sessionStorage.getItem('portfolio-scroll-y');
-        if (saved) {
-          savedScrollY = parseInt(saved, 10);
-          sessionStorage.removeItem('portfolio-scroll-y');
-        }
-      } catch { /* ignore */ }
-
-      if (savedScrollY !== null && !isNaN(savedScrollY)) {
-        const estimatedSpacerHeight = window.innerHeight * 2;
-        const adjustedScrollY = Math.max(0, savedScrollY - estimatedSpacerHeight);
-        window.scrollTo(0, adjustedScrollY);
-        setTimeout(() => {
-          window.scrollTo(0, adjustedScrollY);
-        }, 20);
-        setTimeout(() => {
-          window.scrollTo(0, adjustedScrollY);
-        }, 80);
-      } else {
-        window.scrollTo(0, 0);
-      }
+      window.scrollTo(0, 0);
 
       // Returning visitors skip the remaining animation and video setup.
       return;
     }
+
+    if (isProjectReturn) {
+      introDoneRef.current = true;
+      queueMicrotask(() => {
+        if (!aborted) setIntroComplete(true);
+      });
+    }
+
+    // Next.js may reuse previously rendered home DOM during a soft navigation.
+    // Undo the fast-path inline styles before rebuilding the scroll timeline.
+    if (spacerRef.current) spacerRef.current.style.height = '200vh';
+    if (overlayRef.current) overlayRef.current.style.display = 'block';
 
     // Stream the desktop video directly so playback can begin before the full
     // asset has downloaded. Mobile and reduced-motion visitors skip this path.
@@ -172,6 +179,8 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
     let st: ScrollTriggerInstance | null = null;
     let rafId = 0;
+    let restoreRafId = 0;
+    let restoreScrollTimeout: ReturnType<typeof setTimeout> | null = null;
     let targetTime = 0;
     let lastSoughtTime = 0;
     let currentInterpolatedTime = 0;
@@ -421,7 +430,23 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         }
       };
 
+      if (isProjectReturn && savedScrollY !== null) {
+        window.scrollTo(0, savedScrollY);
+      }
+
       setup();
+
+      if (isProjectReturn && savedScrollY !== null) {
+        const restoreProjectPosition = () => {
+          window.scrollTo(0, savedScrollY);
+          ScrollTrigger.refresh();
+          ScrollTrigger.update();
+          if (st) updateState(st.progress);
+        };
+
+        restoreRafId = requestAnimationFrame(restoreProjectPosition);
+        restoreScrollTimeout = setTimeout(restoreProjectPosition, 80);
+      }
 
       if (window.location.hash) {
         setTimeout(() => {
@@ -448,6 +473,8 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         videoEl.removeEventListener('loadedmetadata', handleMetadataLoaded);
       }
       if (rafId) cancelAnimationFrame(rafId);
+      if (restoreRafId) cancelAnimationFrame(restoreRafId);
+      if (restoreScrollTimeout) clearTimeout(restoreScrollTimeout);
       if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
       window.removeEventListener('wheel', handleUserScrollActivity);
       window.removeEventListener('touchstart', handleUserScrollActivity);
