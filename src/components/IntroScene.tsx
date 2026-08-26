@@ -5,6 +5,22 @@ import { IntroContext } from '@/context/IntroContext';
 
 let isInitialHardLoad = true;
 
+interface ScrollTriggerInstance {
+  progress: number;
+  kill: () => void;
+}
+
+interface AnimationGlobals {
+  gsap: {
+    registerPlugin: (...plugins: unknown[]) => void;
+    to: (target: Window, options: Record<string, unknown>) => void;
+  };
+  ScrollTrigger: {
+    create: (options: Record<string, unknown>) => ScrollTriggerInstance;
+  };
+  ScrollToPlugin: unknown;
+}
+
 export default function IntroScene({ children }: { children: React.ReactNode }) {
   const spacerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -89,7 +105,9 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     // Returning visitor optimization
     if (wasSeenBefore) {
       introDoneRef.current = true;
-      setIntroComplete(true);
+      queueMicrotask(() => {
+        if (!aborted) setIntroComplete(true);
+      });
 
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'auto';
@@ -193,11 +211,12 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
     const loadScript = (src: string, globalName: string): Promise<void> =>
       new Promise((resolve, reject) => {
-        if ((window as any)[globalName]) { resolve(); return; }
+        const browserGlobals = window as unknown as Record<string, unknown>;
+        if (browserGlobals[globalName]) { resolve(); return; }
         const onReady = () => {
           let attempts = 0;
           const interval = setInterval(() => {
-            if ((window as any)[globalName]) { clearInterval(interval); resolve(); return; }
+            if (browserGlobals[globalName]) { clearInterval(interval); resolve(); return; }
             if (++attempts > 250) { clearInterval(interval); reject(new Error(`${globalName} did not load`)); }
           }, 20);
         };
@@ -209,8 +228,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         document.head.appendChild(s);
       });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let st: any;
+    let st: ScrollTriggerInstance | null = null;
     let rafId = 0;
     let targetTime = 0;
     let lastSoughtTime = 0;
@@ -288,7 +306,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         return;
       }
 
-      const { gsap, ScrollTrigger, ScrollToPlugin } = window as any;
+      const { gsap, ScrollTrigger, ScrollToPlugin } = window as unknown as AnimationGlobals;
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
       const video = videoRef.current;

@@ -558,10 +558,12 @@ export default function Work() {
                 {/* Visual Showcase (Image or Color block fallback) */}
                 {selectedProject.image ? (
                   <div className="relative w-full min-h-[300px] md:h-full bg-parchment/10 flex items-center justify-center p-6 border-r border-border-subtle/50">
-                    <img
+                    <Image
                       src={selectedProject.image}
                       alt={selectedProject.title}
-                      className="w-full h-auto max-h-[70vh] object-contain rounded shadow-lg"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-contain p-6"
                     />
                   </div>
                 ) : (
@@ -621,5 +623,4 @@ export default function Work() {
     </>
   );
 }
-
 

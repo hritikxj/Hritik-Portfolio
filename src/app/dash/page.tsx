@@ -24,8 +24,6 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
-const totalSlides = 28;
-
 export default function DashBrandGuidelinesPage() {
   const router = useRouter();
 

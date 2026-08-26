@@ -1,7 +1,8 @@
 {
-  "name": "temp_app",
+  "name": "hritik-portfolio",
   "version": "0.1.0",
   "private": true,
+  "description": "Portfolio of multidisciplinary designer Hritik Jasnani.",
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build",
