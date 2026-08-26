@@ -1,6 +1,6 @@
 # Hritik Jasnani — Portfolio
 
-The portfolio of **Hritik Jasnani**, a multidisciplinary designer based in India and working globally across brand identity, illustration, and digital experiences.
+I’m **Hritik Jasnani**, a multidisciplinary designer based in India, working globally across brand identity, illustration, and digital experiences.
 
 [View the live portfolio](https://hritikjasnani.vercel.app) · [Instagram](https://instagram.com/hritikjasnani)
 
