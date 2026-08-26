@@ -2,23 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { IntroContext } from '@/context/IntroContext';
+import { gsap } from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 let isInitialHardLoad = true;
 
 interface ScrollTriggerInstance {
   progress: number;
   kill: () => void;
-}
-
-interface AnimationGlobals {
-  gsap: {
-    registerPlugin: (...plugins: unknown[]) => void;
-    to: (target: Window, options: Record<string, unknown>) => void;
-  };
-  ScrollTrigger: {
-    create: (options: Record<string, unknown>) => ScrollTriggerInstance;
-  };
-  ScrollToPlugin: unknown;
 }
 
 export default function IntroScene({ children }: { children: React.ReactNode }) {
@@ -29,7 +21,6 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
   const introDoneRef = useRef(false);
   const [introComplete, setIntroComplete] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [loadingProgress, setLoadingProgress] = useState(0);
   const videoLoadedRef = useRef(false);
   const updateStateRef = useRef<((p: number) => void) | null>(null);
   const progressRef = useRef(0);
@@ -66,8 +57,23 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
     let handleMetadataLoaded: (() => void) | null = null;
     let handleSeeked: (() => void) | null = null;
-    let blobUrl: string | null = null;
     let aborted = false;
+
+    const skipIntro = window.matchMedia('(max-width: 767px)').matches
+      || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (skipIntro) {
+      introDoneRef.current = true;
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'auto';
+      }
+      queueMicrotask(() => {
+        if (!aborted) setIntroComplete(true);
+      });
+      return () => {
+        aborted = true;
+      };
+    }
 
     // Check if seen before
     let wasSeenBefore = false;
@@ -153,80 +159,16 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         window.scrollTo(0, 0);
       }
 
-      // Returning visitors skip the rest of the GSAP setup and video fetch completely!
+      // Returning visitors skip the remaining animation and video setup.
       return;
     }
 
-    // First-time visitors: fetch video and set up ScrollTrigger
-    const fetchVideo = async () => {
-      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-      const videoSrc = isMobile ? '/intro2-scrub-mobile.mp4' : '/intro2-scrub.mp4';
-
-      try {
-        const response = await fetch(videoSrc);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-        const contentLength = response.headers.get('content-length');
-        const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
-
-        if (!response.body) {
-          throw new Error('ReadableStream not supported');
-        }
-
-        const reader = response.body.getReader();
-        const chunks: BlobPart[] = [];
-        let loadedBytes = 0;
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          if (aborted) return;
-          chunks.push(value);
-          loadedBytes += value.length;
-
-          if (totalBytes > 0) {
-            const percent = Math.round((loadedBytes / totalBytes) * 100);
-            setLoadingProgress(percent);
-          }
-        }
-
-        if (aborted) return;
-        const blob = new Blob(chunks, { type: 'video/mp4' });
-        blobUrl = URL.createObjectURL(blob);
-
-        if (videoRef.current) {
-          videoRef.current.src = blobUrl;
-          videoRef.current.load();
-        }
-      } catch (err) {
-        console.warn("Failed to load video as blob, falling back to direct stream:", err);
-        if (videoRef.current) {
-          videoRef.current.src = videoSrc;
-          videoRef.current.load();
-        }
-      }
-    };
-
-    fetchVideo();
-
-    const loadScript = (src: string, globalName: string): Promise<void> =>
-      new Promise((resolve, reject) => {
-        const browserGlobals = window as unknown as Record<string, unknown>;
-        if (browserGlobals[globalName]) { resolve(); return; }
-        const onReady = () => {
-          let attempts = 0;
-          const interval = setInterval(() => {
-            if (browserGlobals[globalName]) { clearInterval(interval); resolve(); return; }
-            if (++attempts > 250) { clearInterval(interval); reject(new Error(`${globalName} did not load`)); }
-          }, 20);
-        };
-        if (document.querySelector(`script[src="${src}"]`)) { onReady(); return; }
-        const s = document.createElement('script');
-        s.src = src;
-        s.onload = onReady;
-        s.onerror = () => reject(new Error(`Failed to load: ${src}`));
-        document.head.appendChild(s);
-      });
+    // Stream the desktop video directly so playback can begin before the full
+    // asset has downloaded. Mobile and reduced-motion visitors skip this path.
+    if (videoEl) {
+      videoEl.src = '/intro2-scrub.mp4';
+      videoEl.load();
+    }
 
     let st: ScrollTriggerInstance | null = null;
     let rafId = 0;
@@ -289,24 +231,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       setIntroComplete(true);
     };
 
-    const init = async () => {
-      try {
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', 'gsap');
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', 'ScrollTrigger');
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js', 'ScrollToPlugin');
-      } catch {
-        // GSAP failed to load — fallback
-        const overlay = overlayRef.current;
-        const landing = landingRef.current;
-        const spacer = spacerRef.current;
-        if (overlay) { overlay.style.display = 'none'; }
-        if (landing) { landing.style.opacity = '1'; landing.style.pointerEvents = 'auto'; }
-        if (spacer) { spacer.style.display = 'none'; }
-        markIntroDone();
-        return;
-      }
-
-      const { gsap, ScrollTrigger, ScrollToPlugin } = window as unknown as AnimationGlobals;
+    const init = () => {
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
       const video = videoRef.current;
@@ -532,18 +457,18 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       window.removeEventListener('wheel', preventScroll);
       window.removeEventListener('touchmove', preventScroll);
       window.removeEventListener('keydown', preventKeys);
-      if (blobUrl) URL.revokeObjectURL(blobUrl);
     };
   }, []);
 
   return (
     <IntroContext.Provider value={introComplete}>
       {/* 200vh spacer — creates scroll room without GSAP pin manipulation */}
-      <div ref={spacerRef} style={{ height: '200vh', width: '100%', pointerEvents: 'none' }} />
+      <div ref={spacerRef} className="intro-spacer" style={{ height: '200vh', width: '100%', pointerEvents: 'none' }} />
 
       {/* Fixed video overlay — always covers viewport, fades out at end */}
       <div
         ref={overlayRef}
+        className="intro-overlay"
         style={{
           position: 'fixed',
           inset: 0,
@@ -587,24 +512,35 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
                 A designer who gives a damn.
               </p>
             </div>
-            <span style={{ fontSize: 'clamp(16px, 2vw, 24px)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 500, marginTop: '8px' }}>
-              Portfolio&nbsp;·&nbsp;2026
-            </span>
+            <div className="flex flex-col items-end gap-4">
+              <span style={{ fontSize: 'clamp(16px, 2vw, 24px)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 500, marginTop: '8px' }}>
+                Portfolio&nbsp;·&nbsp;2026
+              </span>
+              <button
+                type="button"
+                onClick={handleScrollClick}
+                className="pointer-events-auto text-xs uppercase tracking-[0.2em] text-white/70 underline underline-offset-4 hover:text-white"
+              >
+                Skip intro
+              </button>
+            </div>
           </div>
 
           {/* Scroll / Loading indicator */}
           {!videoLoaded ? (
             <div className="flex flex-col items-center md:items-start self-center md:self-start w-fit gap-3 select-none">
-              <span style={{ fontSize: '12px', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 600 }}>
-                Loading {loadingProgress}%
+              <span style={{ fontSize: '12px', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.75)', fontFamily: 'var(--font-body), sans-serif', fontWeight: 600 }}>
+                Loading intro…
               </span>
-              <div style={{ width: '120px', height: '1.5px', background: 'rgba(255, 255, 255, 0.12)', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: `${loadingProgress}%`, background: '#fff', transition: 'width 0.1s ease' }} />
+              <div style={{ width: '120px', height: '1.5px', background: 'rgba(255, 255, 255, 0.18)', position: 'relative', overflow: 'hidden' }}>
+                <div className="intro-loading-line" />
               </div>
             </div>
           ) : (
-            <div
+            <button
+              type="button"
               onClick={handleScrollClick}
+              aria-label="Continue to portfolio"
               className="flex flex-col items-center self-center md:self-start w-fit gap-3 cursor-pointer group"
               style={{ pointerEvents: 'auto' }}
             >
@@ -617,7 +553,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
               <svg width="16" height="9" viewBox="0 0 16 9" fill="none" className="group-hover:text-white transition-colors duration-200" style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
                 <path d="M1 1L8 8L15 1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </div>
+            </button>
           )}
         </div>
       </div>
@@ -625,7 +561,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       {/* Landing page — fades in when intro ends */}
       <div
         ref={landingRef}
-        className="landing-initial-state"
+        className="landing-initial-state intro-landing"
         style={{
           willChange: 'opacity, visibility',
         }}

@@ -12,11 +12,13 @@ export default function Home() {
     <>
       <IntroScene>
         <Navbar />
-        <Hero />
-        <Work />
-        <About />
-        <Services />
-        <Contact />
+        <main id="main-content" tabIndex={-1}>
+          <Hero />
+          <Work />
+          <About />
+          <Services />
+          <Contact />
+        </main>
         <Footer />
       </IntroScene>
     </>

@@ -13,7 +13,7 @@ export default function About() {
         </Reveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start">
-          <Reveal delay={0.2} className="h-full">
+          <Reveal className="h-full">
             <div className="aspect-square lg:aspect-[4/3] bg-parchment rounded relative flex items-end p-5 h-full overflow-hidden">
               <Image
                 src="/me_thumb.jpg"
@@ -34,12 +34,12 @@ export default function About() {
           </Reveal>
 
           <div>
-            <Reveal delay={0.1}>
+            <Reveal>
               <p className="font-display text-3xl md:text-4xl font-light leading-[1.3] mb-7">
                 I think like an inventor.
               </p>
             </Reveal>
-            <Reveal delay={0.2}>
+            <Reveal>
               <p className="text-sm text-smoke leading-[1.9] mb-5">
                 Communication Design student, but I&apos;ve been building things long before formal education. My instinct is always toward systems: how visual identities hold together, how a user feels before they think.
               </p>
@@ -50,7 +50,7 @@ export default function About() {
                 Driven by a childhood ambition to become a scientist. I found design — a field where thinking and making are the same act.
               </p>
               <p className="text-sm text-smoke leading-[1.9] mb-5">
-                I share my design process and work with a community of over <span className="text-brand-red font-medium">17k+ followers on Instagram</span>.
+                I share my design process and work with a community of more than <span className="text-brand-red font-medium">17,000 followers on Instagram</span>.
               </p>
             </Reveal>
           </div>

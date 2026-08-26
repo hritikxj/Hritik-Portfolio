@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 
 const cormorant = Cormorant_Garamond({
@@ -55,17 +54,6 @@ function CreativeSection({ title, images, columns = "grid-cols-1 sm:grid-cols-2 
 }
 
 export default function SocialMediaCreativesPage() {
-  const router = useRouter();
-
-  const handleBack = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (window.history.length > 1) {
-      router.back();
-    } else {
-      router.push('/');
-    }
-  };
-
   const appleImages = [
     { src: "/social/apple_1.png", alt: "Apple Social Creative 1", aspect: "aspect-[4/5]" },
     { src: "/social/apple_2.png", alt: "Apple Social Creative 2", aspect: "aspect-[4/5]" },
@@ -113,7 +101,7 @@ export default function SocialMediaCreativesPage() {
     <div className={`min-h-screen bg-[#FAF9F5] text-[#1A1A1A] ${jost.className} selection:bg-black selection:text-white pb-20`}>
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FAF9F5]/90 backdrop-blur-sm border-b-[0.5px] border-[#E5E0D5]">
-        <Link href="/" onClick={handleBack} className="text-[#1A1A1A] hover:text-smoke transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
+        <Link href="/" className="text-[#1A1A1A] hover:text-smoke transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
           ← Back to Portfolio
         </Link>
         <div className="uppercase tracking-[0.3em] text-[10px] text-smoke font-semibold">

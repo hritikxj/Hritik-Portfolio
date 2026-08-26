@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 
 const cormorant = Cormorant_Garamond({
@@ -39,22 +38,11 @@ function PurrLogo({ className, color1, strokeWidth = 18 }: { className?: string,
 }
 
 export default function PurrPantryPage() {
-  const router = useRouter();
-
-  const handleBack = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (window.history.length > 1) {
-      router.back();
-    } else {
-      router.push('/');
-    }
-  };
-
   return (
     <div className={`min-h-screen bg-[#FAF6EE] text-[#1A1208] ${jost.className} selection:bg-[#C4611A] selection:text-white pb-20`}>
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FAF6EE]/90 backdrop-blur-sm border-b-[0.5px] border-[#D4C4AA]">
-        <Link href="/" onClick={handleBack} className="text-[#1A1208] hover:text-[#C4611A] transition-colors uppercase tracking-[0.2em] text-xs font-medium">
+        <Link href="/" className="text-[#1A1208] hover:text-[#C4611A] transition-colors uppercase tracking-[0.2em] text-xs font-medium">
           ← Back to Portfolio
         </Link>
         <div className={`uppercase tracking-[0.3em] text-[10px] text-[#C4611A] ${jost.className}`}>

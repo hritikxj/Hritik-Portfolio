@@ -11,14 +11,14 @@ export default function Contact() {
       <div className="w-full px-5 md:px-12 lg:px-10 pt-16 md:pt-24 pb-0">
 
         {/* Headline */}
-        <Reveal delay={0.1}>
+        <Reveal>
           <h2 className="font-display text-5xl md:text-6xl lg:text-[76px] font-light leading-[1.05] text-off-white mb-5 max-w-3xl">
             Let&apos;s build something<br/>worth remembering.
           </h2>
         </Reveal>
 
         {/* Primary CTA Button */}
-        <Reveal delay={0.3}>
+        <Reveal>
           <button
             onClick={handleHireMeClick}
             className="group inline-flex items-center gap-3 bg-brand-red text-off-white px-8 py-4 rounded-sm font-body text-sm tracking-[0.08em] uppercase cursor-pointer border-none transition-all duration-200 hover:bg-off-white hover:text-ink mb-16"
@@ -29,7 +29,7 @@ export default function Contact() {
         </Reveal>
 
         {/* Contact Links Row */}
-        <Reveal delay={0.4}>
+        <Reveal>
           <div className="flex flex-col sm:flex-row border-t-[0.5px] border-white/10">
             <button
               onClick={handleHireMeClick}

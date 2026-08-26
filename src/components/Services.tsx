@@ -21,7 +21,7 @@ export default function Services() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[0.5px] bg-border-subtle border-[0.5px] border-border-subtle rounded overflow-hidden">
         {services.map((service, idx) => (
-          <Reveal key={idx} delay={idx * 0.1}>
+          <Reveal key={idx}>
             <div className="p-6 md:p-8 lg:p-10 transition-colors duration-200 hover:bg-parchment bg-off-white h-full">
               <div className="text-sm font-medium text-ink mb-2.5">{service.name}</div>
               <div className="text-xs text-smoke leading-[1.7]">{service.desc}</div>

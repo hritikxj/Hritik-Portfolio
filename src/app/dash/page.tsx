@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Cormorant_Garamond, Jost, Montserrat } from 'next/font/google';
 
 const cormorant = Cormorant_Garamond({
@@ -25,22 +24,11 @@ const montserrat = Montserrat({
 });
 
 export default function DashBrandGuidelinesPage() {
-  const router = useRouter();
-
-  const handleBack = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (window.history.length > 1) {
-      router.back();
-    } else {
-      router.push('/');
-    }
-  };
-
   return (
     <div className={`min-h-screen bg-[#FAF9F5] text-[#1A1A1A] ${jost.className} selection:bg-[#FF6B35] selection:text-white pb-20`}>
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FAF9F5]/90 backdrop-blur-sm border-b-[0.5px] border-[#E5E0D5]">
-        <Link href="/" onClick={handleBack} className="text-[#1A1A1A] hover:text-[#FF6B35] transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
+        <Link href="/" className="text-[#1A1A1A] hover:text-[#FF6B35] transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
           ← Back to Portfolio
         </Link>
         <div className={`uppercase tracking-[0.3em] text-[10px] text-[#FF6B35] ${jost.className} font-semibold`}>

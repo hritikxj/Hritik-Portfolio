@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 
 const cormorant = Cormorant_Garamond({
@@ -59,21 +58,17 @@ const strategyPillars = [
 ];
 
 export default function DoveCampaignPage() {
-  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-
-  const handleBack = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (window.history.length > 1) {
-      router.back();
-    } else {
-      router.push('/');
-    }
-  };
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!isLightboxOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => closeButtonRef.current?.focus());
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -86,14 +81,18 @@ export default function DoveCampaignPage() {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
+    };
   }, [isLightboxOpen]);
 
   return (
     <div className={`min-h-screen bg-[#FDFCF9] text-[#0A2240] ${jost.className} selection:bg-[#C5A059] selection:text-white pb-20`}>
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FDFCF9]/95 backdrop-blur-sm border-b-[0.5px] border-[#E8E2D6]">
-        <Link href="/" onClick={handleBack} className="text-[#0A2240] hover:text-[#C5A059] transition-colors uppercase tracking-[0.2em] text-xs font-semibold no-underline">
+        <Link href="/" className="text-[#0A2240] hover:text-[#C5A059] transition-colors uppercase tracking-[0.2em] text-xs font-semibold no-underline">
           ← Back to Portfolio
         </Link>
         <div className={`uppercase tracking-[0.3em] text-[10px] text-[#C5A059] ${jost.className} font-semibold`}>
@@ -185,9 +184,18 @@ export default function DoveCampaignPage() {
                 return (
                   <div
                     key={pillar.num}
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={isActive}
                     className="relative pb-10 last:pb-0 cursor-pointer group"
                     onClick={() => setActiveIndex(idx)}
                     onMouseEnter={() => setActiveIndex(idx)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        setActiveIndex(idx);
+                      }
+                    }}
                   >
                     {/* Active Line indicator overlay */}
                     {isActive && (
@@ -227,8 +235,17 @@ export default function DoveCampaignPage() {
             <div className="lg:col-span-8 lg:sticky lg:top-28 flex flex-col gap-4 w-full">
               {/* Slide Wrapper with aspect ratio */}
               <div 
+                role="button"
+                tabIndex={0}
+                aria-label={`Expand ${strategyPillars[activeIndex].title} slide`}
                 className="group relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-md border border-[#E8E2D6]/40 cursor-zoom-in bg-white"
                 onClick={() => setIsLightboxOpen(true)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setIsLightboxOpen(true);
+                  }
+                }}
               >
                 {/* Images with transition */}
                 {strategyPillars.map((pillar, idx) => {
@@ -461,7 +478,12 @@ export default function DoveCampaignPage() {
 
       {/* Lightbox Modal */}
       {isLightboxOpen && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 transition-all duration-300 animate-fadeIn select-none">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${strategyPillars[activeIndex].title} slide viewer`}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 transition-all duration-300 animate-fadeIn select-none"
+        >
           <style dangerouslySetInnerHTML={{__html: `
             @keyframes fadeIn {
               from { opacity: 0; }
@@ -474,6 +496,7 @@ export default function DoveCampaignPage() {
 
           {/* Close button top-right */}
           <button 
+            ref={closeButtonRef}
             onClick={() => setIsLightboxOpen(false)}
             className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2 z-50 focus:outline-none cursor-pointer"
             aria-label="Close Lightbox"

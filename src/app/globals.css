@@ -3,7 +3,7 @@
 @theme {
   --color-ink: #111110;
   --color-parchment: #F5F2EC;
-  --color-smoke: #9E9C98;
+  --color-smoke: #6F6D69;
   --color-brand-red: #C0392B;
   --color-off-white: #FAFAF8;
   --color-border-subtle: rgba(17, 17, 16, 0.12);
@@ -11,16 +11,6 @@
   --font-display: var(--font-cormorant), serif;
   --font-body: var(--font-dm-sans), sans-serif;
 
-  --animate-marquee: marquee 25s linear infinite;
-
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-100%);
-    }
-  }
 }
 
 
@@ -66,20 +56,58 @@ body {
 }
 
 .intro-text-initial-fade {
-  opacity: 0;
+  opacity: 1;
 }
 
 .intro-text-initial-fade.loaded {
   opacity: 1;
-  transition: opacity 0.8s ease;
 }
 
 .landing-initial-state {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
+@keyframes introLoading {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
 
+.intro-loading-line {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  animation: introLoading 1.2s ease-in-out infinite;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-red);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .intro-spacer,
+  .intro-overlay {
+    display: none !important;
+  }
+
+  .landing-initial-state {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 

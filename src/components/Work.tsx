@@ -297,12 +297,6 @@ export default function Work() {
     }
   ];
 
-  type WorkItem = typeof works[number];
-  type IllustrationItem = typeof illustrations[number];
-  type ShowcaseItem = WorkItem | IllustrationItem;
-
-  const [selectedProject, setSelectedProject] = useState<ShowcaseItem | null>(null);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -336,13 +330,18 @@ export default function Work() {
               <h2 className="font-display text-4xl md:text-5xl font-light text-ink">The Work</h2>
 
               {/* Category Filter Tabs */}
-              <div className="flex items-center gap-1 p-1 bg-parchment/60 border border-border-subtle rounded-full w-full md:w-fit select-none scrollbar-none">
+              <div
+                role="group"
+                aria-label="Filter work by category"
+                className="flex items-center gap-1 p-1 bg-parchment/60 border border-border-subtle rounded-full w-full md:w-fit select-none scrollbar-none"
+              >
                 {categories.map((cat) => {
                   const isActive = activeCategory === cat;
                   return (
                     <button
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
+                      aria-pressed={isActive}
                       className="relative flex-1 md:flex-none px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase cursor-pointer whitespace-nowrap select-none focus:outline-none"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
@@ -494,28 +493,19 @@ export default function Work() {
                         transition={{ duration: 0.15, ease: "easeInOut", delay: idx * 0.011 }}
                         className={work.double ? 'md:col-span-2' : ''}
                       >
-                        {work.link ? (
-                          <Link
-                            href={work.link}
-                            onClick={() => {
-                              try {
-                                sessionStorage.setItem('portfolio-scroll-y', window.scrollY.toString());
-                              } catch (e) {
-                                console.warn(e);
-                              }
-                            }}
-                            className="block cursor-pointer group h-full no-underline"
-                          >
-                            {CardContent}
-                          </Link>
-                        ) : (
-                          <div
-                            onClick={() => setSelectedProject(work)}
-                            className="group h-full cursor-pointer"
-                          >
-                            {CardContent}
-                          </div>
-                        )}
+                        <Link
+                          href={work.link}
+                          onClick={() => {
+                            try {
+                              sessionStorage.setItem('portfolio-scroll-y', window.scrollY.toString());
+                            } catch (e) {
+                              console.warn(e);
+                            }
+                          }}
+                          className="block cursor-pointer group h-full no-underline"
+                        >
+                          {CardContent}
+                        </Link>
                       </motion.div>
                     );
                   })}
@@ -526,101 +516,6 @@ export default function Work() {
         </div>
       </section>
 
-      {/* Showcase Lightbox Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedProject(null)}
-            className="fixed inset-0 bg-ink/80 backdrop-blur-md z-[100] flex items-center justify-center p-4 md:p-6 cursor-zoom-out"
-          >
-            <motion.div
-              initial={{ scale: 0.95, y: 20, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.95, y: 20, opacity: 0 }}
-              transition={{ type: "spring", duration: 0.5 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-[#FAF9F5] text-ink rounded-xl overflow-hidden max-w-3xl w-full border border-border-subtle shadow-2xl relative cursor-default"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 text-smoke hover:text-ink transition-colors cursor-pointer p-2 z-10 focus:outline-none"
-              >
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-
-              <div className="grid grid-cols-1 md:grid-cols-2">
-                {/* Visual Showcase (Image or Color block fallback) */}
-                {selectedProject.image ? (
-                  <div className="relative w-full min-h-[300px] md:h-full bg-parchment/10 flex items-center justify-center p-6 border-r border-border-subtle/50">
-                    <Image
-                      src={selectedProject.image}
-                      alt={selectedProject.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-contain p-6"
-                    />
-                  </div>
-                ) : (
-                  <div
-                    className="aspect-4/3 md:aspect-auto md:h-full min-h-[300px] relative flex items-center justify-center w-full"
-                    style={{ backgroundColor: selectedProject.color || "#FAF9F5" }}
-                  >
-                    <span className={`font-display font-light text-[clamp(28px,4vw,54px)] text-white/20 select-none`}>
-                      {selectedProject.thumbText || ""}
-                    </span>
-                  </div>
-                )}
-
-                {/* Details */}
-                <div className="p-6 md:p-8 flex flex-col justify-between h-full min-h-[300px]">
-                  <div>
-                    <span className="text-[10px] tracking-[0.2em] uppercase text-smoke font-mono block mb-1">
-                      {selectedProject.category}
-                    </span>
-                    <h3 className="font-display text-2xl md:text-3xl font-light text-ink mb-6">
-                      {selectedProject.title}
-                    </h3>
-
-                    <p className="text-xs text-smoke leading-relaxed mb-6 font-light">
-                      {('description' in selectedProject && selectedProject.description) || "Project details and visual assets are currently being curated for this showcase."}
-                    </p>
-
-                    <div className="grid grid-cols-2 gap-4 border-t border-border-subtle pt-5">
-                      <div>
-                        <span className="text-[9px] tracking-[0.1em] uppercase text-smoke block mb-0.5">Role</span>
-                        <span className="text-xs text-ink font-medium">{('role' in selectedProject && selectedProject.role) || "Designer"}</span>
-                      </div>
-                      <div>
-                        <span className="text-[9px] tracking-[0.1em] uppercase text-smoke block mb-0.5">Year</span>
-                        <span className="text-xs text-ink font-medium">{('year' in selectedProject && selectedProject.year) || "2026"}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-8 pt-5 border-t border-border-subtle flex items-center justify-between">
-                    <span className="text-[10px] text-smoke italic">
-                      Case study under construction
-                    </span>
-                    <button
-                      onClick={() => setSelectedProject(null)}
-                      className="text-xs font-semibold tracking-wider uppercase border border-ink px-4 py-2 rounded-full hover:bg-ink hover:text-off-white transition-all cursor-pointer focus:outline-none"
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }
-

@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 
 const cormorant = Cormorant_Garamond({
@@ -19,17 +18,6 @@ const jost = Jost({
 });
 
 export default function NothingCommunityEditionPage() {
-  const router = useRouter();
-
-  const handleBack = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (window.history.length > 1) {
-      router.back();
-    } else {
-      router.push('/');
-    }
-  };
-
   return (
     <div 
       className={`min-h-screen bg-[#111110] text-[#FAFAF8] ${jost.className} selection:bg-[#C0392B] selection:text-white pb-20 relative overflow-hidden`}
@@ -45,7 +33,7 @@ export default function NothingCommunityEditionPage() {
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#111110]/95 backdrop-blur-sm border-b-[0.5px] border-white/10">
-        <Link href="/" onClick={handleBack} className="text-[#FAFAF8] hover:text-[#C0392B] transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
+        <Link href="/" className="text-[#FAFAF8] hover:text-[#C0392B] transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
           ← Back to Portfolio
         </Link>
         <div className={`uppercase tracking-[0.3em] text-[10px] text-[#C0392B] ${jost.className} font-medium`}>

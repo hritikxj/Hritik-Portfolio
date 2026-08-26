@@ -13,25 +13,33 @@ export const useHireMe = () => useContext(HireMeContext);
 
 export default function HireMeProvider({ children }: { children: ReactNode }) {
   const [showToast, setShowToast] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
 
   const handleHireMeClick = useCallback(() => {
     window.location.href = MAILTO;
     setShowToast(true);
-    setCopied(false);
+    setCopyState('idle');
     setTimeout(() => setShowToast(false), 8000);
   }, []);
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText('hritikjasnani.design@gmail.com');
-    setCopied(true);
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText('hritikjasnani.design@gmail.com');
+      setCopyState('copied');
+    } catch {
+      setCopyState('failed');
+    }
   };
 
   return (
     <HireMeContext.Provider value={{ handleHireMeClick }}>
       {children}
       {showToast && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] bg-off-white text-ink px-6 py-4 rounded-sm shadow-2xl flex items-center gap-6 text-xs font-body min-w-[320px] max-w-[480px]">
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] bg-off-white text-ink px-6 py-4 rounded-sm shadow-2xl flex items-center gap-6 text-xs font-body min-w-[320px] max-w-[calc(100vw-2rem)] sm:max-w-[480px]"
+        >
           <div className="flex-1">
             <p className="font-medium text-ink mb-1">Opening mail app…</p>
             <p className="text-smoke">
@@ -40,12 +48,13 @@ export default function HireMeProvider({ children }: { children: ReactNode }) {
                 onClick={copyEmail}
                 className="underline text-brand-red hover:text-ink transition-colors cursor-pointer bg-transparent border-none p-0 inline font-medium"
               >
-                {copied ? '✓ Email copied!' : 'Copy email address'}
+                {copyState === 'copied' ? '✓ Email copied!' : copyState === 'failed' ? 'Copy failed — select the address above' : 'Copy email address'}
               </button>
             </p>
           </div>
           <button
             onClick={() => setShowToast(false)}
+            aria-label="Dismiss email message"
             className="text-smoke hover:text-ink cursor-pointer bg-transparent border-none p-0 text-lg shrink-0 transition-colors"
           >
             ✕

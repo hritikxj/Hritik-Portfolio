@@ -9,15 +9,15 @@ export default function Hero() {
       <div className="w-full px-5 md:px-12 lg:px-10 max-w-4xl">
         {/* Left column — text */}
         <div className="flex flex-col justify-center">
-          <Reveal delay={0.2}>
+          <Reveal>
             <h1 className="font-display text-5xl md:text-6xl lg:text-[68px] font-light leading-[1.05] tracking-[-0.01em] mb-6">
               I design brands and<br />
               <em className="italic text-brand-red">experiences.</em>
             </h1>
           </Reveal>
-          <Reveal delay={0.3}>
+          <Reveal>
             <p className="text-sm text-smoke leading-[1.8]">
-              Multidisciplinary designer Based in India, working globally.
+              Multidisciplinary designer based in India, working globally.
             </p>
           </Reveal>
         </div>

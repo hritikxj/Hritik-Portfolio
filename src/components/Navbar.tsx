@@ -28,6 +28,12 @@ export default function Navbar() {
 
   return (
     <div className="sticky top-0 z-50">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[300] focus:bg-ink focus:text-off-white focus:px-4 focus:py-2 focus:rounded-sm"
+      >
+        Skip to content
+      </a>
       <nav className="border-b-[0.5px] border-border-subtle bg-off-white">
         <div className="w-full flex justify-between items-center px-5 md:px-12 lg:px-10 py-4">
           <Link
