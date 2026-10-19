@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    const groups = [
+      ['apple', 6], ['blumelife', 3], ['dotnews', 4],
+      ['malabar', 3], ['thru', 3], ['vivora', 6],
+    ] as const;
+    return [
+      { source: '/intro2-scrub.mp4', destination: '/intro-desktop.mp4' },
+      ...groups.flatMap(([name, count]) => Array.from({ length: count }, (_, index) => ({
+        source: `/social/${name}_${index + 1}.png`,
+        destination: `/social/${name}_${index + 1}.webp`,
+      }))),
+    ];
+  },
   images: {
     deviceSizes: [320, 384, 480, 640, 750, 828, 1080, 1200, 1440, 1920],
     minimumCacheTTL: 86400,

@@ -146,4 +146,8 @@ test('SEO metadata, social card and 404 directives are consistent', async ({ pag
   const card = await request.get('/opengraph-image');
   expect(card.status()).toBe(200);
   expect(card.headers()['content-type']).toContain('image/png');
+  // Old tabs and shared asset links continue to work after media optimization.
+  expect((await request.get('/intro2-scrub.mp4')).status()).toBe(200);
+  const legacyImage = await request.get('/_next/image?url=%2Fsocial%2Fapple_1.png&w=640&q=75');
+  expect(legacyImage.status()).toBe(200);
 });
