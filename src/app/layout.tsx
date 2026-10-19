@@ -12,7 +12,7 @@ const dmSans = DM_Sans({
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400"],
   style: ["normal", "italic"],
 });
 
@@ -36,17 +36,13 @@ export const metadata: Metadata = {
     siteName: "Hritik Jasnani",
     locale: "en_IN",
     type: "website",
-    images: [{ url: "/portfolio-preview.png", width: 1440, height: 1050, alt: "Hritik Jasnani portfolio" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Hritik Jasnani — Multidisciplinary Designer" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Hritik Jasnani — Multidisciplinary Designer",
     description: "Brand identity, illustration, and digital experiences designed in India for clients worldwide.",
-    images: ["/portfolio-preview.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
+    images: ["/opengraph-image"],
   },
 };
 
@@ -61,8 +57,15 @@ export default function RootLayout({
       className={`${dmSans.variable} ${cormorant.variable}`}
     >
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': [
+            { '@type': 'Person', '@id': 'https://hritikjasnani.vercel.app/#person', name: 'Hritik Jasnani', jobTitle: 'Multidisciplinary designer', url: 'https://hritikjasnani.vercel.app', sameAs: ['https://instagram.com/hritikjasnani'] },
+            { '@type': 'WebSite', '@id': 'https://hritikjasnani.vercel.app/#website', name: 'Hritik Jasnani — Portfolio', url: 'https://hritikjasnani.vercel.app', author: { '@id': 'https://hritikjasnani.vercel.app/#person' } },
+          ],
+        }).replace(/</g, '\\u003c') }} />
         <HireMeProvider>{children}</HireMeProvider>
-        <SpeedInsights />
+        {process.env.VERCEL === '1' && <SpeedInsights />}
       </body>
     </html>
   );

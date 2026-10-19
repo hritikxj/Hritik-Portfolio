@@ -12,13 +12,13 @@ export default function Navbar() {
   const handleLogoClick = (e: React.MouseEvent) => {
     if (pathname === '/') {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     }
   };
 
   const scrollTo = (id: string) => {
     if (pathname === '/') {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     } else {
       // Client-side navigation; IntroScene skips the intro on return visits
       // because the sessionStorage flag is already set.

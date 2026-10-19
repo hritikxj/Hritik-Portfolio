@@ -44,3 +44,6 @@ next-env.d.ts
 .claude/
 .gemini/
 
+# Browser regression artifacts
+test-results/
+playwright-report/

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ProjectStructuredData from "@/components/ProjectStructuredData";
 
 const title = "Purr Pantry — Brand Identity";
 const description = "A premium cat-food identity balancing veterinary credibility with the warmth of a home-cooked meal.";
@@ -17,5 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function PurrPantryLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return children;
+  return <><ProjectStructuredData title={title} description={description} path="/purr-pantry" />{children}</>;
 }

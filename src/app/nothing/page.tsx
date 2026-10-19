@@ -1,4 +1,4 @@
-'use client';
+
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -57,7 +57,9 @@ export default function NothingCommunityEditionPage() {
             width={1920}
             height={1080}
             className="w-full h-auto"
-            priority
+            loading="eager"
+            fetchPriority="high"
+            sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
           />
         </div>
       </header>
@@ -123,7 +125,8 @@ export default function NothingCommunityEditionPage() {
               </p>
               
               <div className="group w-full rounded-2xl overflow-hidden shadow-xl bg-[#161615]/50 border border-white/5">
-                <Image
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                   src="/nothing/nothing-details-1.png"
                   alt="Nothing Design System Grid"
                   width={1920}
@@ -151,7 +154,8 @@ export default function NothingCommunityEditionPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="group rounded-2xl overflow-hidden shadow-md bg-[#161615]/50 border border-white/5">
-              <Image
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/nothing/nothing-details-2.png"
                 alt="Widget state list view"
                 width={1920}
@@ -160,7 +164,8 @@ export default function NothingCommunityEditionPage() {
               />
             </div>
             <div className="group rounded-2xl overflow-hidden shadow-md bg-[#161615]/50 border border-white/5">
-              <Image
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/nothing/nothing-details-3.png"
                 alt="Widget state details"
                 width={1920}
@@ -189,7 +194,8 @@ export default function NothingCommunityEditionPage() {
 
           <div className="flex flex-col gap-6">
             <div className="group rounded-2xl overflow-hidden shadow-lg bg-[#161615]/50 border border-white/5">
-              <Image
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/nothing/nothing-details-4.png"
                 alt="Device mock representation"
                 width={1920}
@@ -198,7 +204,8 @@ export default function NothingCommunityEditionPage() {
               />
             </div>
             <div className="group rounded-2xl overflow-hidden shadow-lg bg-[#161615]/50 border border-white/5">
-              <Image
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/nothing/nothing-details-5.png"
                 alt="Nothing glyph context mockup"
                 width={1586}
@@ -237,12 +244,12 @@ export default function NothingCommunityEditionPage() {
                 style={{ backgroundColor: swatch.hex }}
               >
                 <div className="flex justify-between items-start">
-                  <span className="text-[9px] font-mono tracking-[0.2em] uppercase font-bold opacity-60">{swatch.role}</span>
+                  <span className="text-[9px] font-mono tracking-[0.2em] uppercase font-bold opacity-100">{swatch.role}</span>
                 </div>
                 <div>
                   <div className="text-sm font-semibold tracking-wide mb-0.5">{swatch.name}</div>
-                  <div className="text-xs font-mono opacity-50 mb-3">{swatch.hex}</div>
-                  <p className="text-[11px] leading-[1.5] font-light opacity-80">{swatch.desc}</p>
+                  <div className="text-xs font-mono opacity-100 mb-3">{swatch.hex}</div>
+                  <p className="text-[11px] leading-[1.5] font-light opacity-100">{swatch.desc}</p>
                 </div>
               </div>
             ))}

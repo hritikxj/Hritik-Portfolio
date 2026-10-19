@@ -1,4 +1,4 @@
-'use client';
+
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,10 +28,10 @@ export default function DashBrandGuidelinesPage() {
     <div className={`min-h-screen bg-[#FAF9F5] text-[#1A1A1A] ${jost.className} selection:bg-[#FF6B35] selection:text-white pb-20`}>
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FAF9F5]/90 backdrop-blur-sm border-b-[0.5px] border-[#E5E0D5]">
-        <Link href="/" className="text-[#1A1A1A] hover:text-[#FF6B35] transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
+        <Link href="/" className="text-[#1A1A1A] hover:text-[#AF390F] transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
           ← Back to Portfolio
         </Link>
-        <div className={`uppercase tracking-[0.3em] text-[10px] text-[#FF6B35] ${jost.className} font-semibold`}>
+        <div className={`uppercase tracking-[0.3em] text-[10px] text-[#AF390F] ${jost.className} font-semibold`}>
           Brand Identity
         </div>
       </nav>
@@ -53,7 +53,9 @@ export default function DashBrandGuidelinesPage() {
             width={1920}
             height={1080}
             className="w-full h-auto object-contain"
-            priority
+            loading="eager"
+            fetchPriority="high"
+            sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
           />
         </div>
       </header>
@@ -64,15 +66,15 @@ export default function DashBrandGuidelinesPage() {
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[#F5F2EA] border border-[#E5E0D5]/40 shadow-sm text-center">
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#FF6B35] block mb-1 font-semibold">Role</span>
+              <span className="text-[9px] tracking-[0.2em] uppercase text-[#AF390F] block mb-1 font-semibold">Role</span>
               <span className="text-sm text-[#1A1A1A] font-medium font-sans">Brand Designer & Strategist</span>
             </div>
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#FF6B35] block mb-1 font-semibold">Platform</span>
+              <span className="text-[9px] tracking-[0.2em] uppercase text-[#AF390F] block mb-1 font-semibold">Platform</span>
               <span className="text-sm text-[#1A1A1A] font-medium font-sans">Print & Digital</span>
             </div>
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#FF6B35] block mb-1 font-semibold">Type</span>
+              <span className="text-[9px] tracking-[0.2em] uppercase text-[#AF390F] block mb-1 font-semibold">Type</span>
               <span className="text-sm text-[#1A1A1A] font-medium font-sans">Brand Guidelines</span>
             </div>
           </div>
@@ -84,7 +86,7 @@ export default function DashBrandGuidelinesPage() {
         <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             <div className="w-full md:w-1/4 shrink-0">
-              <p className="text-[11px] tracking-[0.4em] uppercase text-[#FF6B35] mb-3 font-semibold">Brief & Vision</p>
+              <p className="text-[11px] tracking-[0.4em] uppercase text-[#AF390F] mb-3 font-semibold">Brief & Vision</p>
               <h2 className={`${cormorant.className} text-3xl md:text-4xl text-[#1A1A1A] font-light`}>Tech Emergencies Obsolete</h2>
             </div>
             <div className="w-full md:w-3/4">
@@ -117,7 +119,7 @@ export default function DashBrandGuidelinesPage() {
                   height={1080}
                   className="w-full h-auto object-contain"
                   sizes="(max-width: 1200px) 100vw, 1200px"
-                  priority={slideNum <= 5} // Eagerly load the first few slides
+
                 />
               </div>
             );
@@ -130,7 +132,7 @@ export default function DashBrandGuidelinesPage() {
         <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start mb-6">
             <div className="w-full md:w-1/4 shrink-0">
-              <p className="text-[11px] tracking-[0.4em] uppercase text-[#FF6B35] mb-3 font-semibold">05 — Mascot System</p>
+              <p className="text-[11px] tracking-[0.4em] uppercase text-[#AF390F] mb-3 font-semibold">05 — Mascot System</p>
               <h2 className={`${cormorant.className} text-3xl md:text-4xl text-[#1A1A1A] font-light`}>Chigma Boy</h2>
             </div>
             <div className="w-full md:w-3/4">

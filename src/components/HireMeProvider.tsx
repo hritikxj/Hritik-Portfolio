@@ -19,7 +19,6 @@ export default function HireMeProvider({ children }: { children: ReactNode }) {
     window.location.href = MAILTO;
     setShowToast(true);
     setCopyState('idle');
-    setTimeout(() => setShowToast(false), 8000);
   }, []);
 
   const copyEmail = async () => {
@@ -36,12 +35,14 @@ export default function HireMeProvider({ children }: { children: ReactNode }) {
       {children}
       {showToast && (
         <div
-          role="status"
-          aria-live="polite"
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] bg-off-white text-ink px-6 py-4 rounded-sm shadow-2xl flex items-center gap-6 text-xs font-body min-w-[320px] max-w-[calc(100vw-2rem)] sm:max-w-[480px]"
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] bg-off-white text-ink px-5 py-4 rounded-sm shadow-2xl flex items-center gap-4 text-xs font-body w-[calc(100vw-2rem)] max-w-[480px]"
         >
           <div className="flex-1">
             <p className="font-medium text-ink mb-1">Opening mail app…</p>
+            <p className="select-text break-all mb-2">hritikjasnani.design@gmail.com</p>
+            <p role="status" aria-live="polite" className="sr-only">
+              {copyState === 'copied' ? 'Email copied.' : copyState === 'failed' ? 'Copy failed. Select the email address above.' : 'Email address available to copy.'}
+            </p>
             <p className="text-smoke">
               Nothing happened?{' '}
               <button

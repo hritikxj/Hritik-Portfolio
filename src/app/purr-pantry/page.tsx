@@ -1,4 +1,4 @@
-'use client';
+
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -42,10 +42,10 @@ export default function PurrPantryPage() {
     <div className={`min-h-screen bg-[#FAF6EE] text-[#1A1208] ${jost.className} selection:bg-[#C4611A] selection:text-white pb-20`}>
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FAF6EE]/90 backdrop-blur-sm border-b-[0.5px] border-[#D4C4AA]">
-        <Link href="/" className="text-[#1A1208] hover:text-[#C4611A] transition-colors uppercase tracking-[0.2em] text-xs font-medium">
+        <Link href="/" className="text-[#1A1208] hover:text-[#984510] transition-colors uppercase tracking-[0.2em] text-xs font-medium">
           ← Back to Portfolio
         </Link>
-        <div className={`uppercase tracking-[0.3em] text-[10px] text-[#C4611A] ${jost.className}`}>
+        <div className={`uppercase tracking-[0.3em] text-[10px] text-[#984510] ${jost.className}`}>
           Brand Identity
         </div>
       </nav>
@@ -55,7 +55,7 @@ export default function PurrPantryPage() {
         <h1 className={`${cormorant.className} text-6xl md:text-8xl lg:text-[110px] font-light tracking-wide text-[#1A1208] mb-6 leading-none`}>
           Purr Pantry
         </h1>
-        <p className={`${cormorant.className} italic text-[#8A7660] text-xl md:text-2xl max-w-3xl mb-16`}>
+        <p className={`${cormorant.className} italic text-[#705C48] text-xl md:text-2xl max-w-3xl mb-16`}>
           Logo · Colour · Typography
         </p>
         
@@ -66,7 +66,9 @@ export default function PurrPantryPage() {
             width={1920}
             height={1080}
             className="w-full h-auto object-contain"
-            priority
+            loading="eager"
+            fetchPriority="high"
+            sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
           />
         </div>
       </header>
@@ -77,14 +79,14 @@ export default function PurrPantryPage() {
         <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             <div className="w-full md:w-1/4 shrink-0">
-              <p className="text-[11px] tracking-[0.4em] uppercase text-[#C4611A] mb-3">00 — The Brief</p>
+              <p className="text-[11px] tracking-[0.4em] uppercase text-[#984510] mb-3">00 — The Brief</p>
               <h2 className={`${cormorant.className} text-3xl md:text-4xl text-[#1A1208]`}>Project Context</h2>
             </div>
             <div className="w-full md:w-3/4">
               <p className={`${cormorant.className} text-2xl md:text-[28px] leading-[1.5] text-[#2E1A0E] mb-6`}>
                 Purr Pantry blends culinary craft with veterinary science. The brand needed an identity balancing scientific credibility with the warmth of a home-cooked meal.
               </p>
-              <p className={`${cormorant.className} text-xl md:text-[22px] leading-[1.6] text-[#8A7660] italic`}>
+              <p className={`${cormorant.className} text-xl md:text-[22px] leading-[1.6] text-[#705C48] italic`}>
                 Inspired by its Pacific Northwest roots, the design appeals to modern pet owners who value transparency, avoiding the sterile feel of clinical pet food.
               </p>
             </div>
@@ -97,7 +99,7 @@ export default function PurrPantryPage() {
         <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             <div className="w-full md:w-1/4 shrink-0">
-              <p className="text-[11px] tracking-[0.4em] uppercase text-[#C4611A] mb-3">01 — The Concept</p>
+              <p className="text-[11px] tracking-[0.4em] uppercase text-[#984510] mb-3">01 — The Concept</p>
               <h2 className={`${cormorant.className} text-3xl md:text-4xl text-[#1A1208]`}>Process & Exploration</h2>
             </div>
             <div className="w-full md:w-3/4">
@@ -124,10 +126,10 @@ export default function PurrPantryPage() {
         <section className="mb-12">
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="text-[11px] tracking-[0.4em] uppercase text-[#C4611A] mb-3">02 — Mark & Logo</p>
+              <p className="text-[11px] tracking-[0.4em] uppercase text-[#984510] mb-3">02 — Mark & Logo</p>
               <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#1A1208]`}>Logo Variations</h2>
             </div>
-            <p className={`${cormorant.className} italic text-[#8A7660] text-lg md:text-xl leading-relaxed max-w-xl`}>
+            <p className={`${cormorant.className} italic text-[#705C48] text-lg md:text-xl leading-relaxed max-w-xl`}>
               The primary brand mark adapts to different backgrounds within our palette system, ensuring high contrast and legibility while maintaining the premium aesthetic.
             </p>
           </div>
@@ -138,7 +140,7 @@ export default function PurrPantryPage() {
               <div className="absolute inset-0 bg-gradient-to-tr from-[#a34f13] to-[#C4611A] opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
               
               <div className="absolute top-8 left-8">
-                <p className="text-[10px] tracking-[0.3em] uppercase text-white/60">Primary Application</p>
+                <p className="text-[10px] tracking-[0.3em] uppercase text-[#111110]">Primary Application</p>
               </div>
 
               <PurrLogo 
@@ -151,7 +153,7 @@ export default function PurrPantryPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-[#1A1208] rounded-3xl flex flex-col items-center justify-center p-16 relative overflow-hidden group shadow-md hover:shadow-xl transition-all duration-500">
                 <div className="absolute top-6 left-6">
-                  <p className="text-[9px] tracking-[0.2em] uppercase text-[#F5EAD7]/30">Accent / Active</p>
+                  <p className="text-[9px] tracking-[0.2em] uppercase text-[#F5EAD7]">Accent / Active</p>
                 </div>
                 <PurrLogo 
                   className="w-32 md:w-40 h-auto transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-translate-y-1" 
@@ -161,7 +163,7 @@ export default function PurrPantryPage() {
               
               <div className="bg-[#FAF6EE] border-[0.5px] border-[#D4C4AA] rounded-3xl flex flex-col items-center justify-center p-16 relative overflow-hidden group shadow-sm hover:shadow-md transition-all duration-500">
                 <div className="absolute top-6 left-6">
-                  <p className="text-[9px] tracking-[0.2em] uppercase text-[#1A1208]/30">Print / Light</p>
+                  <p className="text-[9px] tracking-[0.2em] uppercase text-[#1A1208]">Print / Light</p>
                 </div>
                 <PurrLogo 
                   className="w-32 md:w-40 h-auto transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-translate-y-1" 
@@ -171,7 +173,7 @@ export default function PurrPantryPage() {
 
               <div className="bg-[#F5EAD7] rounded-3xl flex flex-col items-center justify-center p-16 relative overflow-hidden group shadow-md hover:shadow-xl transition-all duration-500">
                 <div className="absolute top-6 left-6">
-                  <p className="text-[9px] tracking-[0.2em] uppercase text-[#2E1A0E]/30">Structural / Core</p>
+                  <p className="text-[9px] tracking-[0.2em] uppercase text-[#1A1208]">Structural / Core</p>
                 </div>
                 <PurrLogo 
                   className="w-32 md:w-40 h-auto transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-translate-y-1" 
@@ -188,10 +190,10 @@ export default function PurrPantryPage() {
         <section className="mb-12">
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="text-[11px] tracking-[0.4em] uppercase text-[#C4611A] mb-3">03 — Colour</p>
+              <p className="text-[11px] tracking-[0.4em] uppercase text-[#984510] mb-3">03 — Colour</p>
               <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#1A1208]`}>The Palette</h2>
             </div>
-            <p className={`${cormorant.className} italic text-[#8A7660] text-lg md:text-xl leading-relaxed max-w-xl`}>
+            <p className={`${cormorant.className} italic text-[#705C48] text-lg md:text-xl leading-relaxed max-w-xl`}>
               Built from the warmth of the Pacific Northwest coast — amber firelight, espresso dark, parchment paper, sage coastal green. Every colour has a job. None are decorative.
             </p>
           </div>
@@ -199,93 +201,93 @@ export default function PurrPantryPage() {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-10">
             {/* Swatch 1 */}
             <div className="bg-[#2E1A0E] aspect-square p-5 flex flex-col justify-between text-[#F5EAD7] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
-              <span className="text-[10px] uppercase tracking-[0.2em] opacity-50">Primary</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-100">Primary</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Espresso</div>
-                <div className="text-xs font-mono opacity-60">#2E1A0E</div>
+                <div className="text-xs font-mono opacity-100">#2E1A0E</div>
               </div>
             </div>
             {/* Swatch 2 */}
             <div className="bg-[#1A1208] aspect-square p-5 flex flex-col justify-between text-[#F5EAD7] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
-              <span className="text-[10px] uppercase tracking-[0.2em] opacity-50">Primary</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-100">Primary</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Deep Ink</div>
-                <div className="text-xs font-mono opacity-60">#1A1208</div>
+                <div className="text-xs font-mono opacity-100">#1A1208</div>
               </div>
             </div>
             {/* Swatch 3 */}
-            <div className="bg-[#C4611A] aspect-square p-5 flex flex-col justify-between text-[#FFF8F0] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
-              <span className="text-[10px] uppercase tracking-[0.2em] opacity-70">Accent</span>
+            <div className="bg-[#C4611A] aspect-square p-5 flex flex-col justify-between text-[#111110] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-100">Accent</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Amber</div>
-                <div className="text-xs font-mono opacity-90">#C4611A</div>
+                <div className="text-xs font-mono opacity-100">#C4611A</div>
               </div>
             </div>
             {/* Swatch 4 */}
             <div className="bg-[#F5EAD7] aspect-square p-5 flex flex-col justify-between text-[#2E1A0E] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
-              <span className="text-[10px] uppercase tracking-[0.2em] opacity-60">Primary</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-100">Primary</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Parchment</div>
-                <div className="text-xs font-mono opacity-70">#F5EAD7</div>
+                <div className="text-xs font-mono opacity-100">#F5EAD7</div>
               </div>
             </div>
             {/* Swatch 5 */}
             <div className="bg-[#FAF6EE] aspect-square p-5 flex flex-col justify-between text-[#2E1A0E] border-[0.5px] border-[#D4C4AA] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
-              <span className="text-[10px] uppercase tracking-[0.2em] opacity-60">Background</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-100">Background</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Warm Cream</div>
-                <div className="text-xs font-mono opacity-70">#FAF6EE</div>
+                <div className="text-xs font-mono opacity-100">#FAF6EE</div>
               </div>
             </div>
             {/* Secondary Swatches */}
-            <div className="bg-[#7A8C6E] aspect-square p-5 flex flex-col justify-between text-white rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
-              <span className="text-[10px] uppercase tracking-[0.2em] opacity-60">Secondary</span>
+            <div className="bg-[#7A8C6E] aspect-square p-5 flex flex-col justify-between text-[#1A1208] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-100">Secondary</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Herb Sage</div>
-                <div className="text-xs font-mono opacity-70">#7A8C6E</div>
+                <div className="text-xs font-mono opacity-100">#7A8C6E</div>
               </div>
             </div>
-            <div className="bg-[#E8956B] aspect-square p-5 flex flex-col justify-between text-white rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
-              <span className="text-[10px] uppercase tracking-[0.2em] opacity-60">Secondary</span>
+            <div className="bg-[#E8956B] aspect-square p-5 flex flex-col justify-between text-[#1A1208] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-100">Secondary</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Amber Light</div>
-                <div className="text-xs font-mono opacity-70">#E8956B</div>
+                <div className="text-xs font-mono opacity-100">#E8956B</div>
               </div>
             </div>
             <div className="bg-[#5C3D28] aspect-square p-5 flex flex-col justify-between text-[#F5EAD7] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
-              <span className="text-[10px] uppercase tracking-[0.2em] opacity-50">Secondary</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-100">Secondary</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Dark Roast</div>
-                <div className="text-xs font-mono opacity-60">#5C3D28</div>
+                <div className="text-xs font-mono opacity-100">#5C3D28</div>
               </div>
             </div>
             <div className="bg-[#D4C4AA] aspect-square p-5 flex flex-col justify-between text-[#2E1A0E] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
-              <span className="text-[10px] uppercase tracking-[0.2em] opacity-60">UI</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-100">UI</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Warm Rule</div>
-                <div className="text-xs font-mono opacity-70">#D4C4AA</div>
+                <div className="text-xs font-mono opacity-100">#D4C4AA</div>
               </div>
             </div>
-            <div className="bg-[#8A7660] aspect-square p-5 flex flex-col justify-between text-white rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
-              <span className="text-[10px] uppercase tracking-[0.2em] opacity-60">UI</span>
+            <div className="bg-[#8A7660] aspect-square p-5 flex flex-col justify-between text-black rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-100">UI</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Warm Muted</div>
-                <div className="text-xs font-mono opacity-70">#8A7660</div>
+                <div className="text-xs font-mono opacity-100">#8A7660</div>
               </div>
             </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-8 border-[0.5px] border-[#D4C4AA] rounded-xl hover:shadow-md transition-shadow">
-              <p className="text-[10px] tracking-[0.3em] text-[#C4611A] uppercase mb-4 font-medium">Dominant</p>
+              <p className="text-[10px] tracking-[0.3em] text-[#984510] uppercase mb-4 font-medium">Dominant</p>
               <p className={`${cormorant.className} italic text-[#1A1208] text-xl leading-[1.6]`}>Parchment and Cream together form 70% of every surface. This is the brand&apos;s breathing room — warm, tactile, quiet.</p>
             </div>
             <div className="bg-white p-8 border-[0.5px] border-[#D4C4AA] rounded-xl hover:shadow-md transition-shadow">
-              <p className="text-[10px] tracking-[0.3em] text-[#C4611A] uppercase mb-4 font-medium">Structural</p>
+              <p className="text-[10px] tracking-[0.3em] text-[#984510] uppercase mb-4 font-medium">Structural</p>
               <p className={`${cormorant.className} italic text-[#1A1208] text-xl leading-[1.6]`}>Espresso and Deep Ink carry all type and mark applications. Never use pure black — always the warm dark browns.</p>
             </div>
             <div className="bg-white p-8 border-[0.5px] border-[#D4C4AA] rounded-xl hover:shadow-md transition-shadow">
-              <p className="text-[10px] tracking-[0.3em] text-[#C4611A] uppercase mb-4 font-medium">Accent</p>
+              <p className="text-[10px] tracking-[0.3em] text-[#984510] uppercase mb-4 font-medium">Accent</p>
               <p className={`${cormorant.className} italic text-[#1A1208] text-xl leading-[1.6]`}>Amber is used sparingly and with intention — the cat elements in the mark, key words in headlines, active UI states. Never as a background.</p>
             </div>
           </div>
@@ -297,10 +299,10 @@ export default function PurrPantryPage() {
         <section className="mb-12">
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="text-[11px] tracking-[0.4em] uppercase text-[#C4611A] mb-3">04 — Typography</p>
+              <p className="text-[11px] tracking-[0.4em] uppercase text-[#984510] mb-3">04 — Typography</p>
               <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#1A1208]`}>Type System</h2>
             </div>
-            <p className={`${cormorant.className} italic text-[#8A7660] text-lg md:text-xl leading-relaxed max-w-xl`}>
+            <p className={`${cormorant.className} italic text-[#705C48] text-lg md:text-xl leading-relaxed max-w-xl`}>
               Two typefaces. One rule: Cormorant Garamond carries warmth and authority. Jost carries clarity and precision. They never fight — they take turns.
             </p>
           </div>
@@ -315,8 +317,8 @@ export default function PurrPantryPage() {
             ].map((type, idx) => (
               <div key={idx} className="flex flex-col lg:flex-row items-baseline gap-6 lg:gap-16 p-8 md:p-12 border-b-[0.5px] border-[#D4C4AA] last:border-0 hover:bg-white transition-colors">
                 <div className="w-full lg:w-64 shrink-0">
-                  <p className="text-[11px] uppercase tracking-[0.3em] text-[#C4611A] mb-3 font-medium">{type.role}</p>
-                  <p className="text-xs text-[#8A7660] whitespace-pre-line leading-relaxed">{type.spec}</p>
+                  <p className="text-[11px] uppercase tracking-[0.3em] text-[#984510] mb-3 font-medium">{type.role}</p>
+                  <p className="text-xs text-[#705C48] whitespace-pre-line leading-relaxed">{type.spec}</p>
                 </div>
                 <div className={`${type.isCormorant ? cormorant.className : jost.className} ${type.classes} whitespace-pre-line text-[#1A1208]`}>
                   {type.sample}
@@ -329,7 +331,7 @@ export default function PurrPantryPage() {
       </main>
       
       <footer className="text-center mt-20 mb-12 px-5 md:px-12 lg:px-10">
-        <p className="text-[11px] tracking-[0.3em] text-[#8A7660] uppercase">
+        <p className="text-[11px] tracking-[0.3em] text-[#705C48] uppercase">
           © {new Date().getFullYear()} Purr Pantry · Brand Identity
         </p>
       </footer>

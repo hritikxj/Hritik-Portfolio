@@ -2,9 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { IntroContext } from '@/context/IntroContext';
-import { gsap } from 'gsap';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 let isInitialHardLoad = true;
 
@@ -14,6 +11,7 @@ interface ScrollTriggerInstance {
 }
 
 export default function IntroScene({ children }: { children: React.ReactNode }) {
+  const sceneRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -51,6 +49,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     const videoEl = videoRef.current;
+    const previousScrollRestoration = window.history.scrollRestoration;
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
@@ -58,26 +57,66 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     let handleMetadataLoaded: (() => void) | null = null;
     let handleSeeked: (() => void) | null = null;
     let aborted = false;
+    let bypassed = false;
 
-    const skipIntro = window.matchMedia('(max-width: 767px)').matches
-      || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobileQuery = window.matchMedia('(max-width: 767px)');
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let savedScrollY: number | null = null;
+    let savedIntroHeight: number | null = null;
+    try {
+      const saved = sessionStorage.getItem('portfolio-scroll-y');
+      const height = sessionStorage.getItem('portfolio-intro-height');
+      if (saved !== null && Number.isFinite(Number(saved))) savedScrollY = Number(saved);
+      if (height !== null && Number.isFinite(Number(height))) savedIntroHeight = Number(height);
+      sessionStorage.removeItem('portfolio-scroll-y');
+      sessionStorage.removeItem('portfolio-intro-height');
+    } catch { /* Storage may be disabled. */ }
 
-    if (skipIntro) {
+    const showPortfolio = () => {
+      bypassed = true;
+      if (sceneRef.current) sceneRef.current.dataset.intro = 'bypassed';
       introDoneRef.current = true;
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'auto';
       }
+
+      // Keep the bypass explicit in the DOM: a later viewport change must not
+      // reveal an overlay whose animation controller was never initialized.
+      if (spacerRef.current) spacerRef.current.style.height = '0px';
+      if (overlayRef.current) overlayRef.current.style.display = 'none';
+      const landing = landingRef.current;
+      if (landing) {
+        landing.style.opacity = '1';
+        landing.style.visibility = 'visible';
+        landing.style.pointerEvents = 'auto';
+      }
+
       queueMicrotask(() => {
-        if (!aborted) setIntroComplete(true);
+        if (!aborted) {
+          setIntroComplete(true);
+          setVideoLoaded(false);
+        }
       });
+    };
+
+    const bypassAndRestore = () => {
+      showPortfolio();
+      const y = Math.max(0, (savedScrollY ?? 0) - (savedIntroHeight ?? 0));
+      const restore = () => { if (!aborted && !window.location.hash) window.scrollTo(0, y); };
+      const frame = requestAnimationFrame(restore);
       return () => {
         aborted = true;
+        cancelAnimationFrame(frame);
+        window.history.scrollRestoration = previousScrollRestoration;
       };
+    };
+
+    if (mobileQuery.matches || reducedMotionQuery.matches || savedIntroHeight === 0) {
+      return bypassAndRestore();
     }
 
     // Check if seen before
     let wasSeenBefore = false;
-    let savedScrollY: number | null = null;
     if (isInitialHardLoad) {
       isInitialHardLoad = false;
       try {
@@ -101,61 +140,11 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
     // A project card stores the home-page position before navigating away. On
     // return, keep the intro spacer and ScrollTrigger alive so scrolling back
     // toward the top can scrub the video in reverse.
-    if (wasSeenBefore) {
-      try {
-        const saved = sessionStorage.getItem('portfolio-scroll-y');
-        if (saved !== null) {
-          const parsedScrollY = Number.parseInt(saved, 10);
-          if (!Number.isNaN(parsedScrollY)) savedScrollY = parsedScrollY;
-          sessionStorage.removeItem('portfolio-scroll-y');
-        }
-      } catch { /* ignore */ }
-    }
-
-    const isProjectReturn = wasSeenBefore && savedScrollY !== null;
-
-    // First-time visitor initialization
-    if (!wasSeenBefore) {
-      const landing = landingRef.current;
-      if (landing) {
-        landing.style.opacity = '0';
-        landing.style.visibility = 'hidden';
-        landing.style.pointerEvents = 'none';
-      }
-    }
+    const isProjectReturn = savedScrollY !== null;
 
     // Returning visitor optimization
     if (wasSeenBefore && !isProjectReturn) {
-      introDoneRef.current = true;
-      queueMicrotask(() => {
-        if (!aborted) setIntroComplete(true);
-      });
-
-      if ('scrollRestoration' in window.history) {
-        window.history.scrollRestoration = 'auto';
-      }
-
-      // Collapse the spacer completely so the page behaves like a normal site
-      const spacer = spacerRef.current;
-      const overlay = overlayRef.current;
-      const landing = landingRef.current;
-
-      if (spacer) {
-        spacer.style.height = '0px';
-      }
-      if (overlay) {
-        overlay.style.display = 'none';
-      }
-      if (landing) {
-        landing.style.opacity = '1';
-        landing.style.visibility = 'visible';
-        landing.style.pointerEvents = 'auto';
-      }
-
-      window.scrollTo(0, 0);
-
-      // Returning visitors skip the remaining animation and video setup.
-      return;
+      return bypassAndRestore();
     }
 
     if (isProjectReturn) {
@@ -165,22 +154,15 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       });
     }
 
-    // Next.js may reuse previously rendered home DOM during a soft navigation.
-    // Undo the fast-path inline styles before rebuilding the scroll timeline.
-    if (spacerRef.current) spacerRef.current.style.height = '200vh';
-    if (overlayRef.current) overlayRef.current.style.display = 'block';
-
-    // Stream the desktop video directly so playback can begin before the full
-    // asset has downloaded. Mobile and reduced-motion visitors skip this path.
-    if (videoEl) {
-      videoEl.src = '/intro2-scrub.mp4';
-      videoEl.load();
-    }
-
+    let gsap: typeof import('gsap').gsap;
+    let ScrollTrigger: typeof import('gsap/ScrollTrigger').ScrollTrigger;
     let st: ScrollTriggerInstance | null = null;
     let rafId = 0;
     let restoreRafId = 0;
-    let restoreScrollTimeout: ReturnType<typeof setTimeout> | null = null;
+    let hashScrollTimeout: ReturnType<typeof setTimeout> | null = null;
+    let scrollTween: ReturnType<typeof import('gsap').gsap.to> | null = null;
+    let introScrollHeight = window.innerHeight * 2;
+    let videoLoadTimeout: ReturnType<typeof setTimeout> | null = null;
     let targetTime = 0;
     let lastSoughtTime = 0;
     let currentInterpolatedTime = 0;
@@ -240,7 +222,15 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       setIntroComplete(true);
     };
 
-    const init = () => {
+    const init = async () => {
+      // Desktop-only chunks are never requested by mobile/reduced-motion visits.
+      const [core, trigger, scrollTo] = await Promise.all([
+        import('gsap'), import('gsap/ScrollTrigger'), import('gsap/ScrollToPlugin'),
+      ]);
+      if (aborted || bypassed) return;
+      gsap = core.gsap;
+      ScrollTrigger = trigger.ScrollTrigger;
+      const ScrollToPlugin = scrollTo.ScrollToPlugin;
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
       const video = videoRef.current;
@@ -249,6 +239,16 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       const spacer = spacerRef.current;
 
       if (!video || !overlay || !landing || !spacer) return;
+
+      if (sceneRef.current) sceneRef.current.dataset.intro = 'active';
+      spacer.style.height = '200vh';
+      overlay.style.display = 'block';
+      video.src = '/intro-desktop.mp4';
+      video.load();
+      video.addEventListener('error', handleVideoFailure);
+      videoLoadTimeout = setTimeout(() => {
+        if (video.readyState < 2) handleVideoFailure();
+      }, 8000);
 
       handleSeeked = () => {
         isSeekingRef.current = false;
@@ -356,6 +356,12 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
 
         const textEl = document.getElementById('intro-text-ui');
         if (textEl) {
+          const controlsHidden = videoLoadedRef.current && p >= 0.15;
+          if (controlsHidden && textEl.contains(document.activeElement)) {
+            landing.querySelector<HTMLElement>('a, button')?.focus({ preventScroll: true });
+          }
+          textEl.inert = controlsHidden;
+          textEl.style.visibility = controlsHidden ? 'hidden' : 'visible';
           if (!videoLoadedRef.current) {
             textEl.style.opacity = '1';
           } else {
@@ -372,10 +378,11 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       const triggerAutoScroll = (targetY: number) => {
         if (isAutoScrolling && targetScrollY === targetY) return;
 
+        scrollTween?.kill();
         isAutoScrolling = true;
         targetScrollY = targetY;
 
-        gsap.to(window, {
+        scrollTween = gsap.to(window, {
           scrollTo: { y: targetY, autoKill: false },
           duration: 1.2,
           ease: "power2.inOut",
@@ -406,6 +413,9 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
           start: 'top top',
           end: 'bottom top',
           scrub: true,
+          onRefresh: () => {
+            if (spacer.offsetHeight > 0) introScrollHeight = spacer.offsetHeight;
+          },
           onUpdate: (self: { progress: number; direction: number }) => {
             updateState(self.progress);
 
@@ -431,25 +441,24 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       };
 
       if (isProjectReturn && savedScrollY !== null) {
-        window.scrollTo(0, savedScrollY);
+        window.scrollTo(0, Math.max(0, savedScrollY - (savedIntroHeight ?? spacer.offsetHeight) + spacer.offsetHeight));
       }
 
       setup();
 
       if (isProjectReturn && savedScrollY !== null) {
         const restoreProjectPosition = () => {
-          window.scrollTo(0, savedScrollY);
+          window.scrollTo(0, Math.max(0, savedScrollY - (savedIntroHeight ?? spacer.offsetHeight) + spacer.offsetHeight));
           ScrollTrigger.refresh();
           ScrollTrigger.update();
           if (st) updateState(st.progress);
         };
 
         restoreRafId = requestAnimationFrame(restoreProjectPosition);
-        restoreScrollTimeout = setTimeout(restoreProjectPosition, 80);
       }
 
       if (window.location.hash) {
-        setTimeout(() => {
+        hashScrollTimeout = setTimeout(() => {
           try {
             const el = document.querySelector(window.location.hash);
             if (el) el.scrollIntoView({ behavior: 'auto' });
@@ -460,11 +469,10 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       }
     };
 
-    init();
-
-    return () => {
-      aborted = true;
+    const stopAnimation = () => {
       updateStateRef.current = null;
+      triggerAutoScrollRef.current = null;
+      scrollTween?.kill();
       try { if (st) st.kill(); } catch { /* ignore */ }
       if (videoEl && handleSeeked) {
         videoEl.removeEventListener('seeked', handleSeeked);
@@ -474,8 +482,9 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       }
       if (rafId) cancelAnimationFrame(rafId);
       if (restoreRafId) cancelAnimationFrame(restoreRafId);
-      if (restoreScrollTimeout) clearTimeout(restoreScrollTimeout);
+      if (hashScrollTimeout) clearTimeout(hashScrollTimeout);
       if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
+      if (videoLoadTimeout) clearTimeout(videoLoadTimeout);
       window.removeEventListener('wheel', handleUserScrollActivity);
       window.removeEventListener('touchstart', handleUserScrollActivity);
       window.removeEventListener('touchmove', handleUserScrollActivity);
@@ -484,11 +493,54 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
       window.removeEventListener('wheel', preventScroll);
       window.removeEventListener('touchmove', preventScroll);
       window.removeEventListener('keydown', preventKeys);
+
+      if (videoEl) {
+        videoEl.removeEventListener('error', handleVideoFailure);
+        videoEl.pause();
+        videoEl.removeAttribute('src');
+        videoEl.load();
+      }
+      isSeekingRef.current = false;
+    };
+
+    const handleVideoFailure = () => {
+      const contentScrollY = Math.max(0, window.scrollY - introScrollHeight);
+      stopAnimation();
+      showPortfolio();
+      window.scrollTo(0, contentScrollY);
+    };
+
+    const bypassForMediaChange = () => {
+      if (!mobileQuery.matches && !reducedMotionQuery.matches) return;
+
+      const contentScrollY = Math.max(0, window.scrollY - introScrollHeight);
+      stopAnimation();
+      showPortfolio();
+      window.scrollTo(0, contentScrollY);
+
+      // Once bypassed, keep the current page readable when returning to desktop
+      // or turning reduced motion off, rather than unexpectedly replaying it.
+      mobileQuery.removeEventListener('change', bypassForMediaChange);
+      reducedMotionQuery.removeEventListener('change', bypassForMediaChange);
+    };
+
+    mobileQuery.addEventListener('change', bypassForMediaChange);
+    reducedMotionQuery.addEventListener('change', bypassForMediaChange);
+
+    void init().catch(handleVideoFailure);
+
+    return () => {
+      aborted = true;
+      window.history.scrollRestoration = previousScrollRestoration;
+      mobileQuery.removeEventListener('change', bypassForMediaChange);
+      reducedMotionQuery.removeEventListener('change', bypassForMediaChange);
+      stopAnimation();
     };
   }, []);
 
   return (
     <IntroContext.Provider value={introComplete}>
+      <div ref={sceneRef} className="intro-shell">
       {/* 200vh spacer — creates scroll room without GSAP pin manipulation */}
       <div ref={spacerRef} className="intro-spacer" style={{ height: '200vh', width: '100%', pointerEvents: 'none' }} />
 
@@ -567,7 +619,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
             <button
               type="button"
               onClick={handleScrollClick}
-              aria-label="Continue to portfolio"
+              aria-label="Scroll to portfolio"
               className="flex flex-col items-center self-center md:self-start w-fit gap-3 cursor-pointer group"
               style={{ pointerEvents: 'auto' }}
             >
@@ -594,6 +646,7 @@ export default function IntroScene({ children }: { children: React.ReactNode }) 
         }}
       >
         {children}
+      </div>
       </div>
     </IntroContext.Provider>
   );

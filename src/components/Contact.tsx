@@ -35,7 +35,7 @@ export default function Contact() {
               onClick={handleHireMeClick}
               className="flex-1 flex justify-between items-center py-5 sm:pr-12 border-b-[0.5px] sm:border-b-0 sm:border-r-[0.5px] border-white/10 cursor-pointer hover:pl-2 transition-all duration-200 group bg-transparent text-left"
             >
-              <span className="text-[11px] tracking-[0.12em] uppercase text-white/40">Email</span>
+              <span className="text-[11px] tracking-[0.12em] uppercase text-white/60">Email</span>
               <div className="flex items-center gap-2">
                 <span className="text-[13px] text-white/70 group-hover:text-off-white transition-colors">hritikjasnani.design@gmail.com</span>
                 <span className="text-white/30 group-hover:text-off-white transition-colors text-base">↗</span>
@@ -47,7 +47,7 @@ export default function Contact() {
               rel="noopener noreferrer"
               className="flex-1 flex justify-between items-center py-5 sm:pl-12 cursor-pointer hover:pl-[3.5rem] transition-all duration-200 group no-underline"
             >
-              <span className="text-[11px] tracking-[0.12em] uppercase text-white/40">Instagram</span>
+              <span className="text-[11px] tracking-[0.12em] uppercase text-white/60">Instagram</span>
               <div className="flex items-center gap-2">
                 <span className="text-[13px] text-white/70 group-hover:text-off-white transition-colors">@hritikjasnani</span>
                 <span className="text-white/30 group-hover:text-off-white transition-colors text-base">↗</span>

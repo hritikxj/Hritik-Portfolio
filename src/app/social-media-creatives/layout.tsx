@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ProjectStructuredData from "@/components/ProjectStructuredData";
 
 const title = "Social Media Creatives";
 const description = "A curated collection of campaign, content, and social-media design across consumer brands.";
@@ -17,5 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function SocialMediaLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return children;
+  return <><ProjectStructuredData title={title} description={description} path="/social-media-creatives" />{children}</>;
 }

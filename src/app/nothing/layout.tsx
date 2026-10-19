@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ProjectStructuredData from "@/components/ProjectStructuredData";
 
 const title = "Nothing Community Edition — UI/UX";
 const description = "A minimalist to-do widget concept designed for the Nothing Community Edition software showcase.";
@@ -17,5 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function NothingLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return children;
+  return <><ProjectStructuredData title={title} description={description} path="/nothing" />{children}</>;
 }

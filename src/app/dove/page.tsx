@@ -61,21 +61,37 @@ export default function DoveCampaignPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     if (!isLightboxOpen) return;
 
     const previousOverflow = document.body.style.overflow;
     const previousFocus = document.activeElement as HTMLElement | null;
+    const dialog = dialogRef.current;
+    dialog?.showModal();
     document.body.style.overflow = 'hidden';
-    requestAnimationFrame(() => closeButtonRef.current?.focus());
+    const frame = requestAnimationFrame(() => closeButtonRef.current?.focus());
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === 'Tab') {
+        const buttons = dialog?.querySelectorAll<HTMLButtonElement>('button:not([disabled])');
+        const first = buttons?.[0];
+        const last = buttons?.[buttons.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      } else if (e.key === 'Escape') {
         setIsLightboxOpen(false);
       } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
         setActiveIndex((prev) => (prev + 1) % strategyPillars.length);
       } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
         setActiveIndex((prev) => (prev - 1 + strategyPillars.length) % strategyPillars.length);
       }
     };
@@ -83,6 +99,8 @@ export default function DoveCampaignPage() {
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      cancelAnimationFrame(frame);
+      dialog?.close();
       document.body.style.overflow = previousOverflow;
       previousFocus?.focus();
     };
@@ -92,17 +110,17 @@ export default function DoveCampaignPage() {
     <div className={`min-h-screen bg-[#FDFCF9] text-[#0A2240] ${jost.className} selection:bg-[#C5A059] selection:text-white pb-20`}>
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FDFCF9]/95 backdrop-blur-sm border-b-[0.5px] border-[#E8E2D6]">
-        <Link href="/" className="text-[#0A2240] hover:text-[#C5A059] transition-colors uppercase tracking-[0.2em] text-xs font-semibold no-underline">
+        <Link href="/" className="text-[#0A2240] hover:text-[#846324] transition-colors uppercase tracking-[0.2em] text-xs font-semibold no-underline">
           ← Back to Portfolio
         </Link>
-        <div className={`uppercase tracking-[0.3em] text-[10px] text-[#C5A059] ${jost.className} font-semibold`}>
+        <div className={`uppercase tracking-[0.3em] text-[10px] text-[#846324] ${jost.className} font-semibold`}>
           Brand Campaign
         </div>
       </nav>
 
       {/* Hero Section */}
       <header className="pt-36 px-5 md:px-12 lg:px-10 max-w-7xl mx-auto flex flex-col items-center text-center">
-        <h1 className={`${cormorant.className} text-5xl md:text-7xl lg:text-[90px] font-light tracking-wide text-[#0A2240] mb-6 leading-none`}>
+        <h1 className={`${cormorant.className} text-5xl md:text-7xl lg:text-[90px] font-light tracking-wide text-[#0A2240] mb-6 leading-none max-w-full break-words`}>
           Dove #TheRealGrowth
         </h1>
         <p className={`${cormorant.className} italic text-[#4B5E7D] text-lg md:text-xl lg:text-2xl max-w-3xl mb-16`}>
@@ -110,7 +128,8 @@ export default function DoveCampaignPage() {
         </p>
         
         <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D6]/40">
-          <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
             src="/dove/dove-slide-1.png" 
             alt="Dove Campaign Cover Slide" 
             width={1920}
@@ -127,15 +146,15 @@ export default function DoveCampaignPage() {
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[#FAF7F0] border border-[#E8E2D6]/40 shadow-sm text-center">
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#C5A059] block mb-1 font-semibold">Role</span>
+              <span className="text-[9px] tracking-[0.2em] uppercase text-[#846324] block mb-1 font-semibold">Role</span>
               <span className="text-sm text-[#0A2240] font-medium font-sans">Brand Strategist</span>
             </div>
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#C5A059] block mb-1 font-semibold">Platform</span>
+              <span className="text-[9px] tracking-[0.2em] uppercase text-[#846324] block mb-1 font-semibold">Platform</span>
               <span className="text-sm text-[#0A2240] font-medium font-sans">Digital & Print</span>
             </div>
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#C5A059] block mb-1 font-semibold">Type</span>
+              <span className="text-[9px] tracking-[0.2em] uppercase text-[#846324] block mb-1 font-semibold">Type</span>
               <span className="text-sm text-[#0A2240] font-medium font-sans">Academic Project</span>
             </div>
           </div>
@@ -146,7 +165,7 @@ export default function DoveCampaignPage() {
         {/* Section 01: Strategic Foundation (Split-screen interactive timeline and slide viewer) */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="text-[11px] tracking-[0.4em] uppercase text-[#C5A059] mb-3 block font-semibold">01 — Strategic Foundation</span>
+            <span className="text-[11px] tracking-[0.4em] uppercase text-[#846324] mb-3 block font-semibold">01 — Strategic Foundation</span>
             <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#0A2240] font-light leading-tight mb-4`}>
               Core Pillars
             </h2>
@@ -164,6 +183,7 @@ export default function DoveCampaignPage() {
                 return (
                   <button
                     key={pillar.num}
+                    aria-pressed={isActive}
                     onClick={() => setActiveIndex(idx)}
                     className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 ${
                       isActive 
@@ -209,11 +229,11 @@ export default function DoveCampaignPage() {
 
                     <div className="pl-4 transition-all duration-300">
                       <div className="flex items-baseline gap-3">
-                        <span className={`${cormorant.className} text-2xl md:text-3xl transition-all duration-300 ${isActive ? 'text-[#C5A059] font-medium' : 'text-[#4B5E7D]/50'}`}>
+                        <span className={`${cormorant.className} text-2xl md:text-3xl transition-all duration-300 ${isActive ? 'text-[#846324] font-medium' : 'text-[#4B5E7D]'}`}>
                           {pillar.num}
                         </span>
                         <h3 className={`${cormorant.className} text-3xl md:text-4xl transition-all duration-300 leading-tight ${
-                          isActive ? 'text-[#0A2240] font-medium' : 'text-[#4B5E7D]/60 group-hover:text-[#0A2240]'
+                          isActive ? 'text-[#0A2240] font-medium' : 'text-[#4B5E7D] group-hover:text-[#0A2240]'
                         }`}>
                           {pillar.title}
                         </h3>
@@ -221,7 +241,7 @@ export default function DoveCampaignPage() {
                       
                       {/* Subtitle */}
                       <span className={`text-[10px] md:text-[11px] tracking-[0.2em] uppercase font-semibold transition-all duration-300 mt-1 block ${
-                        isActive ? 'text-[#C5A059]' : 'text-[#4B5E7D]/40'
+                        isActive ? 'text-[#846324]' : 'text-[#4B5E7D]'
                       }`}>
                         {pillar.subtitle}
                       </span>
@@ -285,7 +305,7 @@ export default function DoveCampaignPage() {
               </div>
 
               {/* Pagination Meta indicator */}
-              <div className="flex items-center justify-between px-2 text-[9px] tracking-[0.15em] text-[#4B5E7D]/60 uppercase font-semibold select-none">
+              <div className="flex items-center justify-between px-2 text-[9px] tracking-[0.15em] text-[#4B5E7D] uppercase font-semibold select-none">
                 <span>Campaign Insight Deck</span>
                 <span>Pillar {strategyPillars[activeIndex].num} / 06</span>
               </div>
@@ -299,19 +319,19 @@ export default function DoveCampaignPage() {
         {/* Section 02: Touchpoints & Digital Activation */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="text-[11px] tracking-[0.4em] uppercase text-[#C5A059] mb-3 block font-semibold">02 — Campaign Touchpoints</span>
+            <span className="text-[11px] tracking-[0.4em] uppercase text-[#846324] mb-3 block font-semibold">02 — Campaign Touchpoints</span>
             <h2 className={`${cormorant.className} text-4xl md:text-5xl text-[#0A2240] font-light leading-tight mb-4`}>
               Reaching the Target
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left mt-6">
               <div className="p-6 bg-[#FAF7F0] border border-[#E8E2D6]/30 rounded-xl">
-                <h3 className="text-xs tracking-[0.15em] uppercase text-[#C5A059] font-semibold mb-2">Digital Activation (Instagram)</h3>
+                <h3 className="text-xs tracking-[0.15em] uppercase text-[#846324] font-semibold mb-2">Digital Activation (Instagram)</h3>
                 <p className="text-xs text-[#4B5E7D] leading-relaxed font-light">
                   Statics, organic Reels, and interactive AR filters designed to reach Gen Z and Millennial audiences directly in spaces where digital perfection pressure is highest.
                 </p>
               </div>
               <div className="p-6 bg-[#FAF7F0] border border-[#E8E2D6]/30 rounded-xl">
-                <h3 className="text-xs tracking-[0.15em] uppercase text-[#C5A059] font-semibold mb-2">D2C Activation (The Mirror Gift)</h3>
+                <h3 className="text-xs tracking-[0.15em] uppercase text-[#846324] font-semibold mb-2">D2C Activation (The Mirror Gift)</h3>
                 <p className="text-xs text-[#4B5E7D] leading-relaxed font-light">
                   A unique peer-to-peer gifting system that distributes physical unfiltered mirrors, building an offline supportive community of sisters and friends.
                 </p>
@@ -322,14 +342,16 @@ export default function DoveCampaignPage() {
           <div className="flex flex-col gap-6 mt-12">
             {/* Side-by-side feed and filter mockups */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-              <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/dove/dove-slide-9.png" 
                 alt="Social feed design" 
                 width={1920}
                 height={1126}
                 className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
               />
-              <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/dove/dove-slide-10.png" 
                 alt="AR Filter details" 
                 width={1920}
@@ -345,7 +367,7 @@ export default function DoveCampaignPage() {
         {/* Section 03: Creative Deliverables & Posters (Card dimensions fixed) */}
         <section className="mb-12">
           <div className="max-w-7xl mx-auto mb-6 text-center">
-            <span className="text-[11px] tracking-[0.4em] uppercase text-[#C5A059] mb-3 block font-semibold">03 — Creative Assets</span>
+            <span className="text-[11px] tracking-[0.4em] uppercase text-[#846324] mb-3 block font-semibold">03 — Creative Assets</span>
             <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#0A2240] font-light leading-tight mb-4`}>
               Visual Delivery
             </h2>
@@ -359,50 +381,55 @@ export default function DoveCampaignPage() {
             {/* Grid 1: Side-by-side vertical posters (Slide 11 & Slide 14) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-5xl mx-auto">
               <div className="flex flex-col gap-3">
-                <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                   src="/dove/dove-slide-11.png" 
                   alt="Unfiltered Normal Poster" 
                   width={960}
                   height={1200}
                   className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
                 />
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#C5A059] font-semibold pl-2">Print Poster Option A</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[#846324] font-semibold pl-2">Print Poster Option A</span>
               </div>
               
               <div className="flex flex-col gap-3 mt-0 md:mt-12">
-                <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                   src="/dove/dove-slide-14.png" 
                   alt="Lehenga Story Poster" 
                   width={961}
                   height={1707}
                   className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
                 />
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#C5A059] font-semibold pl-2">Print Poster Option B</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[#846324] font-semibold pl-2">Print Poster Option B</span>
               </div>
             </div>
 
             {/* Centered Campaign Illustrations (Slide 13) */}
             <div className="max-w-4xl mx-auto my-12 flex flex-col gap-3">
-              <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/dove/dove-slide-13.png" 
                 alt="Boardroom and Lehenga Illustrations" 
                 width={1920}
                 height={1937}
                 className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
               />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#C5A059] font-semibold pl-2">Campaign Illustrations</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] text-[#846324] font-semibold pl-2">Campaign Illustrations</span>
             </div>
 
             {/* Grid 3: Slide 12 (Illustrations details) & Slide 15 (Mirror Card Mockup) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-7xl mx-auto">
-              <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/dove/dove-slide-12.png" 
                 alt="Identity illustrations detail" 
                 width={1920}
                 height={1590}
                 className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
               />
-              <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/dove/dove-slide-15.png" 
                 alt="D2C Mirror Card representation" 
                 width={1920}
@@ -413,7 +440,8 @@ export default function DoveCampaignPage() {
 
             {/* Full-bleed Panoramic Banner (Slide 16) */}
             <div className="w-full my-8">
-              <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/dove/dove-slide-16.png" 
                 alt="Banner Campaign message" 
                 width={1919}
@@ -424,14 +452,16 @@ export default function DoveCampaignPage() {
 
             {/* Grid 4: Slide 17 & Slide 18 (Mirror details and packaging) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-7xl mx-auto">
-              <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/dove/dove-slide-17.png" 
                 alt="Unfiltered mirror details" 
                 width={1920}
                 height={1240}
                 className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
               />
-              <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/dove/dove-slide-18.png" 
                 alt="Unfiltered packaging design" 
                 width={1920}
@@ -448,7 +478,7 @@ export default function DoveCampaignPage() {
         {/* Section 04: Outcome & Reflection */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="text-[11px] tracking-[0.4em] uppercase text-[#C5A059] mb-3 block font-semibold">04 — Outcomes</span>
+            <span className="text-[11px] tracking-[0.4em] uppercase text-[#846324] mb-3 block font-semibold">04 — Outcomes</span>
             <h2 className={`${cormorant.className} text-4xl md:text-5xl text-[#0A2240] font-light leading-tight mb-4`}>
               Quiet Self-Acceptance
             </h2>
@@ -458,7 +488,8 @@ export default function DoveCampaignPage() {
           </div>
           
           <div className="w-full">
-            <Image 
+<Image
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
               src="/dove/dove-slide-19.png" 
               alt="Outcome slide" 
               width={1920}
@@ -478,11 +509,13 @@ export default function DoveCampaignPage() {
 
       {/* Lightbox Modal */}
       {isLightboxOpen && (
-        <div
+        <dialog
+          ref={dialogRef}
+          onCancel={() => setIsLightboxOpen(false)}
           role="dialog"
           aria-modal="true"
           aria-label={`${strategyPillars[activeIndex].title} slide viewer`}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 transition-all duration-300 animate-fadeIn select-none"
+          className="fixed inset-0 m-0 border-0 p-0 w-screen h-dvh max-w-none max-h-none z-[100] flex flex-col items-center justify-center bg-black/95 transition-all duration-300 animate-fadeIn select-none"
         >
           <style dangerouslySetInnerHTML={{__html: `
             @keyframes fadeIn {
@@ -498,7 +531,7 @@ export default function DoveCampaignPage() {
           <button 
             ref={closeButtonRef}
             onClick={() => setIsLightboxOpen(false)}
-            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2 z-50 focus:outline-none cursor-pointer"
+            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2 z-50 cursor-pointer"
             aria-label="Close Lightbox"
           >
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -509,7 +542,7 @@ export default function DoveCampaignPage() {
           {/* Left Arrow */}
           <button 
             onClick={() => setActiveIndex((prev) => (prev - 1 + strategyPillars.length) % strategyPillars.length)}
-            className="absolute left-6 text-white/50 hover:text-white transition-colors p-3 z-50 rounded-full hover:bg-white/5 focus:outline-none cursor-pointer"
+            className="absolute left-6 text-white/50 hover:text-white transition-colors p-3 z-50 rounded-full hover:bg-white/5 cursor-pointer"
             aria-label="Previous Slide"
           >
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -542,7 +575,7 @@ export default function DoveCampaignPage() {
           {/* Right Arrow */}
           <button 
             onClick={() => setActiveIndex((prev) => (prev + 1) % strategyPillars.length)}
-            className="absolute right-6 text-white/50 hover:text-white transition-colors p-3 z-50 rounded-full hover:bg-white/5 focus:outline-none cursor-pointer"
+            className="absolute right-6 text-white/50 hover:text-white transition-colors p-3 z-50 rounded-full hover:bg-white/5 cursor-pointer"
             aria-label="Next Slide"
           >
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -555,11 +588,11 @@ export default function DoveCampaignPage() {
             <span className={`${cormorant.className} text-xl md:text-2xl font-light text-white`}>
               {strategyPillars[activeIndex].num} — {strategyPillars[activeIndex].title}
             </span>
-            <span className="text-[9px] tracking-[0.2em] uppercase text-[#C5A059] font-semibold mt-1">
+            <span className="text-[9px] tracking-[0.2em] uppercase text-[#E0C58F] font-semibold mt-1">
               Use ← / → Arrow Keys · Esc to Close
             </span>
           </div>
-        </div>
+        </dialog>
       )}
     </div>
   );

@@ -1,16 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useWorkCategory } from '@/hooks/useWorkCategory';
 import Reveal from './Reveal';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Work() {
   const categories = ["Branding", "Illustrations", "UI/UX"] as const;
-  type Category = typeof categories[number];
 
-  const [activeCategory, setActiveCategory] = useState<Category>("Branding");
+  const [activeCategory, setActiveCategory] = useWorkCategory();
 
   const works = [
     // Branding
@@ -297,28 +295,6 @@ export default function Work() {
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.014
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 13 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.25,
-        ease: [0.16, 1, 0.3, 1] as const // premium easeOutExpo
-      }
-    }
-  };
-
   const filteredWorks = works.filter(work => work.section === activeCategory);
 
   return (
@@ -342,14 +318,12 @@ export default function Work() {
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
                       aria-pressed={isActive}
-                      className="relative flex-1 md:flex-none px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase cursor-pointer whitespace-nowrap select-none focus:outline-none"
+                      className="relative flex-1 md:flex-none px-2 sm:px-5 py-2.5 rounded-full text-[11px] sm:text-xs font-semibold tracking-wider uppercase cursor-pointer whitespace-nowrap select-none"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       {isActive && (
-                        <motion.div
-                          layoutId="active-pill"
+                        <div
                           className="absolute inset-0 bg-brand-red rounded-full"
-                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
                         />
                       )}
                       <span className={`relative z-10 transition-colors duration-300 ${isActive ? "text-off-white" : "text-smoke hover:text-ink"}`}>
@@ -361,93 +335,82 @@ export default function Work() {
               </div>
             </div>
           </Reveal>
-
-          <AnimatePresence mode="wait">
             {activeCategory === "Illustrations" ? (
               /* Immersive Custom Curated Bento Grid for Illustrations, preserving sequence with height alignment */
-              <motion.div
+              <div
                 key="illustrations-grid"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                exit={{ opacity: 0, y: -6, transition: { duration: 0.1, ease: "easeIn" } }}
                 className="grid grid-cols-1 md:grid-cols-12 gap-6 w-full items-start"
               >
 
                 {/* Row 1: Comic Strip & Process (Landscape - 6 cols each) */}
-                <motion.div variants={itemVariants} className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <div className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[0].image} alt={illustrations[0].title} width={1410} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
-                </motion.div>
-                <motion.div variants={itemVariants} className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                </div>
+                <div className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[1].image} alt={illustrations[1].title} width={1410} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
-                </motion.div>
+                </div>
 
                 {/* Row 2: Poster Print Series (Portrait - 6 cols each) */}
-                <motion.div variants={itemVariants} className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <div className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[2].image} alt={illustrations[2].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
-                </motion.div>
-                <motion.div variants={itemVariants} className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                </div>
+                <div className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[3].image} alt={illustrations[3].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
-                </motion.div>
+                </div>
 
                 {/* Row 3: Ghalib Section (Left stacked, Right 2x2 grid) */}
                 {/* Stacked Ghalib Art & Cover on Left (4 cols) */}
-                <motion.div className="col-span-12 md:col-span-4 flex flex-col gap-6 w-full">
-                  <motion.div variants={itemVariants} className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <div className="col-span-12 md:col-span-4 flex flex-col gap-6 w-full">
+                  <div className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                     <Image src={illustrations[4].image} alt={illustrations[4].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 33vw" />
-                  </motion.div>
-                  <motion.div variants={itemVariants} className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                  </div>
+                  <div className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                     <Image src={illustrations[5].image} alt={illustrations[5].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 33vw" />
-                  </motion.div>
-                </motion.div>
+                  </div>
+                </div>
                 {/* 2x2 Mockup Grid on Right (8 cols) */}
-                <motion.div className="col-span-12 md:col-span-8 grid grid-cols-2 gap-6 w-full">
+                <div className="col-span-12 md:col-span-8 grid grid-cols-2 gap-6 w-full">
                   {illustrations.slice(6, 10).map((item) => (
-                    <motion.div key={item.id} variants={itemVariants} className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                    <div key={item.id} className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                       <Image src={item.image} alt={item.title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 33vw" />
-                    </motion.div>
+                    </div>
                   ))}
-                </motion.div>
+                </div>
 
                 {/* Row 4: Ajji Kairuchi (Full Width - 12 cols) */}
-                <motion.div variants={itemVariants} className="col-span-12 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <div className="col-span-12 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[10].image} alt={illustrations[10].title} width={1200} height={1000} className="w-full h-auto object-contain block" sizes="100vw" />
-                </motion.div>
+                </div>
 
                 {/* Row 5: Vaibhav Caricature & Vaibhav Presentation Photo (Portrait - 4 cols, Landscape - 8 cols) */}
-                <motion.div variants={itemVariants} className="col-span-12 md:col-span-4 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <div className="col-span-12 md:col-span-4 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[11].image} alt={illustrations[11].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 33vw" />
-                </motion.div>
-                <motion.div variants={itemVariants} className="col-span-12 md:col-span-8 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                </div>
+                <div className="col-span-12 md:col-span-8 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[12].image} alt={illustrations[12].title} width={1500} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 66vw" />
-                </motion.div>
+                </div>
 
                 {/* Row 6: Coffee Branding (4-column row to keep Neon Signage sharp and compact) */}
-                <motion.div variants={itemVariants} className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                <div className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[13].image} alt={illustrations[13].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
-                </motion.div>
-                <motion.div variants={itemVariants} className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                </div>
+                <div className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[14].image} alt={illustrations[14].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
-                </motion.div>
-                <motion.div variants={itemVariants} className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                </div>
+                <div className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[15].image} alt={illustrations[15].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
-                </motion.div>
-                <motion.div variants={itemVariants} className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
+                </div>
+                <div className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
                   <Image src={illustrations[16].image} alt={illustrations[16].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
-                </motion.div>
+                </div>
 
-              </motion.div>
+              </div>
             ) : (
               /* Regular Grid for Branding and UI/UX */
-              <motion.div
+              <div
                 key="regular-works-grid"
-                layout
-                initial={{ opacity: 0, y: 13 }}
-                animate={{ opacity: 1, y: 0, transition: { duration: 0.22 } }}
-                exit={{ opacity: 0, y: -6, transition: { duration: 0.1, ease: "easeIn" } }}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
               >
-                <AnimatePresence mode="popLayout">
                   {filteredWorks.map((work, idx) => {
                     const CardContent = (
                       <>
@@ -461,8 +424,10 @@ export default function Work() {
                               alt={work.title}
                               fill
                               className="object-cover"
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                              priority={idx < 3}
+                              quality={65}
+                              sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc((100vw - 120px) / 2), calc((100vw - 128px) / 3)"
+                              loading={idx === 0 ? "eager" : "lazy"}
+                              fetchPriority={idx === 0 ? "high" : "auto"}
                             />
                           )}
                           {!work.image && (
@@ -484,20 +449,18 @@ export default function Work() {
                     );
 
                     return (
-                      <motion.div
+                      <div
                         key={work.title}
-                        layout
-                        initial={{ opacity: 0, y: 13 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.97 }}
-                        transition={{ duration: 0.15, ease: "easeInOut", delay: idx * 0.011 }}
                         className={work.double ? 'md:col-span-2' : ''}
                       >
                         <Link
                           href={work.link}
+                          prefetch={false}
                           onClick={() => {
                             try {
                               sessionStorage.setItem('portfolio-scroll-y', window.scrollY.toString());
+                              sessionStorage.setItem('portfolio-intro-height', String(document.querySelector<HTMLElement>('.intro-spacer')?.offsetHeight ?? 0));
+                              sessionStorage.setItem('portfolio-category', activeCategory);
                             } catch (e) {
                               console.warn(e);
                             }
@@ -506,13 +469,11 @@ export default function Work() {
                         >
                           {CardContent}
                         </Link>
-                      </motion.div>
+                      </div>
                     );
                   })}
-                </AnimatePresence>
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
         </div>
       </section>
 

@@ -63,7 +63,17 @@ body {
   opacity: 1;
 }
 
-.landing-initial-state {
+.intro-spacer,
+.intro-overlay {
+  display: none;
+}
+
+.intro-shell[data-intro='active'] .intro-spacer,
+.intro-shell[data-intro='active'] .intro-overlay {
+  display: block;
+}
+
+.intro-shell[data-intro='active'] .landing-initial-state {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
