@@ -1,0 +1,64 @@
+.page {
+  background: #fbf4e9;
+  color: #38241c;
+  font-size: 1rem;
+  --text-muted: #68463a;
+  --line: #dec9b9;
+  --red: #983322;
+}
+
+.shell, .nav { width: min(92%, 75rem); margin-inline: auto; }
+.nav {
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--line);
+  font-size: .86rem;
+}
+.nav a, .footer a { text-decoration: underline; text-underline-offset: .27em; }
+.kicker { font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red); }
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, .75fr);
+  align-items: end;
+  gap: .95rem 2.5rem;
+  padding-block: clamp(2.25rem, 6.6vw, 6rem) clamp(1.35rem, 3.5vw, 2.8rem);
+}
+.intro h1, .sectionHeading h2 {
+  margin-top: .14em;
+  color: var(--red);
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -.045em;
+}
+.intro h1 { font-size: clamp(3.4rem, 8.8vw, 8.5rem); line-height: .84; }
+.intro > p { max-width: 35ch; color: var(--text-muted); font-size: clamp(1.05rem, 1.8vw, 1.3rem); line-height: 1.45; }
+.hero { width: 100%; height: auto; display: block; border-radius: .55rem; }
+.caption { margin-top: .65rem; font-size: .83rem; color: var(--text-muted); }
+.section, .range { padding-block: clamp(3rem, 7vw, 6rem); }
+.sectionHeading { margin-bottom: 1.5rem; }
+.sectionHeading h2 { font-size: clamp(2.65rem, 5.6vw, 5rem); line-height: .92; }
+.sectionHeading > p:not(.kicker) { margin-top: .7rem; max-width: 47ch; color: var(--text-muted); }
+.studyGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.6rem, 4vw, 3.25rem) clamp(1rem, 3vw, 2.25rem); }
+.studyMedia { padding: clamp(.45rem, 1.4vw, 1rem); background: #f0e2d2; border-radius: .45rem; }
+.study img, .flavours img, .campaign img { width: 100%; height: auto; display: block; }
+.study img { aspect-ratio: 1.4; object-fit: contain; border-radius: .2rem; }
+.study figcaption { padding-top: .9rem; }
+.study h3 { font-size: 1.17rem; font-weight: 700; }
+.study figcaption p { color: var(--text-muted); max-width: 49ch; margin-top: .22rem; }
+.range { background: #f3dfc9; }
+.flavours { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem clamp(.8rem, 2vw, 1.4rem); }
+.flavours img { border-radius: .3rem; border: 1px solid #825f4538; }
+.flavours figcaption { font-size: .91rem; font-weight: 650; margin-top: .55rem; }
+.campaign { display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, 1fr); align-items: center; gap: 1rem clamp(2rem, 8vw, 6rem); }
+.campaign img { border-radius: .55rem; }
+.footer { padding-block: 1.6rem 2rem; border-top: 1px solid var(--line); }
+@media (max-width: 45rem) {
+  .intro, .studyGrid, .campaign { grid-template-columns: minmax(0, 1fr); }
+  .campaign .sectionHeading { margin-bottom: 0; }
+}
+@media (max-width: 38rem) {
+  .flavours { grid-template-columns: minmax(0, 1fr); }
+}

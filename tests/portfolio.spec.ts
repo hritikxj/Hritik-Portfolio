@@ -40,6 +40,8 @@ test('resizing during an auto-scroll and toggling reduced motion leave readable 
   await page.goto('/');
   await page.getByRole('button', { name: 'Skip intro', exact: true }).click();
   await page.setViewportSize({ width: 390, height: 844 });
+  // Mobile styles can reveal the landing before the media-query handler runs.
+  await expect(page.locator('.intro-shell')).toHaveAttribute('data-intro', 'bypassed');
   await contentVisible(page);
   await page.setViewportSize({ width: 1440, height: 900 });
   await contentVisible(page);

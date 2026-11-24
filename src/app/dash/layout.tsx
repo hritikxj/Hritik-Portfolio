@@ -12,9 +12,9 @@ export const metadata: Metadata = {
     title,
     description,
     url: "/dash",
-    images: [{ url: "/dash/dash-slide-1.png", alt: "Dash brand identity" }],
+    images: [{ url: "/case-studies/dash/delivery-cover.webp", alt: "Hands passing a black delivery box with the Dash wordmark" }],
   },
-  twitter: { card: "summary_large_image", title, description, images: ["/dash/dash-slide-1.png"] },
+  twitter: { card: "summary_large_image", title, description, images: ["/case-studies/dash/delivery-cover.webp"] },
 };
 
 export default function DashLayout({ children }: Readonly<{ children: React.ReactNode }>) {

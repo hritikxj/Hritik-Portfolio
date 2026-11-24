@@ -45,12 +45,14 @@ export default function Navbar() {
           </Link>
 
           <ul className="hidden md:flex gap-8 list-none items-center">
+            <li><a href="#work" className="text-xs text-smoke tracking-[0.08em] uppercase hover:text-ink">Work</a></li>
             <li><button onClick={() => scrollTo('about')} className="text-xs text-smoke tracking-[0.08em] uppercase transition-colors duration-200 hover:text-ink cursor-pointer">About</button></li>
             <li><button onClick={() => scrollTo('services')} className="text-xs text-smoke tracking-[0.08em] uppercase transition-colors duration-200 hover:text-ink cursor-pointer">Services</button></li>
             <li><button onClick={handleHireMeClick} className="bg-brand-red text-off-white px-6 py-2.5 rounded-sm tracking-[0.06em] text-xs transition-colors duration-200 hover:bg-ink cursor-pointer inline-block">Hire Me →</button></li>
           </ul>
 
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center gap-4">
+            <a href="#work" className="text-xs text-smoke uppercase hover:text-ink">Work</a>
             <button onClick={handleHireMeClick} className="bg-brand-red text-off-white px-5 py-2.5 rounded-sm tracking-[0.06em] text-[11px] transition-colors duration-200 hover:bg-ink cursor-pointer inline-block">Hire Me</button>
           </div>
         </div>

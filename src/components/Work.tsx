@@ -1,25 +1,70 @@
 'use client';
 
-import { useWorkCategory } from '@/hooks/useWorkCategory';
+import { useWorkCategory, workCategories } from '@/hooks/useWorkCategory';
+import { caseStudies } from '@/content/case-studies';
 import Reveal from './Reveal';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function Work() {
-  const categories = ["Branding", "Illustrations", "UI/UX"] as const;
+type ProjectCard = { title: string; category: string; image: string; link: string };
 
+function ProjectCards({ projects, category }: {
+  projects: readonly ProjectCard[];
+  category: (typeof workCategories)[number];
+}) {
+  return (
+    <div className="grid grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map((project, index) => (
+        <Link
+          key={project.link}
+          href={project.link}
+          prefetch={false}
+          onClick={() => {
+            try {
+              sessionStorage.setItem('portfolio-scroll-y', String(window.scrollY));
+              sessionStorage.setItem('portfolio-intro-height', String(document.querySelector<HTMLElement>('.intro-spacer')?.offsetHeight ?? 0));
+              sessionStorage.setItem('portfolio-category', category);
+            } catch { /* Navigation still works when storage is disabled. */ }
+          }}
+          className="group block min-w-0 rounded-md no-underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-red"
+        >
+          <div className="relative mb-3 aspect-4/3 overflow-hidden rounded-md bg-parchment">
+            <Image
+              src={project.image}
+              alt=""
+              fill
+              className="object-cover motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-[1.025]"
+              quality={75}
+              sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc((100vw - 120px) / 2), calc((100vw - 128px) / 3)"
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          </div>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <span className="text-base font-semibold text-ink group-hover:underline group-hover:underline-offset-4">{project.title}</span>
+            <span className="text-sm text-smoke">{project.category}</span>
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+export default function Work() {
   const [activeCategory, setActiveCategory] = useWorkCategory();
 
   const works = [
+    ...caseStudies.map(study => ({
+      title: study.title,
+      category: study.discipline,
+      section: study.category,
+      image: `/case-studies/${study.slug}/${study.cover ?? 'cover.webp'}`,
+      link: `/work/${study.slug}`,
+    })),
     // Branding
     {
       title: "Purr Pantry — Premium Cat Food Brand",
       category: "Branding",
       section: "Branding",
-      double: false,
-      color: "#1A1A1A",
-      thumbText: "Purr Pantry",
-      textClass: "text-[clamp(32px,5vw,64px)] text-white/20",
       image: "/Purthumbnail.jpg",
       link: "/purr-pantry"
     },
@@ -27,10 +72,6 @@ export default function Work() {
       title: "Dove #TheRealGrowth",
       category: "Campaign",
       section: "Branding",
-      double: false,
-      color: "#E8E2D6",
-      thumbText: "Dove Campaign",
-      textClass: "text-lg text-smoke",
       image: "/dove_thumb.jpg",
       link: "/dove"
     },
@@ -38,21 +79,13 @@ export default function Work() {
       title: "Dash — Ultra-Fast Electronics Delivery",
       category: "Branding",
       section: "Branding",
-      double: false,
-      color: "#FF6B35",
-      thumbText: "DASH",
-      textClass: "text-lg text-white/30",
-      image: "/dash/dash-slide-1.png",
+      image: "/case-studies/dash/delivery-cover.webp",
       link: "/dash"
     },
     {
       title: "Social Media Creatives",
       category: "Social Media",
       section: "Branding",
-      double: false,
-      color: "#0F172A",
-      thumbText: "Social Media Creatives",
-      textClass: "text-lg text-white/30",
       image: "/social_thumb.png",
       link: "/social-media-creatives"
     },
@@ -62,10 +95,6 @@ export default function Work() {
       title: "Nothing Community Edition",
       category: "UI/UX",
       section: "UI/UX",
-      double: false,
-      color: "#2C3E50",
-      thumbText: "Nothing Widget",
-      textClass: "text-lg text-white/30",
       image: "/nothing_thumb.jpg",
       link: "/nothing"
     },
@@ -295,7 +324,17 @@ export default function Work() {
     }
   ];
 
-  const filteredWorks = works.filter(work => work.section === activeCategory);
+  const selectedLinks = [
+    '/work/clarity-labs', '/social-media-creatives', '/work/og-kombucha',
+    '/work/fino', '/work/farebird', '/dash',
+    '/work/typehaus', '/work/fileshuttle', '/work/digital-buddy',
+    '/purr-pantry', '/nothing',
+  ];
+  const selectedWorks = selectedLinks.flatMap(link => works.filter(work => work.link === link));
+  const filteredWorks = activeCategory === 'Selected'
+    ? selectedWorks
+    : [...selectedWorks, ...works.filter(work => !selectedLinks.includes(work.link))]
+        .filter(work => work.section === activeCategory);
 
   return (
     <>
@@ -311,14 +350,14 @@ export default function Work() {
                 aria-label="Filter work by category"
                 className="flex items-center gap-1 p-1 bg-parchment/60 border border-border-subtle rounded-full w-full md:w-fit select-none scrollbar-none"
               >
-                {categories.map((cat) => {
+                {workCategories.map((cat) => {
                   const isActive = activeCategory === cat;
                   return (
                     <button
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
                       aria-pressed={isActive}
-                      className="relative flex-1 md:flex-none px-2 sm:px-5 py-2.5 rounded-full text-[11px] sm:text-xs font-semibold tracking-wider uppercase cursor-pointer whitespace-nowrap select-none"
+                      className="relative flex-1 md:flex-none px-1 sm:px-5 py-2.5 rounded-full text-[11px] sm:text-xs font-semibold sm:tracking-wider uppercase cursor-pointer whitespace-nowrap select-none"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       {isActive && (
@@ -335,11 +374,12 @@ export default function Work() {
               </div>
             </div>
           </Reveal>
-            {activeCategory === "Illustrations" ? (
+            <ProjectCards projects={filteredWorks} category={activeCategory} />
+            {activeCategory === "Illustrations" && (
               /* Immersive Custom Curated Bento Grid for Illustrations, preserving sequence with height alignment */
               <div
                 key="illustrations-grid"
-                className="grid grid-cols-1 md:grid-cols-12 gap-6 w-full items-start"
+                className="mt-12 grid grid-cols-1 md:grid-cols-12 gap-6 w-full items-start"
               >
 
                 {/* Row 1: Comic Strip & Process (Landscape - 6 cols each) */}
@@ -404,74 +444,6 @@ export default function Work() {
                   <Image src={illustrations[16].image} alt={illustrations[16].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
                 </div>
 
-              </div>
-            ) : (
-              /* Regular Grid for Branding and UI/UX */
-              <div
-                key="regular-works-grid"
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
-              >
-                  {filteredWorks.map((work, idx) => {
-                    const CardContent = (
-                      <>
-                        <div
-                          className={`rounded mb-3.5 overflow-hidden relative transition-transform duration-300 group-hover:scale-[1.01] ${work.double ? 'aspect-video' : 'aspect-4/3'}`}
-                          style={{ backgroundColor: work.image ? undefined : work.color }}
-                        >
-                          {work.image && (
-                            <Image
-                              src={work.image}
-                              alt={work.title}
-                              fill
-                              className="object-cover"
-                              quality={65}
-                              sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc((100vw - 120px) / 2), calc((100vw - 128px) / 3)"
-                              loading={idx === 0 ? "eager" : "lazy"}
-                              fetchPriority={idx === 0 ? "high" : "auto"}
-                            />
-                          )}
-                          {!work.image && (
-                            <div className={`w-full h-full flex items-center justify-center font-display font-light ${work.textClass}`}>
-                              {work.thumbText}
-                            </div>
-                          )}
-                          <div className="absolute inset-0 bg-ink opacity-0 transition-opacity duration-300 flex items-center justify-center group-hover:opacity-85 z-10">
-                            <span className="text-off-white text-xs tracking-[0.1em] uppercase">
-                              {work.link ? (work.double ? 'View Case Study →' : 'View →') : 'Showcase →'}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex justify-between items-baseline">
-                          <span className="text-sm font-medium text-ink">{work.title}</span>
-                          <span className="text-[10px] tracking-[0.1em] uppercase text-smoke">{work.category}</span>
-                        </div>
-                      </>
-                    );
-
-                    return (
-                      <div
-                        key={work.title}
-                        className={work.double ? 'md:col-span-2' : ''}
-                      >
-                        <Link
-                          href={work.link}
-                          prefetch={false}
-                          onClick={() => {
-                            try {
-                              sessionStorage.setItem('portfolio-scroll-y', window.scrollY.toString());
-                              sessionStorage.setItem('portfolio-intro-height', String(document.querySelector<HTMLElement>('.intro-spacer')?.offsetHeight ?? 0));
-                              sessionStorage.setItem('portfolio-category', activeCategory);
-                            } catch (e) {
-                              console.warn(e);
-                            }
-                          }}
-                          className="block cursor-pointer group h-full no-underline"
-                        >
-                          {CardContent}
-                        </Link>
-                      </div>
-                    );
-                  })}
               </div>
             )}
         </div>

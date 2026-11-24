@@ -1,0 +1,19 @@
+.section {
+  margin-block: clamp(2.25rem, 5vw, 4rem);
+  border-block: 1px solid #cad4db;
+  padding-block: clamp(1.75rem, 4vw, 3.5rem);
+}
+.header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: .9rem 1.5rem; margin-bottom: 1.4rem; }
+.header h2 { font-family: var(--font-cormorant), Georgia, serif; font-weight: 600; font-size: clamp(2.2rem, 5vw, 4rem); line-height: .97; }
+.header p { margin-top: .65rem; font-size: .97rem; }
+.header a { display: inline-flex; align-items: baseline; gap: .4rem; padding: .65rem .95rem; background: #073f55; color: white; border-radius: .25rem; text-decoration: underline; text-underline-offset: .2em; }
+.header small { margin-left: .25rem; color: #d8eef5; }
+.pages { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); list-style: none; gap: clamp(.75rem, 2vw, 1.6rem); }
+.pages a { display: block; padding: clamp(.4rem, 1.5vw, .85rem); background: #e8eef1; border-radius: .4rem; }
+.pages a:hover { background: #d9e7ee; }
+.pages img { display: block; width: 100%; height: auto; border-radius: .15rem; }
+.pages a > span { display: flex; flex-wrap: wrap; gap: .15rem .7rem; margin-top: .55rem; font-size: .85rem; }
+.number { font-variant-numeric: tabular-nums; font-weight: 650; color: #00506a; }
+@media (max-width: 42.5rem) {
+  .pages { grid-template-columns: minmax(0, 1fr); }
+}

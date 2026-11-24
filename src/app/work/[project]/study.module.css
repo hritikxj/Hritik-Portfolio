@@ -1,0 +1,90 @@
+.page {
+  min-height: 100vh;
+  background: #f8f6f0;
+  color: #221e19;
+  padding-inline: clamp(1.25rem, 4vw, 4.5rem);
+}
+
+.pine { --stage: #143e32; --surface: #e1e9df; --accent: #245542; }
+.gold { --stage: #f1d990; --surface: #f3e9d0; --accent: #60401e; }
+.indigo { --stage: #182647; --surface: #e8ebf4; --accent: #35476f; }
+.print { --stage: #c9bb90; --surface: #eee7d6; --accent: #5f532b; }
+.lab { --stage: #051428; --surface: #e4eff4; --accent: #00506a; }
+.peach { --stage: #ffc49c; --surface: #f7e7d8; --accent: #9a3b28; }
+.desktop { --stage: #293743; --surface: #e7ebec; --accent: #354e60; }
+.mobile { --stage: #184d48; --surface: #e2eeeb; --accent: #236153; }
+
+.nav, .hero, .body { max-width: 86rem; margin-inline: auto; }
+.nav {
+  min-height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid #d7d0c4;
+  font-size: .875rem;
+}
+.nav a, .related a { text-decoration: underline; text-underline-offset: .25em; }
+.nav a:hover, .related a:hover { color: var(--accent); }
+.hero { margin-block: clamp(2rem, 5vw, 5rem); }
+.intro { max-width: 45rem; margin-block-end: 2rem; }
+.discipline { color: var(--accent); font-size: .875rem; font-weight: 650; }
+.intro h1 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(3.65rem, 9vw, 8.75rem);
+  line-height: .85;
+  letter-spacing: -.055em;
+  font-weight: 400;
+  margin-block: .25em;
+}
+.summary { max-width: 40ch; font-size: clamp(1.125rem, 2.2vw, 1.55rem); line-height: 1.45; }
+.format { margin-top: 1rem; font-size: .875rem; color: #514a40; }
+.stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(.5rem, 3.1vw, 3rem);
+  padding: clamp(1rem, 4vw, 4rem);
+  overflow: hidden;
+  background: radial-gradient(ellipse at 70% 3%, #ffffff39, transparent 72%), var(--stage);
+  border-radius: .6rem;
+}
+.stage img { display: block; height: auto; min-width: 0; }
+.pine .stage img, .mobile .stage img {
+  width: min(33%, 16.5rem);
+  border-radius: clamp(.8rem, 2vw, 1.6rem);
+  border: clamp(.2rem, .65vw, .56rem) solid #161d19;
+  box-shadow: 0 19px 38px #0006, 0 0 0 1px #ffffff50;
+}
+.pine .stage img + img, .mobile .stage img + img { margin-top: clamp(.8rem, 6vw, 5rem); }
+.gold .stage img, .desktop .stage img {
+  width: min(100%, 63rem);
+  border: 1px solid #7148152b;
+  border-top: clamp(.45rem, 1.4vw, 1rem) solid #392642;
+  border-radius: .55rem;
+  box-shadow: 0 20px 48px #49310f38;
+}
+.desktop .stage img { border-top: 1px solid #ffffff80; }
+.indigo .stage img { width: min(46%, 26rem); }
+.print .stage img { width: min(100%, 70rem); border: clamp(.35rem, 1.2vw, .95rem) solid #fff9ee; box-shadow: 0 12px 30px #37280c43; }
+.lab .stage, .peach .stage { padding: 0; }
+.lab .stage img, .peach .stage img { width: 100%; }
+.body { padding-block-end: 4rem; }
+.contribution, .note { max-width: 58ch; font-size: 1.05rem; line-height: 1.65; }
+.features { display: grid; gap: 1.75rem; margin-block: 2rem; }
+.feature { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); align-items: center; gap: clamp(1rem, 4vw, 3.75rem); }
+.feature + .feature { padding-top: 1.75rem; border-top: 1px solid #d7d0c4; }
+.figureMedia { display: grid; place-items: center; min-width: 0; padding: clamp(.65rem, 3vw, 2rem); background: var(--surface); border-radius: .55rem; }
+.figureMedia img { display: block; width: 100%; height: auto; border-radius: .25rem; }
+.pine .figureMedia img, .mobile .figureMedia img { width: min(100%, 15rem); border: 5px solid #17241f; border-radius: 1rem; box-shadow: 0 10px 24px #243d312c; }
+.indigo .figureMedia img, .peach .figureMedia img { width: min(100%, 27rem); }
+.feature h2, .related h2 { font-family: var(--font-cormorant), Georgia, serif; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; }
+.feature figcaption p { margin-top: .65rem; line-height: 1.55; max-width: 38ch; }
+.note { font-size: .875rem; color: #514a40; }
+.related { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: baseline; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #d7d0c4; }
+.related h2 { width: 100%; }
+@media (max-width: 47rem) {
+  .feature { grid-template-columns: minmax(0, 1fr); }
+  .pine .stage img, .mobile .stage img { width: min(44%, 14rem); }
+  .indigo .stage img { width: min(48%, 20rem); }
+}
