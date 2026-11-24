@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from '@/components/PortfolioImage';
 import styles from './ClarityGuidelines.module.css';
 
 const asset = '/case-studies/clarity-labs';

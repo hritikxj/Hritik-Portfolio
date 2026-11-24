@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
+import Image from '@/components/PortfolioImage';
 import Link from 'next/link';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 
@@ -267,29 +267,14 @@ export default function DoveCampaignPage() {
                   }
                 }}
               >
-                {/* Images with transition */}
-                {strategyPillars.map((pillar, idx) => {
-                  const isActive = activeIndex === idx;
-                  return (
-                    <div
-                      key={pillar.num}
-                      className={`absolute inset-0 transition-all duration-700 ease-in-out ${
-                        isActive 
-                          ? 'opacity-100 scale-100 z-10 pointer-events-auto' 
-                          : 'opacity-0 scale-95 z-0 pointer-events-none'
-                      }`}
-                    >
-                      <Image
-                        src={`/dove/dove-slide-${idx + 2}.png`}
-                        alt={`Slide for ${pillar.title}`}
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 1024px) 100vw, 70vw"
-                        priority={idx === 0}
-                      />
-                    </div>
-                  );
-                })}
+                <Image
+                  key={activeIndex}
+                  src={`/dove/dove-slide-${activeIndex + 2}.png`}
+                  alt={`Slide for ${strategyPillars[activeIndex].title}`}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(100vw - 96px), (max-width: 1279px) 58vw, 704px"
+                />
 
                 {/* Hover zoom overlay */}
                 <div className="absolute inset-0 bg-[#0A2240]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center">

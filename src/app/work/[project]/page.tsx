@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
+import Image from '@/components/PortfolioImage';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import AppBuildDetails from '@/components/AppBuildDetails';
@@ -83,7 +83,7 @@ export default async function CaseStudyPage({ params }: Props) {
                 width={image.width}
                 height={image.height}
                 sizes={study.hero.width > study.hero.height ? '(max-width: 960px) 90vw, 1200px' : '(max-width: 720px) 43vw, 420px'}
-                loading="eager"
+                loading={index === 0 ? 'eager' : 'lazy'}
                 fetchPriority={index === 0 ? 'high' : 'auto'}
               />
             ))}

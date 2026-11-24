@@ -1,6 +1,6 @@
 
 
-import Image from 'next/image';
+import Image from '@/components/PortfolioImage';
 import Link from 'next/link';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 

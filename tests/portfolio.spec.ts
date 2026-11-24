@@ -19,6 +19,22 @@ test('mobile never loads the video or animation chunks, including after resize',
   expect(await page.locator('video').getAttribute('src')).toBeNull();
 });
 
+test('portfolio images use responsive, cacheable files and decode after scrolling', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/social-media-creatives');
+  const poster = page.getByRole('img', { name: 'Vivora Event Poster 1', exact: true });
+  await expect(poster).toHaveAttribute('loading', 'lazy');
+  await poster.scrollIntoViewIfNeeded();
+  const source = await poster.evaluate(async (image: HTMLImageElement) => {
+    await image.decode();
+    return new URL(image.currentSrc).pathname;
+  });
+  expect(source).toMatch(/^\/portfolio-images\/[a-f0-9]+\/\d+\.webp$/);
+  const response = await page.request.head(source);
+  expect(response.ok()).toBe(true);
+  expect(response.headers()['cache-control']).toContain('immutable');
+});
+
 test('desktop intro reverses after a project return', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Skip intro', exact: true }).click();

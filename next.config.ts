@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import imageSizes from "./src/lib/portfolio-image-sizes.json";
 
 const nextConfig: NextConfig = {
   async rewrites() {
@@ -15,7 +16,8 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
-    deviceSizes: [320, 384, 480, 640, 750, 828, 1080, 1200, 1440, 1920],
+    deviceSizes: imageSizes.deviceSizes,
+    imageSizes: [16, 32, 48, 64, 96, 128, ...imageSizes.imageSizes],
     minimumCacheTTL: 86400,
     qualities: [65, 75],
   },
@@ -34,6 +36,10 @@ const nextConfig: NextConfig = {
       {
         source: '/:path*\\.(mp4|webp|jpg|png)',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+      },
+      {
+        source: '/portfolio-images/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
     ];
   },

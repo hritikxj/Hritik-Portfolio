@@ -4,7 +4,7 @@ import { useWorkCategory, workCategories } from '@/hooks/useWorkCategory';
 import { caseStudies } from '@/content/case-studies';
 import Reveal from './Reveal';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from '@/components/PortfolioImage';
 
 type ProjectCard = { title: string; category: string; image: string; link: string };
 
@@ -34,9 +34,9 @@ function ProjectCards({ projects, category }: {
               alt=""
               fill
               className="object-cover motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-[1.025]"
-              quality={75}
               sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc((100vw - 120px) / 2), calc((100vw - 128px) / 3)"
               loading={index === 0 ? 'eager' : 'lazy'}
+              fetchPriority={index === 0 ? 'high' : 'auto'}
             />
           </div>
           <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">

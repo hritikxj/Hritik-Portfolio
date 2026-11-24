@@ -5,12 +5,14 @@
   "description": "Portfolio of multidisciplinary designer Hritik Jasnani.",
   "scripts": {
     "dev": "next dev --webpack",
-    "prebuild": "npm run lint && npm audit --omit=dev",
+    "prebuild": "npm run lint && npm audit --omit=dev && npm run prepare:images",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "check": "npm run build",
-    "test": "playwright test"
+    "test": "playwright test",
+    "predev": "npm run prepare:images",
+    "prepare:images": "node scripts/prepare-portfolio-images.mjs"
   },
   "dependencies": {
     "@vercel/speed-insights": "^2.0.0",
@@ -28,6 +30,7 @@
     "axe-core": "^4.14.0",
     "eslint": "^9",
     "eslint-config-next": "^16.4.6",
+    "sharp": "0.35.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

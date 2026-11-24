@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from '@/components/PortfolioImage';
 import Link from 'next/link';
 import AppBuildDetails from './AppBuildDetails';
 import styles from './FinoCaseStudy.module.css';
