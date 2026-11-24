@@ -338,10 +338,10 @@ export default function Work() {
 
   return (
     <>
-      <section id="work" className="scroll-mt-16 py-12 md:py-16">
+      <section id="work" className="scroll-mt-16 pt-8 pb-12 md:pt-10 md:pb-16">
         <div className="w-full px-5 md:px-12 lg:px-10">
           <Reveal>
-            <div className="flex flex-col gap-5 mb-12 pb-5 border-b-[0.5px] border-border-subtle">
+            <div className="flex flex-col items-center gap-4 mb-7 pb-4 text-center md:mb-8 border-b-[0.5px] border-border-subtle">
               <h2 className="font-display text-4xl md:text-5xl font-light text-ink">The Work</h2>
 
               {/* Category Filter Tabs */}
