@@ -1,5 +1,6 @@
 import Image from '@/components/PortfolioImage';
-import Link from 'next/link';
+import ProjectNav from './ProjectNav';
+import ProjectFooter from './ProjectFooter';
 import AppBuildDetails from './AppBuildDetails';
 import styles from './FinoCaseStudy.module.css';
 
@@ -42,12 +43,10 @@ const media = '/case-studies/fino';
 
 export default function FinoCaseStudy({ summary, stack }: { summary: string; stack?: readonly string[] }) {
   return (
-    <main id="main-content" tabIndex={-1} className={styles.page}>
+    <>
+    <ProjectNav background="#132033" tone="dark" />
+    <main id="main-content" tabIndex={-1} className={`${styles.page} page-enter`}>
       <div className={styles.hero}>
-        <nav className={styles.nav} aria-label="Portfolio">
-          <Link href="/?category=selected#work"><span aria-hidden="true">↖</span> Selected work</Link>
-          <span>Hritik Jasnani</span>
-        </nav>
 
         <header className={styles.shell}>
           <div className={styles.intro}>
@@ -187,9 +186,8 @@ export default function FinoCaseStudy({ summary, stack }: { summary: string; sta
         </div>
       </section>
 
-      <footer className={`${styles.shell} ${styles.footer}`}>
-        <Link href="/?category=selected#work">Back to selected work <span aria-hidden="true">↗</span></Link>
-      </footer>
     </main>
+    <ProjectFooter current="/work/fino" />
+    </>
   );
 }

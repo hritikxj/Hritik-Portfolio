@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ProjectStructuredData from "@/components/ProjectStructuredData";
 
-const title = "Purr Pantry — Brand Identity";
+const title = "Purr Pantry, Brand Identity";
 const description = "A premium cat-food identity balancing veterinary credibility with the warmth of a home-cooked meal.";
 
 export const metadata: Metadata = {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ProjectStructuredData from "@/components/ProjectStructuredData";
 
-const title = "Nothing Community Edition — UI/UX";
+const title = "Nothing Community Edition, UI/UX";
 const description = "A minimalist to-do widget concept designed for the Nothing Community Edition software showcase.";
 
 export const metadata: Metadata = {

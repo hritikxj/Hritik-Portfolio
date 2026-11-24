@@ -1,115 +1,252 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #111110;
-  --color-parchment: #F5F2EC;
-  --color-smoke: #6F6D69;
-  --color-brand-red: #C0392B;
-  --color-off-white: #FAFAF8;
-  --color-border-subtle: rgba(17, 17, 16, 0.12);
+  /* Two colours: Rice paper and Ink. Everything else is a tint of Ink on paper. */
+  --color-ink: #1A1A1A;
+  --color-off-white: #F5F6F3;          /* Rice paper */
+  --color-parchment: #EAEBE7;          /* Ink 5% on paper: image placeholders, soft fills */
+  --color-smoke: #5A5C5F;              /* Ink 70% on paper: secondary text, 6.4:1 */
+  --color-border-subtle: rgba(26, 26, 26, 0.12);
+  --color-band: #1A1A1A;               /* Contact and footer band: dark in both themes */
+  --color-band-fg: #F5F6F3;            /* Text and buttons on the band */
+  --color-band-soft: #C8C9C6;          /* Solid tones on the band. Never use see-through */
+  --color-band-muted: #9C9E9A;         /* text: overlapping letters would show as bright */
+  --color-band-faint: #757773;         /* patches where they touch. */
 
-  --font-display: var(--font-cormorant), serif;
-  --font-body: var(--font-dm-sans), sans-serif;
+  /* One typeface across the site. */
+  --font-display: var(--font-switzer), "Helvetica Neue", Arial, sans-serif;
+  --font-body: var(--font-switzer), "Helvetica Neue", Arial, sans-serif;
 
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Dark theme. `data-theme` is set before paint from the visitor's choice; with
+   no choice saved (or no JavaScript) the operating-system setting is used. */
+:root { color-scheme: light; }
 
+:root[data-theme="dark"] {
+  --color-ink: #ECEDEA;
+  --color-off-white: #131413;
+  --color-parchment: #1E1F1E;
+  --color-smoke: #A2A4A0;
+  --color-border-subtle: rgba(236, 237, 234, 0.14);
+  --color-band: #1C1D1C;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-ink: #ECEDEA;
+    --color-off-white: #131413;
+    --color-parchment: #1E1F1E;
+    --color-smoke: #A2A4A0;
+    --color-border-subtle: rgba(236, 237, 234, 0.14);
+    --color-band: #1C1D1C;
+    color-scheme: dark;
+  }
+}
+
+/* Theme toggle icon: CSS picks the icon so server and client markup match. */
+.theme-icon-sun { display: none; }
+:root[data-theme="dark"] .theme-icon-sun { display: block; }
+:root[data-theme="dark"] .theme-icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-icon-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-icon-moon { display: none; }
+}
+
+/* Smooth colour change when the visitor switches themes (not on first paint). */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.45s var(--ease-out-soft), border-color 0.45s var(--ease-out-soft), color 0.45s var(--ease-out-soft), fill 0.45s var(--ease-out-soft) !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 body {
   font-family: var(--font-body);
   background-color: var(--color-off-white);
   color: var(--color-ink);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
-  overflow-x: hidden;
-}
-@keyframes introLinePulse {
-  0%, 100% { opacity: 0.4; transform: scaleY(0.85) translateY(-4px); }
-  50% { opacity: 1; transform: scaleY(1) translateY(0); }
+  overflow-x: clip;
 }
 
-@keyframes premiumScrollLine {
-  0% {
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-  45% {
-    transform: scaleY(1);
-    transform-origin: top;
-  }
-  55% {
-    transform: scaleY(1);
-    transform-origin: bottom;
-  }
-  100% {
-    transform: scaleY(0);
-    transform-origin: bottom;
-  }
+::selection {
+  background: var(--color-ink);
+  color: var(--color-off-white);
 }
 
-.intro-scroll-line {
-  display: block;
-  width: 2.5px;
-  height: 90px;
-  background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0.45));
-  animation: premiumScrollLine 2.2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-}
+img { -webkit-user-drag: none; }
 
-.intro-text-initial-fade {
-  opacity: 1;
-}
+/* ─── Shared layout + type roles ─────────────────────────────────────────── */
 
-.intro-text-initial-fade.loaded {
-  opacity: 1;
-}
-
-.intro-spacer,
-.intro-overlay {
-  display: none;
-}
-
-.intro-shell[data-intro='active'] .intro-spacer,
-.intro-shell[data-intro='active'] .intro-overlay {
-  display: block;
-}
-
-.intro-shell[data-intro='active'] .landing-initial-state {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-@keyframes introLoading {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(100%); }
-}
-
-.intro-loading-line {
+@utility page-container {
   width: 100%;
-  height: 100%;
-  background: #fff;
-  animation: introLoading 1.2s ease-in-out infinite;
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: 20px;
+  @media (width >= 48rem) { padding-inline: 40px; }
+  @media (width >= 80rem) { padding-inline: 56px; }
+}
+
+@utility eyebrow {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@utility section-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.25rem, 5.2vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+/* ─── Reveal-on-scroll ───────────────────────────────────────────────────────
+   Content is visible by default (no JS, crawlers, failures). The `js` class is
+   added by an inline script before paint, then RevealObserver marks elements
+   visible as they approach the viewport. */
+
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 0.9s var(--ease-out-soft),
+    transform 0.9s var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.js [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Page entrance for case studies: a short, quiet fade. */
+@keyframes page-enter {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+.page-enter {
+  animation: page-enter 0.7s var(--ease-out-soft) both;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-brand-red);
+  outline: 2px solid var(--color-ink);
   outline-offset: 3px;
 }
 
-@media (max-width: 767px), (prefers-reduced-motion: reduce) {
-  .intro-spacer,
-  .intro-overlay {
-    display: none !important;
+/* Hero work ribbon: two rows of real work drifting the same way. */
+.work-ribbon {
+  --ribbon-h: clamp(124px, min(22vw, 22svh), 236px);
+}
+
+.ribbon-mask {
+  /* Fade the ends into the page, in either theme. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.ribbon-row {
+  overflow: hidden;
+  padding-block: 2px;
+}
+
+.ribbon-track {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.ribbon-tile {
+  box-shadow: 0 0 0 0.5px var(--color-border-subtle);
+  -webkit-user-drag: none;
+}
+
+.ribbon-tile {
+  transition: opacity 0.6s var(--ease-out-soft);
+}
+
+.ribbon-tile:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Hovering one piece quietly sets the rest back, so there is one thing to look at. */
+@media (hover: hover) and (pointer: fine) {
+  .ribbon-mask:has(.ribbon-tile:hover) .ribbon-tile:not(:hover) {
+    opacity: 0.5;
+  }
+}
+
+/* In dark mode, bright work would glare against the page; soften it until hovered. */
+:root[data-theme="dark"] .ribbon-tile img {
+  filter: brightness(0.86);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ribbon-tile img {
+    filter: brightness(0.86);
+  }
+}
+
+:root .ribbon-tile:hover img,
+:root .ribbon-tile:focus-visible img {
+  filter: none;
+}
+
+.ribbon-label {
+  opacity: 0;
+  transform: translate3d(0, 6px, 0);
+  transition: opacity 0.45s var(--ease-out-soft), transform 0.6s var(--ease-out-soft);
+}
+
+.ribbon-tile:hover .ribbon-label,
+.ribbon-tile:focus-visible .ribbon-label {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No drift: each row becomes a still strip people can swipe through. */
+  .ribbon-row {
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-inline: 16px;
   }
 
-  .landing-initial-state {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
+  .ribbon-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ribbon-track > li:nth-child(n + 9),
+  .ribbon-toggle {
+    display: none;
+  }
+
+  .ribbon-mask {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
   *,
   *::before,
   *::after {
@@ -119,5 +256,3 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
-
-

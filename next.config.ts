@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
       ['malabar', 3], ['thru', 3], ['vivora', 6],
     ] as const;
     return [
-      { source: '/intro2-scrub.mp4', destination: '/intro-desktop.mp4' },
       ...groups.flatMap(([name, count]) => Array.from({ length: count }, (_, index) => ({
         source: `/social/${name}_${index + 1}.png`,
         destination: `/social/${name}_${index + 1}.webp`,
@@ -34,7 +33,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/:path*\\.(mp4|webp|jpg|png)',
+        source: '/:path*\\.(webp|jpg|png)',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
       },
       {

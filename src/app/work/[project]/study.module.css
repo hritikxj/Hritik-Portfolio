@@ -1,9 +1,11 @@
 .page {
   min-height: 100vh;
-  background: #f8f6f0;
-  color: #221e19;
-  padding-inline: clamp(1.25rem, 4vw, 4.5rem);
+  background: var(--color-off-white);
+  color: var(--color-ink);
+  padding-inline: 20px;
 }
+@media (min-width: 48rem) { .page { padding-inline: 40px; } }
+@media (min-width: 80rem) { .page { padding-inline: 56px; } }
 
 .pine { --stage: #143e32; --surface: #e1e9df; --accent: #245542; }
 .gold { --stage: #f1d990; --surface: #f3e9d0; --accent: #60401e; }
@@ -14,31 +16,9 @@
 .desktop { --stage: #293743; --surface: #e7ebec; --accent: #354e60; }
 .mobile { --stage: #184d48; --surface: #e2eeeb; --accent: #236153; }
 
-.nav, .hero, .body { max-width: 86rem; margin-inline: auto; }
-.nav {
-  min-height: 4.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 1px solid #d7d0c4;
-  font-size: .875rem;
-}
-.nav a, .related a { text-decoration: underline; text-underline-offset: .25em; }
-.nav a:hover, .related a:hover { color: var(--accent); }
-.hero { margin-block: clamp(2rem, 5vw, 5rem); }
-.intro { max-width: 45rem; margin-block-end: 2rem; }
-.discipline { color: var(--accent); font-size: .875rem; font-weight: 650; }
-.intro h1 {
-  font-family: var(--font-cormorant), Georgia, serif;
-  font-size: clamp(3.65rem, 9vw, 8.75rem);
-  line-height: .85;
-  letter-spacing: -.055em;
-  font-weight: 400;
-  margin-block: .25em;
-}
-.summary { max-width: 40ch; font-size: clamp(1.125rem, 2.2vw, 1.55rem); line-height: 1.45; }
-.format { margin-top: 1rem; font-size: .875rem; color: #514a40; }
+.hero, .body { max-width: 1248px; margin-inline: auto; }
+.hero { padding-block: clamp(3rem, 6vw, 5rem) 0; }
+.build { max-width: 46rem; margin: -1rem 0 2.5rem; }
 .stage {
   display: flex;
   align-items: center;
@@ -47,7 +27,7 @@
   padding: clamp(1rem, 4vw, 4rem);
   overflow: hidden;
   background: radial-gradient(ellipse at 70% 3%, #ffffff39, transparent 72%), var(--stage);
-  border-radius: .6rem;
+  border-radius: .5rem;
 }
 .stage img { display: block; height: auto; min-width: 0; }
 .pine .stage img, .mobile .stage img {
@@ -69,22 +49,30 @@
 .print .stage img { width: min(100%, 70rem); border: clamp(.35rem, 1.2vw, .95rem) solid #fff9ee; box-shadow: 0 12px 30px #37280c43; }
 .lab .stage, .peach .stage { padding: 0; }
 .lab .stage img, .peach .stage img { width: 100%; }
-.body { padding-block-end: 4rem; }
-.contribution, .note { max-width: 58ch; font-size: 1.05rem; line-height: 1.65; }
-.features { display: grid; gap: 1.75rem; margin-block: 2rem; }
+.body { padding-block: clamp(3rem, 6vw, 5rem) clamp(4rem, 8vw, 7rem); }
+.role { display: grid; gap: .9rem 3rem; padding-bottom: clamp(2rem, 4vw, 3rem); border-bottom: 1px solid var(--color-border-subtle); }
+@media (min-width: 48rem) { .role { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); align-items: baseline; } }
+.contribution { max-width: 36ch; font-family: var(--font-display); font-size: clamp(1.4rem, 2.4vw, 1.9rem); font-weight: 500; line-height: 1.25; letter-spacing: 0; }
+.note { max-width: 58ch; line-height: 1.65; }
+.features { display: grid; gap: clamp(2rem, 4vw, 3.5rem); margin-block: clamp(2rem, 4vw, 3.5rem); }
 .feature { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); align-items: center; gap: clamp(1rem, 4vw, 3.75rem); }
-.feature + .feature { padding-top: 1.75rem; border-top: 1px solid #d7d0c4; }
+.feature + .feature { padding-top: clamp(2rem, 4vw, 3.5rem); border-top: 1px solid var(--color-border-subtle); }
 .figureMedia { display: grid; place-items: center; min-width: 0; padding: clamp(.65rem, 3vw, 2rem); background: var(--surface); border-radius: .55rem; }
 .figureMedia img { display: block; width: 100%; height: auto; border-radius: .25rem; }
 .pine .figureMedia img, .mobile .figureMedia img { width: min(100%, 15rem); border: 5px solid #17241f; border-radius: 1rem; box-shadow: 0 10px 24px #243d312c; }
 .indigo .figureMedia img, .peach .figureMedia img { width: min(100%, 27rem); }
-.feature h2, .related h2 { font-family: var(--font-cormorant), Georgia, serif; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; }
-.feature figcaption p { margin-top: .65rem; line-height: 1.55; max-width: 38ch; }
-.note { font-size: .875rem; color: #514a40; }
-.related { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: baseline; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #d7d0c4; }
-.related h2 { width: 100%; }
+.feature h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.7rem, 3.2vw, 2.4rem); line-height: 1.05; letter-spacing: .035em; }
+.feature figcaption p { margin-top: .85rem; font-size: 1rem; line-height: 1.65; max-width: 38ch; color: var(--color-smoke); }
+.note { font-size: .875rem; color: var(--color-smoke); margin-top: 2rem; }
 @media (max-width: 47rem) {
   .feature { grid-template-columns: minmax(0, 1fr); }
   .pine .stage img, .mobile .stage img { width: min(44%, 14rem); }
   .indigo .stage img { width: min(48%, 20rem); }
+}
+
+/* Dark theme: keep each project's stage colour, but dim the light mats behind
+   screenshots and use a readable label colour instead of the dark accent. */
+:global(:root[data-theme="dark"]) .page { --surface: color-mix(in srgb, var(--stage) 22%, #131413); --accent: var(--color-smoke); }
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-theme="light"])) .page { --surface: color-mix(in srgb, var(--stage) 22%, #131413); --accent: var(--color-smoke); }
 }

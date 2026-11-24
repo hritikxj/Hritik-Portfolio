@@ -1,50 +1,193 @@
 'use client';
 
-import { useWorkCategory, workCategories } from '@/hooks/useWorkCategory';
-import { caseStudies } from '@/content/case-studies';
-import Reveal from './Reveal';
 import Link from 'next/link';
+import { useWorkCategory, workCategories } from '@/hooks/useWorkCategory';
+import { orderedProjects, selectedLinks, type Project } from '@/content/projects';
 import Image from '@/components/PortfolioImage';
 
-type ProjectCard = { title: string; category: string; image: string; link: string };
+type Category = (typeof workCategories)[number];
 
-function ProjectCards({ projects, category }: {
-  projects: readonly ProjectCard[];
-  category: (typeof workCategories)[number];
+function ProjectCard({ project, index, category }: {
+  project: Project;
+  index: number;
+  category: Category;
 }) {
   return (
-    <div className="grid grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
-      {projects.map((project, index) => (
-        <Link
-          key={project.link}
-          href={project.link}
-          prefetch={false}
-          onClick={() => {
-            try {
-              sessionStorage.setItem('portfolio-scroll-y', String(window.scrollY));
-              sessionStorage.setItem('portfolio-intro-height', String(document.querySelector<HTMLElement>('.intro-spacer')?.offsetHeight ?? 0));
-              sessionStorage.setItem('portfolio-category', category);
-            } catch { /* Navigation still works when storage is disabled. */ }
-          }}
-          className="group block min-w-0 rounded-md no-underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-red"
+    <Link
+      href={project.link}
+      prefetch={false}
+      data-reveal=""
+      style={{ '--reveal-delay': `${(index % 3) * 70}ms` } as React.CSSProperties}
+      onClick={() => {
+        try {
+          // Scroll position is saved by ScrollMemory for every outgoing link.
+          sessionStorage.setItem('portfolio-category', category);
+        } catch { /* Navigation still works when storage is disabled. */ }
+      }}
+      className={`group block min-w-0 rounded-lg no-underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink`}
+    >
+      <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-parchment">
+        <Image
+          src={project.image}
+          alt=""
+          fill
+          className="object-cover transition-transform duration-[1.1s] ease-out-soft motion-safe:group-hover:scale-[1.035]"
+          sizes='(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc((100vw - 120px) / 3), 420px'
+          loading={index < 2 ? 'eager' : 'lazy'}
+          fetchPriority={index === 0 ? 'high' : 'auto'}
+        />
+        {project.built && (
+          <span className="absolute left-3 top-3 rounded-full bg-off-white/90 px-2.5 py-1 text-[11px] font-medium text-ink backdrop-blur-sm">
+            Designed &amp; built
+          </span>
+        )}
+      </div>
+      <div className="mt-4 flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <h3 className="font-display text-[22px] font-semibold md:text-[19px] lg:text-[22px] leading-[1.15] text-ink">
+            {project.title}
+          </h3>
+          <p className="mt-1.5 text-[14px] leading-[1.55] text-smoke">{project.blurb}</p>
+        </div>
+        <span
+          aria-hidden="true"
+          className="mt-1 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border-subtle text-ink transition-all duration-500 ease-out-soft group-hover:border-ink group-hover:bg-ink group-hover:text-off-white"
         >
-          <div className="relative mb-3 aspect-4/3 overflow-hidden rounded-md bg-parchment">
-            <Image
-              src={project.image}
-              alt=""
-              fill
-              className="object-cover motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-[1.025]"
-              sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc((100vw - 120px) / 2), calc((100vw - 128px) / 3)"
-              loading={index === 0 ? 'eager' : 'lazy'}
-              fetchPriority={index === 0 ? 'high' : 'auto'}
-            />
+          <span className="transition-transform duration-500 ease-out-soft group-hover:-rotate-45">→</span>
+        </span>
+      </div>
+      <p className="eyebrow mt-3 text-[11px] text-smoke">{project.discipline}</p>
+    </Link>
+  );
+}
+
+type Artwork = { src: string; alt: string; width: number; height: number; className: string; sizes: string };
+type Group = { caption: string; detail: string; items: Artwork[]; /** Case study for this piece, if it has one. */ link?: string };
+
+const art = (src: string, alt: string, width: number, height: number, className: string, sizes: string): Artwork =>
+  ({ src: `/Illustration section/${src}`, alt, width, height, className, sizes });
+
+const half = '(max-width: 767px) calc(100vw - 40px), 50vw';
+const third = '(max-width: 767px) calc(100vw - 40px), 33vw';
+const quarter = '(max-width: 767px) calc(50vw - 26px), 25vw';
+
+const illustrationGroups: Group[] = [
+  {
+    caption: 'Byraam Realty',
+    detail: 'Commissioned city panorama · Bengaluru',
+    link: '/work/byraam-realty',
+    items: [
+      { src: '/case-studies/byraam-realty/panorama.webp', alt: 'Illustrated Bengaluru panorama with a glasshouse, temple, roadside café and flower stall', width: 1600, height: 800, className: 'col-span-2 md:col-span-12', sizes: '(max-width: 767px) calc(100vw - 40px), (max-width: 1360px) calc(100vw - 112px), 1248px' },
+    ],
+  },
+  {
+    caption: 'Cricket comic strip',
+    detail: 'Sequential comic · final strip and process',
+    items: [
+      art('1.jpg', 'Cricket comic strip: a ball breaks a window and the neighbours react', 1410, 1000, 'col-span-2 md:col-span-6', half),
+      art('1 process.jpg', 'Comic process: storyboards, line layouts and colour blocking', 1410, 1000, 'col-span-2 md:col-span-6', half),
+    ],
+  },
+  {
+    caption: 'Banaras & Samurai',
+    detail: 'Editorial and character illustration',
+    items: [
+      art('2 banaras illustration.jpg', 'Editorial illustration of a ghat scene in Banaras', 710, 1000, 'col-span-2 md:col-span-6', half),
+      art('3 samurai.jpg', 'Character illustration of a samurai in red and white', 710, 1000, 'col-span-2 md:col-span-6', half),
+    ],
+  },
+  {
+    caption: 'Love Secrets of Ghalib',
+    detail: 'Book cover · line art, lettering and print mockups',
+    items: [
+      art('4 galib book cover illustration.jpg', 'Line-art illustration for the Ghalib poetry cover', 710, 1000, 'col-span-2 md:col-span-4', third),
+      art('4 galib book cover .jpg', 'Final Love Secrets of Ghalib cover with custom lettering', 710, 1000, 'col-span-2 md:col-span-4', third),
+      art('4 mockup 1.jpg', 'Printed Ghalib book cover mockup', 750, 1000, 'col-span-2 md:col-span-4', third),
+    ],
+  },
+  {
+    caption: 'Ajji KaiRuchi',
+    detail: 'Brand illustration for packaging',
+    link: '/work/ajji-kairuchi',
+    items: [
+      art('5 ajji kairuchi brand illustration for their packaging.jpg', 'Grandmothers preparing traditional recipes, illustrated for Ajji KaiRuchi packaging', 1200, 1000, 'col-span-2 md:col-span-12', '(max-width: 767px) calc(100vw - 40px), 100vw'),
+    ],
+  },
+  {
+    caption: 'Caricature for Vaibhav Kumaresh',
+    detail: 'Hand-drawn portrait, presented in person',
+    items: [
+      art('6 caricature illustration for Vaibhav Kumaresh.jpg', 'Caricature of animation director Vaibhav Kumaresh', 710, 1000, 'col-span-2 md:col-span-4', third),
+      art('6 Picture with Vaibhav Kumaresh.jpg', 'Hritik presenting the framed caricature to Vaibhav Kumaresh', 1500, 1000, 'col-span-2 md:col-span-8', '(max-width: 767px) calc(100vw - 40px), 66vw'),
+    ],
+  },
+  {
+    caption: 'Immortal Coffee',
+    detail: 'Mascot illustration, signage and packaging',
+    items: [
+      art('7 illustration for immortal coffee.jpg', 'Line-art bull mascot sketch for Immortal Coffee', 750, 1000, 'col-span-1 md:col-span-3', quarter),
+      art('7 illustration for immortal coffee 2.jpg', 'Red neon sign of the Immortal Coffee mascot', 750, 1000, 'col-span-1 md:col-span-3', quarter),
+      art('7 illustration for immortal coffee mockup 1.jpg', 'Matte-black Immortal Coffee bag with gold details', 750, 1000, 'col-span-1 md:col-span-3', quarter),
+      art('7 illustration for immortal coffee mockup 2.jpg', 'Close-up of gold foil on the Immortal Coffee bag', 750, 1000, 'col-span-1 md:col-span-3', quarter),
+    ],
+  },
+];
+
+function IllustrationGallery() {
+  return (
+    <div className="space-y-16 md:space-y-20">
+      {illustrationGroups.map((group, index) => {
+        const artwork = (
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-12 md:gap-5">
+            {group.items.map(item => (
+              <div key={item.src} className={`overflow-hidden rounded-lg bg-parchment ${item.className}`}>
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  width={item.width}
+                  height={item.height}
+                  className={`block h-auto w-full ${group.link ? 'transition-transform duration-[1.1s] ease-out-soft motion-safe:group-hover:scale-[1.02]' : ''}`}
+                  sizes={item.sizes}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                />
+              </div>
+            ))}
           </div>
-          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-            <span className="text-base font-semibold text-ink group-hover:underline group-hover:underline-offset-4">{project.title}</span>
-            <span className="text-sm text-smoke">{project.category}</span>
-          </div>
-        </Link>
-      ))}
+        );
+        const caption = (
+          <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-t-[0.5px] border-border-subtle pt-3">
+            <span className="font-display text-[20px] font-semibold leading-tight text-ink">{group.caption}</span>
+            <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-[13px] text-smoke">
+              {group.detail}
+              {group.link && (
+                <span className="inline-flex items-center gap-1.5 font-medium text-ink underline-offset-4 group-hover:underline">
+                  View case study <span aria-hidden="true" className="transition-transform duration-500 ease-out-soft group-hover:translate-x-1">→</span>
+                </span>
+              )}
+            </span>
+          </figcaption>
+        );
+        return (
+          <figure key={group.caption} data-reveal="">
+            {group.link ? (
+              <Link
+                href={group.link}
+                prefetch={false}
+                className="group block rounded-lg no-underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+                aria-label={`${group.caption}: view case study`}
+              >
+                {artwork}
+                {caption}
+              </Link>
+            ) : (
+              <>
+                {artwork}
+                {caption}
+              </>
+            )}
+          </figure>
+        );
+      })}
     </div>
   );
 }
@@ -52,403 +195,61 @@ function ProjectCards({ projects, category }: {
 export default function Work() {
   const [activeCategory, setActiveCategory] = useWorkCategory();
 
-  const works = [
-    ...caseStudies.map(study => ({
-      title: study.title,
-      category: study.discipline,
-      section: study.category,
-      image: `/case-studies/${study.slug}/${study.cover ?? 'cover.webp'}`,
-      link: `/work/${study.slug}`,
-    })),
-    // Branding
-    {
-      title: "Purr Pantry — Premium Cat Food Brand",
-      category: "Branding",
-      section: "Branding",
-      image: "/Purthumbnail.jpg",
-      link: "/purr-pantry"
-    },
-    {
-      title: "Dove #TheRealGrowth",
-      category: "Campaign",
-      section: "Branding",
-      image: "/dove_thumb.jpg",
-      link: "/dove"
-    },
-    {
-      title: "Dash — Ultra-Fast Electronics Delivery",
-      category: "Branding",
-      section: "Branding",
-      image: "/case-studies/dash/delivery-cover.webp",
-      link: "/dash"
-    },
-    {
-      title: "Social Media Creatives",
-      category: "Social Media",
-      section: "Branding",
-      image: "/social_thumb.png",
-      link: "/social-media-creatives"
-    },
-
-    // UI/UX
-    {
-      title: "Nothing Community Edition",
-      category: "UI/UX",
-      section: "UI/UX",
-      image: "/nothing_thumb.jpg",
-      link: "/nothing"
-    },
-  ];
-
-  const illustrations = [
-    {
-      id: "comic-main",
-      title: "Cricket Comic Strip",
-      category: "Comic Art",
-      image: "/Illustration section/1.jpg",
-      description: "A sequential comic strip telling the story of a cricket ball breaking a window and the resulting reaction.",
-      role: "Illustrator / Storyboard Artist",
-      year: "2026",
-      color: "#F5F5F0",
-      thumbText: "Cricket Comic",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[1.41]"
-    },
-    {
-      id: "comic-process",
-      title: "Comic Strip Process & Sketches",
-      category: "Process Work",
-      image: "/Illustration section/1 process.jpg",
-      description: "Development stages showing rough storyboards, line layouts, and color blocking phases for the cricket comic strip.",
-      role: "Illustrator",
-      year: "2026",
-      color: "#F5F5F0",
-      thumbText: "Comic Process",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[1.41]"
-    },
-    {
-      id: "banaras",
-      title: "Banaras Illustration (A4 - 24)",
-      category: "Editorial Illustration",
-      image: "/Illustration section/2 banaras illustration.jpg",
-      description: "An editorial visual study depicting a traditional scene in Banaras, showcasing architecture and cultural elements.",
-      role: "Illustrator",
-      year: "2026",
-      color: "#1A2E40",
-      thumbText: "Banaras",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.71]"
-    },
-    {
-      id: "samurai",
-      title: "Samurai Illustration (A4 - 21)",
-      category: "Character Design",
-      image: "/Illustration section/3 samurai.jpg",
-      description: "A bold character illustration depicting a Japanese samurai in action with striking red and white colors.",
-      role: "Illustrator",
-      year: "2026",
-      color: "#B82525",
-      thumbText: "Samurai",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.71]"
-    },
-    {
-      id: "ghalib-illustration",
-      title: "Ghalib Cover Art Study",
-      category: "Book Cover Design",
-      image: "/Illustration section/4 galib book cover illustration.jpg",
-      description: "Intricate line-art illustration study for Ghalib's poetry book cover with color explorations.",
-      role: "Illustrator / Cover Designer",
-      year: "2026",
-      color: "#1E2240",
-      thumbText: "Ghalib Art",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.71]"
-    },
-    {
-      id: "ghalib-cover",
-      title: "Love Secrets of Ghalib Book Cover",
-      category: "Book Cover Design",
-      image: "/Illustration section/4 galib book cover .jpg",
-      description: "The finalized cover design for 'Love Secrets of Ghalib' featuring custom lettering and line art details.",
-      role: "Cover Designer",
-      year: "2026",
-      color: "#1E2240",
-      thumbText: "Ghalib Cover",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.71]"
-    },
-    {
-      id: "ghalib-mockup-1",
-      title: "Ghalib Mockup - Front View",
-      category: "Packaging Mockup",
-      image: "/Illustration section/4 mockup 1.jpg",
-      description: "Book cover mockup showing the final layout and texture of the cover in a print environment.",
-      role: "Designer",
-      year: "2026",
-      color: "#FAF9F5",
-      thumbText: "Mockup 1",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.75]"
-    },
-    {
-      id: "ghalib-mockup-2",
-      title: "Ghalib Mockup - Spread View",
-      category: "Packaging Mockup",
-      image: "/Illustration section/4 mockup 2.jpg",
-      description: "Book spread mockup displaying the texture and print quality of the jacket paper and binding.",
-      role: "Designer",
-      year: "2026",
-      color: "#FAF9F5",
-      thumbText: "Mockup 2",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.75]"
-    },
-    {
-      id: "ghalib-mockup-3",
-      title: "Ghalib Mockup - Shelf Display",
-      category: "Packaging Mockup",
-      image: "/Illustration section/4 mockup 3.jpg",
-      description: "Lifestyle print mockup showing the book styled on a bookshelf with accessories.",
-      role: "Designer",
-      year: "2026",
-      color: "#FAF9F5",
-      thumbText: "Mockup 3",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.75]"
-    },
-    {
-      id: "ghalib-mockup-4",
-      title: "Ghalib Mockup - Library Scene",
-      category: "Packaging Mockup",
-      image: "/Illustration section/4 mockup 4.jpg",
-      description: "An alternative library shelf presentation showing the book spine and cover aesthetic in ambient lighting.",
-      role: "Designer",
-      year: "2026",
-      color: "#FAF9F5",
-      thumbText: "Mockup 4",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.75]"
-    },
-    {
-      id: "ajji-kairuchi",
-      title: "Ajji Kairuchi Packaging Illustration",
-      category: "Brand Illustration",
-      image: "/Illustration section/5 ajji kairuchi brand illustration for their packaging.jpg",
-      description: "Warm, family-centric character illustration created for Ajji Kairuchi brand packaging, depicting grandmothers preparing traditional recipes.",
-      role: "Illustrator",
-      year: "2026",
-      color: "#D67B27",
-      thumbText: "Ajji Kairuchi",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[1.20]"
-    },
-    {
-      id: "vaibhav-caricature",
-      title: "Vaibhav Kumaresh Caricature",
-      category: "Caricature Art",
-      image: "/Illustration section/6 caricature illustration for Vaibhav Kumaresh.jpg",
-      description: "A custom hand-drawn digital caricature of renowned Indian animation director Vaibhav Kumaresh.",
-      role: "Illustrator",
-      year: "2026",
-      color: "#ECC844",
-      thumbText: "Caricature",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.71]"
-    },
-    {
-      id: "vaibhav-picture",
-      title: "Presenting to Vaibhav Kumaresh",
-      category: "Event Photo",
-      image: "/Illustration section/6 Picture with Vaibhav Kumaresh.jpg",
-      description: "A photograph capturing the moment of presenting the framed caricature to Vaibhav Kumaresh.",
-      role: "Illustrator",
-      year: "2026",
-      color: "#F0EFEA",
-      thumbText: "Presentation",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[1.50]"
-    },
-    {
-      id: "coffee-concept",
-      title: "Immortal Coffee Concept Sketch",
-      category: "Brand Illustration",
-      image: "/Illustration section/7 illustration for immortal coffee.jpg",
-      description: "Minimalist black and white line-art logo/mascot sketch depicting a bull character with coffee elements.",
-      role: "Brand Designer",
-      year: "2026",
-      color: "#FAF9F5",
-      thumbText: "Coffee Sketch",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.75]"
-    },
-    {
-      id: "coffee-neon",
-      title: "Immortal Coffee Neon Branding",
-      category: "Brand Signage",
-      image: "/Illustration section/7 illustration for immortal coffee 2.jpg",
-      description: "A glowing red acrylic neon signage mockup displaying the Immortal Coffee mascot character.",
-      role: "Brand Designer",
-      year: "2026",
-      color: "#1E1212",
-      thumbText: "Neon Sign",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.75]"
-    },
-    {
-      id: "coffee-mockup-1",
-      title: "Immortal Coffee Package Mockup (Front)",
-      category: "Packaging Design",
-      image: "/Illustration section/7 illustration for immortal coffee mockup 1.jpg",
-      description: "Front view of the premium matte-black coffee bean packaging with gold-foil details.",
-      role: "Packaging Designer",
-      year: "2026",
-      color: "#121212",
-      thumbText: "Mockup 1",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.75]"
-    },
-    {
-      id: "coffee-mockup-2",
-      title: "Immortal Coffee Package Detail",
-      category: "Packaging Design",
-      image: "/Illustration section/7 illustration for immortal coffee mockup 2.jpg",
-      description: "Close-up mockup highlighting the gold foil texture and contrast on the matte black packaging surface.",
-      role: "Packaging Designer",
-      year: "2026",
-      color: "#121212",
-      thumbText: "Mockup 2",
-      textClass: "text-sm text-smoke",
-      aspectClass: "aspect-[0.75]"
-    }
-  ];
-
-  const selectedLinks = [
-    '/work/clarity-labs', '/social-media-creatives', '/work/og-kombucha',
-    '/work/fino', '/work/farebird', '/dash',
-    '/work/typehaus', '/work/fileshuttle', '/work/digital-buddy',
-    '/purr-pantry', '/nothing',
-  ];
-  const selectedWorks = selectedLinks.flatMap(link => works.filter(work => work.link === link));
-  const filteredWorks = activeCategory === 'Selected'
-    ? selectedWorks
-    : [...selectedWorks, ...works.filter(work => !selectedLinks.includes(work.link))]
-        .filter(work => work.section === activeCategory);
+  const visible = activeCategory === 'Selected'
+    ? orderedProjects.filter(project => (selectedLinks as readonly string[]).includes(project.link))
+    : orderedProjects.filter(project => project.section === activeCategory);
 
   return (
-    <>
-      <section id="work" className="scroll-mt-16 pt-8 pb-12 md:pt-10 md:pb-16">
-        <div className="w-full px-5 md:px-12 lg:px-10">
-          <Reveal>
-            <div className="flex flex-col items-center gap-4 mb-7 pb-4 text-center md:mb-8 border-b-[0.5px] border-border-subtle">
-              <h2 className="font-display text-4xl md:text-5xl font-light text-ink">The Work</h2>
+    <section id="work" aria-labelledby="work-title" className="scroll-mt-16 py-16 md:py-24">
+      <div className="page-container">
+        <div data-reveal="" className="mb-10 flex flex-col gap-6 border-b-[0.5px] border-border-subtle pb-6 md:mb-12 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="eyebrow text-smoke">01 · Work</p>
+            <h2 id="work-title" className="section-title mt-3">Selected work</h2>
+          </div>
 
-              {/* Category Filter Tabs */}
-              <div
-                role="group"
-                aria-label="Filter work by category"
-                className="flex items-center gap-1 p-1 bg-parchment/60 border border-border-subtle rounded-full w-full md:w-fit select-none scrollbar-none"
-              >
-                {workCategories.map((cat) => {
-                  const isActive = activeCategory === cat;
-                  return (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveCategory(cat)}
-                      aria-pressed={isActive}
-                      className="relative flex-1 md:flex-none px-1 sm:px-5 py-2.5 rounded-full text-[11px] sm:text-xs font-semibold sm:tracking-wider uppercase cursor-pointer whitespace-nowrap select-none"
-                      style={{ WebkitTapHighlightColor: 'transparent' }}
-                    >
-                      {isActive && (
-                        <div
-                          className="absolute inset-0 bg-brand-red rounded-full"
-                        />
-                      )}
-                      <span className={`relative z-10 transition-colors duration-300 ${isActive ? "text-off-white" : "text-smoke hover:text-ink"}`}>
-                        {cat}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </Reveal>
-            <ProjectCards projects={filteredWorks} category={activeCategory} />
-            {activeCategory === "Illustrations" && (
-              /* Immersive Custom Curated Bento Grid for Illustrations, preserving sequence with height alignment */
-              <div
-                key="illustrations-grid"
-                className="mt-12 grid grid-cols-1 md:grid-cols-12 gap-6 w-full items-start"
-              >
-
-                {/* Row 1: Comic Strip & Process (Landscape - 6 cols each) */}
-                <div className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[0].image} alt={illustrations[0].title} width={1410} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
-                </div>
-                <div className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[1].image} alt={illustrations[1].title} width={1410} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
-                </div>
-
-                {/* Row 2: Poster Print Series (Portrait - 6 cols each) */}
-                <div className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[2].image} alt={illustrations[2].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
-                </div>
-                <div className="col-span-12 md:col-span-6 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[3].image} alt={illustrations[3].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 50vw" />
-                </div>
-
-                {/* Row 3: Ghalib Section (Left stacked, Right 2x2 grid) */}
-                {/* Stacked Ghalib Art & Cover on Left (4 cols) */}
-                <div className="col-span-12 md:col-span-4 flex flex-col gap-6 w-full">
-                  <div className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                    <Image src={illustrations[4].image} alt={illustrations[4].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 33vw" />
-                  </div>
-                  <div className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                    <Image src={illustrations[5].image} alt={illustrations[5].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 33vw" />
-                  </div>
-                </div>
-                {/* 2x2 Mockup Grid on Right (8 cols) */}
-                <div className="col-span-12 md:col-span-8 grid grid-cols-2 gap-6 w-full">
-                  {illustrations.slice(6, 10).map((item) => (
-                    <div key={item.id} className="overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                      <Image src={item.image} alt={item.title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 33vw" />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Row 4: Ajji Kairuchi (Full Width - 12 cols) */}
-                <div className="col-span-12 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[10].image} alt={illustrations[10].title} width={1200} height={1000} className="w-full h-auto object-contain block" sizes="100vw" />
-                </div>
-
-                {/* Row 5: Vaibhav Caricature & Vaibhav Presentation Photo (Portrait - 4 cols, Landscape - 8 cols) */}
-                <div className="col-span-12 md:col-span-4 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[11].image} alt={illustrations[11].title} width={710} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 33vw" />
-                </div>
-                <div className="col-span-12 md:col-span-8 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[12].image} alt={illustrations[12].title} width={1500} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 100vw, 66vw" />
-                </div>
-
-                {/* Row 6: Coffee Branding (4-column row to keep Neon Signage sharp and compact) */}
-                <div className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[13].image} alt={illustrations[13].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
-                </div>
-                <div className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[14].image} alt={illustrations[14].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
-                </div>
-                <div className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[15].image} alt={illustrations[15].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
-                </div>
-                <div className="col-span-12 md:col-span-3 overflow-hidden rounded border border-border-subtle bg-parchment/10 w-full block">
-                  <Image src={illustrations[16].image} alt={illustrations[16].title} width={750} height={1000} className="w-full h-auto object-contain block" sizes="(max-width: 768px) 50vw, 25vw" />
-                </div>
-
-              </div>
-            )}
+          <div
+            role="group"
+            aria-label="Filter work by category"
+            className="grid w-full grid-cols-4 gap-1 rounded-full border border-border-subtle bg-parchment/60 p-1 md:flex md:w-fit"
+          >
+            {workCategories.map(category => {
+              const isActive = activeCategory === category;
+              return (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => setActiveCategory(category)}
+                  aria-pressed={isActive}
+                  className={`cursor-pointer whitespace-nowrap rounded-full px-1 py-2.5 text-[11px] min-[360px]:text-[12px] font-medium transition-colors duration-300 sm:px-5 sm:text-[13px] ${isActive ? 'bg-ink text-off-white' : 'text-smoke hover:text-ink'}`}
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
+                >
+                  {category}
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </section>
 
-    </>
+        {/* Illustrations is one continuous gallery: pieces with a case study link to
+            it, so there is no lone card followed by an empty row. */}
+        {activeCategory === 'Illustrations' ? (
+          <div key={activeCategory}>
+            <IllustrationGallery />
+          </div>
+        ) : (
+          <div key={activeCategory} className="grid grid-cols-1 gap-x-5 gap-y-12 md:grid-cols-3 lg:gap-x-8 lg:gap-y-14">
+            {visible.map((project, index) => (
+              <ProjectCard
+                key={project.link}
+                project={project}
+                index={index}
+                category={activeCategory}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }

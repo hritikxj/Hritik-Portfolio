@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ProjectStructuredData from "@/components/ProjectStructuredData";
 
-const title = "Dash — Brand Identity";
+const title = "Dash, Brand Identity";
 const description = "A fast, energetic identity system for an ultra-fast electronics delivery service.";
 
 export const metadata: Metadata = {

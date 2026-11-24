@@ -1,29 +1,50 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useHireMe } from './HireMeProvider';
+import ThemeToggle from './ThemeToggle';
+
+const links = [
+  { id: 'work', label: 'Work' },
+  { id: 'about', label: 'About' },
+  { id: 'services', label: 'Services' },
+  { id: 'contact', label: 'Contact' },
+];
+
+function scrollBehavior(): ScrollBehavior {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+}
 
 export default function Navbar() {
-  const pathname = usePathname();
-  const router = useRouter();
   const { handleHireMeClick } = useHireMe();
+  const [open, setOpen] = useState(false);
 
-  const handleLogoClick = (e: React.MouseEvent) => {
-    if (pathname === '/') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
-    }
+  useEffect(() => {
+    if (!open) return;
+    const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setOpen(false); };
+    const desktop = window.matchMedia('(min-width: 768px)');
+    const onResize = () => { if (desktop.matches) setOpen(false); };
+    window.addEventListener('keydown', close);
+    desktop.addEventListener('change', onResize);
+    return () => {
+      window.removeEventListener('keydown', close);
+      desktop.removeEventListener('change', onResize);
+    };
+  }, [open]);
+
+  const goTo = (event: React.MouseEvent, id: string) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+    event.preventDefault();
+    setOpen(false);
+    target.scrollIntoView({ behavior: scrollBehavior() });
   };
 
-  const scrollTo = (id: string) => {
-    if (pathname === '/') {
-      document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
-    } else {
-      // Client-side navigation; IntroScene skips the intro on return visits
-      // because the sessionStorage flag is already set.
-      router.push(`/#${id}`);
-    }
+  const goHome = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setOpen(false);
+    window.scrollTo({ top: 0, behavior: scrollBehavior() });
   };
 
   return (
@@ -34,27 +55,86 @@ export default function Navbar() {
       >
         Skip to content
       </a>
-      <nav className="border-b-[0.5px] border-border-subtle bg-off-white">
-        <div className="w-full flex justify-between items-center px-5 md:px-12 lg:px-10 py-4">
+      <nav aria-label="Main" className="border-b-[0.5px] border-border-subtle bg-off-white/90 backdrop-blur-md supports-[backdrop-filter]:bg-off-white/75">
+        <div className="page-container flex h-16 items-center justify-between">
           <Link
             href="/"
-            onClick={handleLogoClick}
-            className="font-display text-lg font-normal tracking-[0.02em] text-ink no-underline hover:opacity-70 transition-opacity duration-200"
+            onClick={goHome}
+            className="font-display text-[18px] font-semibold leading-none text-ink no-underline transition-opacity duration-300 hover:opacity-60"
           >
             Hritik Jasnani
           </Link>
 
-          <ul className="hidden md:flex gap-8 list-none items-center">
-            <li><a href="#work" className="text-xs text-smoke tracking-[0.08em] uppercase hover:text-ink">Work</a></li>
-            <li><button onClick={() => scrollTo('about')} className="text-xs text-smoke tracking-[0.08em] uppercase transition-colors duration-200 hover:text-ink cursor-pointer">About</button></li>
-            <li><button onClick={() => scrollTo('services')} className="text-xs text-smoke tracking-[0.08em] uppercase transition-colors duration-200 hover:text-ink cursor-pointer">Services</button></li>
-            <li><button onClick={handleHireMeClick} className="bg-brand-red text-off-white px-6 py-2.5 rounded-sm tracking-[0.06em] text-xs transition-colors duration-200 hover:bg-ink cursor-pointer inline-block">Hire Me →</button></li>
+          <ul className="hidden md:flex items-center gap-8 list-none">
+            {links.map(link => (
+              <li key={link.id}>
+                <a
+                  href={`#${link.id}`}
+                  onClick={event => goTo(event, link.id)}
+                  className="group relative text-[13px] text-smoke transition-colors duration-300 hover:text-ink"
+                >
+                  {link.label}
+                  <span aria-hidden="true" className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ink transition-transform duration-500 ease-out-soft group-hover:scale-x-100" />
+                </a>
+              </li>
+            ))}
+            <li>
+              <ThemeToggle className="-my-1 text-ink" />
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={handleHireMeClick}
+                className="cursor-pointer rounded-full bg-ink px-5 py-2.5 text-[13px] text-off-white transition-colors duration-300 hover:bg-ink/80"
+              >
+                Hire Me →
+              </button>
+            </li>
           </ul>
 
-          <div className="md:hidden flex items-center gap-4">
-            <a href="#work" className="text-xs text-smoke uppercase hover:text-ink">Work</a>
-            <button onClick={handleHireMeClick} className="bg-brand-red text-off-white px-5 py-2.5 rounded-sm tracking-[0.06em] text-[11px] transition-colors duration-200 hover:bg-ink cursor-pointer inline-block">Hire Me</button>
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle className="text-ink" />
+            <button
+              type="button"
+              onClick={handleHireMeClick}
+              className="cursor-pointer rounded-full bg-ink px-4 py-2 text-[13px] text-off-white"
+            >
+              Hire Me
+            </button>
+            <button
+              type="button"
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              onClick={() => setOpen(value => !value)}
+              className="relative grid h-10 w-10 cursor-pointer place-items-center rounded-full"
+            >
+              <span aria-hidden="true" className={`absolute h-px w-5 bg-ink transition-transform duration-500 ease-out-soft ${open ? 'rotate-45' : '-translate-y-[4px]'}`} />
+              <span aria-hidden="true" className={`absolute h-px w-5 bg-ink transition-transform duration-500 ease-out-soft ${open ? '-rotate-45' : 'translate-y-[4px]'}`} />
+            </button>
           </div>
+        </div>
+
+        <div
+          id="mobile-menu"
+          className={`grid overflow-hidden transition-[grid-template-rows] duration-500 ease-out-soft md:hidden ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+          inert={!open}
+        >
+          <ul className="min-h-0 list-none page-container">
+            {links.map((link, index) => (
+              <li key={link.id} className={index === 0 ? 'border-t-[0.5px] border-border-subtle' : ''}>
+                <a
+                  href={`#${link.id}`}
+                  onClick={event => goTo(event, link.id)}
+                  className="flex items-center justify-between border-b-[0.5px] border-border-subtle py-4 font-display text-[26px] font-semibold leading-none text-ink"
+                >
+                  {link.label}
+                  <span aria-hidden="true" className="font-body text-base text-smoke">↓</span>
+                </a>
+              </li>
+            ))}
+            <li className="py-5 text-[13px] text-smoke">hritikjasnani.design@gmail.com</li>
+          </ul>
         </div>
       </nav>
     </div>

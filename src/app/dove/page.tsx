@@ -2,21 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from '@/components/PortfolioImage';
-import Link from 'next/link';
-import { Cormorant_Garamond, Jost } from 'next/font/google';
-
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  display: 'swap',
-});
-
-const jost = Jost({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
-  display: 'swap',
-});
+import ProjectNav from '@/components/ProjectNav';
+import ProjectFooter from '@/components/ProjectFooter';
+import ProjectIntro from '@/components/ProjectIntro';
 
 const strategyPillars = [
   {
@@ -47,7 +35,7 @@ const strategyPillars = [
     num: "05",
     title: "The Campaign Idea",
     subtitle: "Hair is a Choice",
-    description: "Dove acts as a mirror to reflect existing beauty and a supporter that validates choice—whether to shave or not to shave. Shifting the mindset from 'flaw' to 'choice' encourages Indian women to stop apologizing for biological realities."
+    description: "Dove acts as a mirror to reflect existing beauty and a supporter that validates choice, whether to shave or not to shave. Shifting the mindset from 'flaw' to 'choice' encourages Indian women to stop apologizing for biological realities."
   },
   {
     num: "06",
@@ -107,25 +95,19 @@ export default function DoveCampaignPage() {
   }, [isLightboxOpen]);
 
   return (
-    <div className={`min-h-screen bg-[#FDFCF9] text-[#0A2240] ${jost.className} selection:bg-[#C5A059] selection:text-white pb-20`}>
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FDFCF9]/95 backdrop-blur-sm border-b-[0.5px] border-[#E8E2D6]">
-        <Link href="/" className="text-[#0A2240] hover:text-[#846324] transition-colors uppercase tracking-[0.2em] text-xs font-semibold no-underline">
-          ← Back to Portfolio
-        </Link>
-        <div className={`uppercase tracking-[0.3em] text-[10px] text-[#846324] ${jost.className} font-semibold`}>
-          Brand Campaign
-        </div>
-      </nav>
+    <div className={`min-h-screen bg-[#FDFCF9] text-[#0A2240] font-body selection:bg-[#C5A059] selection:text-white`}>
+      <ProjectNav background="#FDFCF9" tone="light" />
 
       {/* Hero Section */}
-      <header className="pt-36 px-5 md:px-12 lg:px-10 max-w-7xl mx-auto flex flex-col items-center text-center">
-        <h1 className={`${cormorant.className} text-5xl md:text-7xl lg:text-[90px] font-light tracking-wide text-[#0A2240] mb-6 leading-none max-w-full break-words`}>
-          Dove #TheRealGrowth
-        </h1>
-        <p className={`${cormorant.className} italic text-[#4B5E7D] text-lg md:text-xl lg:text-2xl max-w-3xl mb-16`}>
-          Dismantling body hair stigma in India · Brand Campaign
-        </p>
+      <header id="main-content" tabIndex={-1} className="page-container page-enter pt-12 md:pt-20 pb-4 flex flex-col items-start text-left">
+        <ProjectIntro
+          eyebrow="Campaign concept · Academic project"
+          title="Dove #TheRealGrowth"
+          lede="A campaign concept that moves the conversation about body hair in India from hygiene to choice."
+          meta="Brand campaign · Digital & print"
+          accent="#846324"
+          muted="#3E4F6B"
+        />
         
         <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D6]/40">
 <Image
@@ -140,22 +122,22 @@ export default function DoveCampaignPage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-5 md:px-12 lg:px-10">
+      <main className="page-container">
         
         {/* Specs Table */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[#FAF7F0] border border-[#E8E2D6]/40 shadow-sm text-center">
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#846324] block mb-1 font-semibold">Role</span>
-              <span className="text-sm text-[#0A2240] font-medium font-sans">Brand Strategist</span>
+              <span className="eyebrow text-[11px] text-[#846324] block mb-1 font-semibold">Role</span>
+              <span className="text-sm text-[#0A2240] font-medium">Brand Strategist</span>
             </div>
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#846324] block mb-1 font-semibold">Platform</span>
-              <span className="text-sm text-[#0A2240] font-medium font-sans">Digital & Print</span>
+              <span className="eyebrow text-[11px] text-[#846324] block mb-1 font-semibold">Platform</span>
+              <span className="text-sm text-[#0A2240] font-medium">Digital & Print</span>
             </div>
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#846324] block mb-1 font-semibold">Type</span>
-              <span className="text-sm text-[#0A2240] font-medium font-sans">Academic Project</span>
+              <span className="eyebrow text-[11px] text-[#846324] block mb-1 font-semibold">Type</span>
+              <span className="text-sm text-[#0A2240] font-medium">Academic Project</span>
             </div>
           </div>
         </section>
@@ -165,11 +147,11 @@ export default function DoveCampaignPage() {
         {/* Section 01: Strategic Foundation (Split-screen interactive timeline and slide viewer) */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="text-[11px] tracking-[0.4em] uppercase text-[#846324] mb-3 block font-semibold">01 — Strategic Foundation</span>
-            <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#0A2240] font-light leading-tight mb-4`}>
+            <span className="eyebrow text-[#846324] mb-3 block">01 · Strategic Foundation</span>
+            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[#0A2240] font-semibold leading-tight mb-4`}>
               Core Pillars
             </h2>
-            <p className="text-sm text-[#4B5E7D] font-light max-w-2xl mx-auto">
+            <p className="text-sm text-[#4B5E7D] max-w-2xl mx-auto">
               A structured breakdown of the insights, targets, and brand positioning that defined the campaign concept. Click any slide to expand.
             </p>
           </div>
@@ -229,10 +211,10 @@ export default function DoveCampaignPage() {
 
                     <div className="pl-4 transition-all duration-300">
                       <div className="flex items-baseline gap-3">
-                        <span className={`${cormorant.className} text-2xl md:text-3xl transition-all duration-300 ${isActive ? 'text-[#846324] font-medium' : 'text-[#4B5E7D]'}`}>
+                        <span className={`font-display tracking-[0.02em] text-2xl md:text-3xl transition-all duration-300 ${isActive ? 'text-[#846324] font-medium' : 'text-[#4B5E7D]'}`}>
                           {pillar.num}
                         </span>
-                        <h3 className={`${cormorant.className} text-3xl md:text-4xl transition-all duration-300 leading-tight ${
+                        <h3 className={`font-display tracking-[0.03em] text-3xl md:text-4xl transition-all duration-300 leading-tight ${
                           isActive ? 'text-[#0A2240] font-medium' : 'text-[#4B5E7D] group-hover:text-[#0A2240]'
                         }`}>
                           {pillar.title}
@@ -240,7 +222,7 @@ export default function DoveCampaignPage() {
                       </div>
                       
                       {/* Subtitle */}
-                      <span className={`text-[10px] md:text-[11px] tracking-[0.2em] uppercase font-semibold transition-all duration-300 mt-1 block ${
+                      <span className={`eyebrow text-[11px] transition-all duration-300 mt-1 block ${
                         isActive ? 'text-[#846324]' : 'text-[#4B5E7D]'
                       }`}>
                         {pillar.subtitle}
@@ -290,7 +272,7 @@ export default function DoveCampaignPage() {
               </div>
 
               {/* Pagination Meta indicator */}
-              <div className="flex items-center justify-between px-2 text-[9px] tracking-[0.15em] text-[#4B5E7D] uppercase font-semibold select-none">
+              <div className="eyebrow flex items-center justify-between px-2 text-[11px] text-[#4B5E7D] font-semibold select-none">
                 <span>Campaign Insight Deck</span>
                 <span>Pillar {strategyPillars[activeIndex].num} / 06</span>
               </div>
@@ -304,20 +286,20 @@ export default function DoveCampaignPage() {
         {/* Section 02: Touchpoints & Digital Activation */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="text-[11px] tracking-[0.4em] uppercase text-[#846324] mb-3 block font-semibold">02 — Campaign Touchpoints</span>
-            <h2 className={`${cormorant.className} text-4xl md:text-5xl text-[#0A2240] font-light leading-tight mb-4`}>
+            <span className="eyebrow text-[#846324] mb-3 block">02 · Campaign Touchpoints</span>
+            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[#0A2240] font-semibold leading-tight mb-4`}>
               Reaching the Target
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left mt-6">
               <div className="p-6 bg-[#FAF7F0] border border-[#E8E2D6]/30 rounded-xl">
-                <h3 className="text-xs tracking-[0.15em] uppercase text-[#846324] font-semibold mb-2">Digital Activation (Instagram)</h3>
-                <p className="text-xs text-[#4B5E7D] leading-relaxed font-light">
+                <h3 className="eyebrow text-xs text-[#846324] font-semibold mb-2">Digital Activation (Instagram)</h3>
+                <p className="text-xs text-[#4B5E7D] leading-relaxed">
                   Statics, organic Reels, and interactive AR filters designed to reach Gen Z and Millennial audiences directly in spaces where digital perfection pressure is highest.
                 </p>
               </div>
               <div className="p-6 bg-[#FAF7F0] border border-[#E8E2D6]/30 rounded-xl">
-                <h3 className="text-xs tracking-[0.15em] uppercase text-[#846324] font-semibold mb-2">D2C Activation (The Mirror Gift)</h3>
-                <p className="text-xs text-[#4B5E7D] leading-relaxed font-light">
+                <h3 className="eyebrow text-xs text-[#846324] font-semibold mb-2">D2C Activation (The Mirror Gift)</h3>
+                <p className="text-xs text-[#4B5E7D] leading-relaxed">
                   A unique peer-to-peer gifting system that distributes physical unfiltered mirrors, building an offline supportive community of sisters and friends.
                 </p>
               </div>
@@ -352,11 +334,11 @@ export default function DoveCampaignPage() {
         {/* Section 03: Creative Deliverables & Posters (Card dimensions fixed) */}
         <section className="mb-12">
           <div className="max-w-7xl mx-auto mb-6 text-center">
-            <span className="text-[11px] tracking-[0.4em] uppercase text-[#846324] mb-3 block font-semibold">03 — Creative Assets</span>
-            <h2 className={`${cormorant.className} text-4xl md:text-5xl lg:text-6xl text-[#0A2240] font-light leading-tight mb-4`}>
+            <span className="eyebrow text-[#846324] mb-3 block">03 · Creative Assets</span>
+            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[#0A2240] font-semibold leading-tight mb-4`}>
               Visual Delivery
             </h2>
-            <p className="text-sm text-[#4B5E7D] font-light max-w-2xl mx-auto">
+            <p className="text-sm text-[#4B5E7D] max-w-2xl mx-auto">
               Print posters, mirror packaging templates, and hand-drawn line illustrations that celebrate natural growth across both professional and celebratory spaces.
             </p>
           </div>
@@ -374,7 +356,7 @@ export default function DoveCampaignPage() {
                   height={1200}
                   className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
                 />
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#846324] font-semibold pl-2">Print Poster Option A</span>
+                <span className="eyebrow text-[11px] text-[#846324] font-semibold pl-2">Print Poster Option A</span>
               </div>
               
               <div className="flex flex-col gap-3 mt-0 md:mt-12">
@@ -386,7 +368,7 @@ export default function DoveCampaignPage() {
                   height={1707}
                   className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
                 />
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#846324] font-semibold pl-2">Print Poster Option B</span>
+                <span className="eyebrow text-[11px] text-[#846324] font-semibold pl-2">Print Poster Option B</span>
               </div>
             </div>
 
@@ -400,7 +382,7 @@ export default function DoveCampaignPage() {
                 height={1937}
                 className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
               />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#846324] font-semibold pl-2">Campaign Illustrations</span>
+              <span className="eyebrow text-[11px] text-[#846324] font-semibold pl-2">Campaign Illustrations</span>
             </div>
 
             {/* Grid 3: Slide 12 (Illustrations details) & Slide 15 (Mirror Card Mockup) */}
@@ -463,11 +445,11 @@ export default function DoveCampaignPage() {
         {/* Section 04: Outcome & Reflection */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="text-[11px] tracking-[0.4em] uppercase text-[#846324] mb-3 block font-semibold">04 — Outcomes</span>
-            <h2 className={`${cormorant.className} text-4xl md:text-5xl text-[#0A2240] font-light leading-tight mb-4`}>
+            <span className="eyebrow text-[#846324] mb-3 block">04 · Outcomes</span>
+            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[#0A2240] font-semibold leading-tight mb-4`}>
               Quiet Self-Acceptance
             </h2>
-            <p className="text-sm text-[#4B5E7D] font-light max-w-2xl mx-auto mb-12">
+            <p className="text-sm text-[#4B5E7D] max-w-2xl mx-auto mb-12">
               Challenging physical stigmas in India without aggressive confrontation, utilizing Dove&apos;s trusted brand tone to support personal choice and drive authenticity.
             </p>
           </div>
@@ -486,11 +468,7 @@ export default function DoveCampaignPage() {
 
       </main>
 
-      <footer className="text-center mt-20 mb-12 px-5 md:px-12 lg:px-10">
-        <p className="text-[11px] tracking-[0.3em] text-[#4B5E7D] uppercase">
-          © {new Date().getFullYear()} Dove India · #TheRealGrowth · Academic Project
-        </p>
-      </footer>
+      <ProjectFooter current="/dove" />
 
       {/* Lightbox Modal */}
       {isLightboxOpen && (
@@ -516,7 +494,7 @@ export default function DoveCampaignPage() {
           <button 
             ref={closeButtonRef}
             onClick={() => setIsLightboxOpen(false)}
-            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2 z-50 cursor-pointer"
+            className="absolute top-6 right-6 text-[#B3B3B3] hover:text-white transition-colors p-2 z-50 cursor-pointer"
             aria-label="Close Lightbox"
           >
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -527,7 +505,7 @@ export default function DoveCampaignPage() {
           {/* Left Arrow */}
           <button 
             onClick={() => setActiveIndex((prev) => (prev - 1 + strategyPillars.length) % strategyPillars.length)}
-            className="absolute left-6 text-white/50 hover:text-white transition-colors p-3 z-50 rounded-full hover:bg-white/5 cursor-pointer"
+            className="absolute left-6 text-[#8A8A8A] hover:text-white transition-colors p-3 z-50 rounded-full hover:bg-white/5 cursor-pointer"
             aria-label="Previous Slide"
           >
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -560,7 +538,7 @@ export default function DoveCampaignPage() {
           {/* Right Arrow */}
           <button 
             onClick={() => setActiveIndex((prev) => (prev + 1) % strategyPillars.length)}
-            className="absolute right-6 text-white/50 hover:text-white transition-colors p-3 z-50 rounded-full hover:bg-white/5 cursor-pointer"
+            className="absolute right-6 text-[#8A8A8A] hover:text-white transition-colors p-3 z-50 rounded-full hover:bg-white/5 cursor-pointer"
             aria-label="Next Slide"
           >
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -569,11 +547,11 @@ export default function DoveCampaignPage() {
           </button>
 
           {/* Lightbox Meta & Nav Hint */}
-          <div className="mt-8 flex flex-col items-center gap-2 text-center text-white/80 max-w-xl px-4 select-text">
-            <span className={`${cormorant.className} text-xl md:text-2xl font-light text-white`}>
-              {strategyPillars[activeIndex].num} — {strategyPillars[activeIndex].title}
+          <div className="mt-8 flex flex-col items-center gap-2 text-center text-[#CCCCCC] max-w-xl px-4 select-text">
+            <span className={`font-display tracking-[0.02em] text-xl md:text-2xl font-semibold text-white`}>
+              {strategyPillars[activeIndex].num} · {strategyPillars[activeIndex].title}
             </span>
-            <span className="text-[9px] tracking-[0.2em] uppercase text-[#E0C58F] font-semibold mt-1">
+            <span className="eyebrow text-[11px] text-[#E0C58F] font-semibold mt-1">
               Use ← / → Arrow Keys · Esc to Close
             </span>
           </div>

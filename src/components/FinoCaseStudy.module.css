@@ -41,11 +41,11 @@
 }
 .hero .eyebrow { color: var(--gold); }
 .intro h1, .sectionIntro h2, .lens h3 {
-  font-family: var(--font-cormorant), Georgia, serif;
-  font-weight: 500;
-  letter-spacing: -.05em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: .01em;
 }
-.intro h1 { font-size: clamp(6.25rem, 14vw, 12rem); line-height: .75; margin-top: .13em; }
+.intro h1 { font-size: clamp(4.5rem, 11vw, 9rem); line-height: .85; margin-top: .13em; }
 .lede { max-width: 31ch; color: #eef0f4; font-size: clamp(1.12rem, 2.2vw, 1.6rem); line-height: 1.4; }
 .heroStage {
   background: radial-gradient(ellipse at 62% 15%, #526d81, transparent 65%), linear-gradient(140deg, #273e56, #141f30);

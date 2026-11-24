@@ -1,18 +1,18 @@
-import { ReactNode } from 'react';
+import type { CSSProperties, ElementType, ReactNode } from 'react';
 
 interface RevealProps {
   children: ReactNode;
-  width?: 'fit-content' | '100%';
   className?: string;
+  /** Stagger in milliseconds. Keep small (≤ 240) so nothing feels slow. */
+  delay?: number;
+  as?: ElementType;
 }
 
-export default function Reveal({ children, width = '100%', className = '' }: RevealProps) {
+export default function Reveal({ children, className = '', delay = 0, as: Tag = 'div' }: RevealProps) {
+  const style = delay ? ({ '--reveal-delay': `${delay}ms` } as CSSProperties) : undefined;
   return (
-    <div
-      style={{ width }}
-      className={className}
-    >
+    <Tag data-reveal="" className={className} style={style}>
       {children}
-    </div>
+    </Tag>
   );
 }

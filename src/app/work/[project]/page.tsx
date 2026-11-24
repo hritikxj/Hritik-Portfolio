@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Image from '@/components/PortfolioImage';
-import Link from 'next/link';
+import ProjectNav from '@/components/ProjectNav';
+import ProjectFooter from '@/components/ProjectFooter';
+import ProjectIntro from '@/components/ProjectIntro';
 import { notFound } from 'next/navigation';
 import AppBuildDetails from '@/components/AppBuildDetails';
 import ClarityGuidelines from '@/components/ClarityGuidelines';
@@ -28,7 +30,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const study = findStudy((await params).project);
-  const title = `${study.title} — ${study.discipline}`;
+  const title = `${study.title}, ${study.discipline}`;
   const description = study.summary;
   const url = `/work/${study.slug}`;
   const cover = asset(study.slug, study.cover ?? 'cover.webp');
@@ -61,19 +63,18 @@ export default async function CaseStudyPage({ params }: Props) {
   return (
     <>
       <ProjectStructuredData title={study.title} description={study.summary} path={`/work/${study.slug}`} />
-      <main id="main-content" className={`${styles.page} ${style}`} tabIndex={-1}>
-        <nav className={styles.nav} aria-label="Portfolio">
-          <Link href="/">Back to portfolio</Link>
-          <span>Hritik Jasnani</span>
-        </nav>
+      <ProjectNav />
+      <main id="main-content" className={`${styles.page} ${style} page-enter`} tabIndex={-1}>
         <header className={styles.hero}>
-          <div className={styles.intro}>
-            <p className={styles.discipline}>{study.discipline}</p>
-            <h1>{study.title}</h1>
-            <p className={styles.summary}>{study.summary}</p>
-            <p className={styles.format}>{study.format}</p>
-            {study.stack && <AppBuildDetails stack={study.stack} />}
-          </div>
+          <ProjectIntro
+            eyebrow={study.discipline}
+            title={study.title}
+            lede={study.summary}
+            meta={study.format}
+            accent="var(--accent)"
+            muted="var(--color-smoke)"
+          />
+          {study.stack && <div className={styles.build}><AppBuildDetails stack={study.stack} /></div>}
           <div className={styles.stage}>
             {heroImages.map((image, index) => (
               <Image
@@ -90,7 +91,10 @@ export default async function CaseStudyPage({ params }: Props) {
           </div>
         </header>
         <div className={styles.body}>
-          <p className={styles.contribution}>{study.contribution}</p>
+          <section className={styles.role} aria-label="My role">
+            <p className="eyebrow" style={{ color: 'var(--accent)' }}>My role</p>
+            <p className={styles.contribution}>{study.contribution}</p>
+          </section>
           {study.slug === 'clarity-labs' && <ClarityGuidelines />}
           {study.features.length > 0 && (
             <div className={styles.features}>
@@ -114,15 +118,9 @@ export default async function CaseStudyPage({ params }: Props) {
             </div>
           )}
           {study.note && <p className={styles.note}>{study.note}</p>}
-          <nav className={styles.related} aria-label="More portfolio work">
-            <h2>More work</h2>
-            {caseStudies.filter(other => other.slug !== study.slug).map(other => (
-              <Link prefetch={false} href={`/work/${other.slug}`} key={other.slug}>{other.title}</Link>
-            ))}
-            <Link href="/?category=selected#work">View selected work</Link>
-          </nav>
         </div>
       </main>
+      <ProjectFooter current={`/work/${study.slug}`} />
     </>
   );
 }

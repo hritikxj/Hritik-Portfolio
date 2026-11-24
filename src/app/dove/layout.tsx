@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ProjectStructuredData from "@/components/ProjectStructuredData";
 
-const title = "Dove #TheRealGrowth — Brand Campaign";
+const title = "Dove #TheRealGrowth, Brand Campaign";
 const description = "A campaign concept challenging body-hair stigma in India through choice, care, and authentic representation.";
 
 export const metadata: Metadata = {

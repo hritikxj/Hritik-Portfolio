@@ -1,5 +1,6 @@
 import Image from '@/components/PortfolioImage';
-import Link from 'next/link';
+import ProjectNav from './ProjectNav';
+import ProjectFooter from './ProjectFooter';
 import styles from './OgKombuchaCaseStudy.module.css';
 
 const media = '/case-studies/og-kombucha';
@@ -47,11 +48,9 @@ const flavours = [
 
 export default function OgKombuchaCaseStudy({ summary }: { summary: string }) {
   return (
-    <main id="main-content" tabIndex={-1} className={styles.page}>
-      <nav className={styles.nav} aria-label="Portfolio">
-        <Link href="/?category=selected#work"><span aria-hidden="true">↖</span> Selected work</Link>
-        <span>Hritik Jasnani</span>
-      </nav>
+    <>
+    <ProjectNav background="#fbf4e9" />
+    <main id="main-content" tabIndex={-1} className={`${styles.page} page-enter`}>
 
       <header className={styles.shell}>
         <div className={styles.intro}>
@@ -114,9 +113,8 @@ export default function OgKombuchaCaseStudy({ summary }: { summary: string }) {
         <Image src={`${media}/peach-splash.webp`} alt="Peach OG Kombucha bottle framed by peach slices and a splash of amber liquid" width={1020} height={1275} sizes="(max-width: 720px) 92vw, 610px" />
       </section>
 
-      <footer className={`${styles.shell} ${styles.footer}`}>
-        <Link href="/?category=selected#work">Back to selected work <span aria-hidden="true">↗</span></Link>
-      </footer>
     </main>
+    <ProjectFooter current="/work/og-kombucha" />
+    </>
   );
 }

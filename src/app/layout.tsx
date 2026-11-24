@@ -1,25 +1,40 @@
-import type { Metadata } from "next";
-import { DM_Sans, Cormorant_Garamond } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
 import HireMeProvider from "@/components/HireMeProvider";
+import RevealObserver from "@/components/RevealObserver";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
+// Switzer by Indian Type Foundry (Fontshare, ITF Free Font License), self-hosted.
+// One family for the whole site: headings and text.
+const switzer = localFont({
+  variable: "--font-switzer",
+  display: "swap",
+  src: [
+    { path: "../fonts/switzer-300.woff2", weight: "300", style: "normal" },
+    { path: "../fonts/switzer-400.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/switzer-500.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/switzer-600.woff2", weight: "600", style: "normal" },
+    { path: "../fonts/switzer-700.woff2", weight: "700", style: "normal" },
+  ],
+  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
 });
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["300", "400"],
-  style: ["normal", "italic"],
-});
+// Runs before first paint: applies a saved light/dark choice and enables
+// reveal motion only when JavaScript is available.
+const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t)}catch(e){}})();`;
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F5F6F3" },
+    { media: "(prefers-color-scheme: dark)", color: "#131413" },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hritikjasnani.vercel.app"),
   title: {
-    default: "Hritik Jasnani — Multidisciplinary Designer",
+    default: "Hritik Jasnani, Multidisciplinary Designer",
     template: "%s | Hritik Jasnani",
   },
   description: "Multidisciplinary designer based in India, working globally across brand identity, illustration, and digital experiences.",
@@ -30,17 +45,17 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Hritik Jasnani — Multidisciplinary Designer",
+    title: "Hritik Jasnani, Multidisciplinary Designer",
     description: "Brand identity, illustration, and digital experiences designed in India for clients worldwide.",
     url: "/",
     siteName: "Hritik Jasnani",
     locale: "en_IN",
     type: "website",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Hritik Jasnani — Multidisciplinary Designer" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Hritik Jasnani, Multidisciplinary Designer" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hritik Jasnani — Multidisciplinary Designer",
+    title: "Hritik Jasnani, Multidisciplinary Designer",
     description: "Brand identity, illustration, and digital experiences designed in India for clients worldwide.",
     images: ["/opengraph-image"],
   },
@@ -54,17 +69,22 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${cormorant.variable}`}
+      className={switzer.variable}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
+      </head>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           '@context': 'https://schema.org',
           '@graph': [
-            { '@type': 'Person', '@id': 'https://hritikjasnani.vercel.app/#person', name: 'Hritik Jasnani', jobTitle: 'Multidisciplinary designer', url: 'https://hritikjasnani.vercel.app', sameAs: ['https://instagram.com/hritikjasnani'] },
-            { '@type': 'WebSite', '@id': 'https://hritikjasnani.vercel.app/#website', name: 'Hritik Jasnani — Portfolio', url: 'https://hritikjasnani.vercel.app', author: { '@id': 'https://hritikjasnani.vercel.app/#person' } },
+            { '@type': 'Person', '@id': 'https://hritikjasnani.vercel.app/#person', name: 'Hritik Jasnani', jobTitle: 'Multidisciplinary designer', url: 'https://hritikjasnani.vercel.app', sameAs: ['https://instagram.com/hritikjasnani', 'https://www.linkedin.com/in/hritikjasnani/'], alumniOf: { '@type': 'CollegeOrUniversity', name: 'Rishihood University' }, knowsAbout: ['Brand identity', 'Illustration', 'UI/UX design', 'Packaging design', 'App development'] },
+            { '@type': 'WebSite', '@id': 'https://hritikjasnani.vercel.app/#website', name: 'Hritik Jasnani, Portfolio', url: 'https://hritikjasnani.vercel.app', author: { '@id': 'https://hritikjasnani.vercel.app/#person' } },
           ],
         }).replace(/</g, '\\u003c') }} />
         <HireMeProvider>{children}</HireMeProvider>
+        <RevealObserver />
         {process.env.VERCEL === '1' && <SpeedInsights />}
       </body>
     </html>

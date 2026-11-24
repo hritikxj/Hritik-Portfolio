@@ -1,49 +1,25 @@
 
 
 import Image from '@/components/PortfolioImage';
-import Link from 'next/link';
-import { Cormorant_Garamond, Jost, Montserrat } from 'next/font/google';
-
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  display: 'swap',
-});
-
-const jost = Jost({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
-  display: 'swap',
-});
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  display: 'swap',
-});
+import ProjectNav from '@/components/ProjectNav';
+import ProjectFooter from '@/components/ProjectFooter';
+import ProjectIntro from '@/components/ProjectIntro';
 
 export default function DashBrandGuidelinesPage() {
   return (
-    <div className={`min-h-screen bg-[#FAF9F5] text-[#1A1A1A] ${jost.className} selection:bg-[#FF6B35] selection:text-white pb-20`}>
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-12 lg:px-10 md:py-6 bg-[#FAF9F5]/90 backdrop-blur-sm border-b-[0.5px] border-[#E5E0D5]">
-        <Link href="/" className="text-[#1A1A1A] hover:text-[#AF390F] transition-colors uppercase tracking-[0.2em] text-xs font-medium no-underline">
-          ← Back to Portfolio
-        </Link>
-        <div className={`uppercase tracking-[0.3em] text-[10px] text-[#AF390F] ${jost.className} font-semibold`}>
-          Brand Identity
-        </div>
-      </nav>
+    <div className={`min-h-screen bg-[#FAF9F5] text-[#1A1A1A] font-body selection:bg-[#FF6B35] selection:text-white`}>
+      <ProjectNav background="#FAF9F5" tone="light" />
 
       {/* Hero Section */}
-      <header className="pt-36 px-5 md:px-12 lg:px-10 max-w-7xl mx-auto flex flex-col items-center text-center">
-        <h1 className={`${montserrat.className} text-6xl md:text-8xl lg:text-[110px] font-extrabold tracking-tight text-[#1A1A1A] mb-6 leading-none`}>
-          DASH
-        </h1>
-        <p className={`${cormorant.className} italic text-[#666666] text-xl md:text-2xl max-w-3xl mb-8`}>
-          Brand Guidelines · Ultra-Fast Electronics Delivery · 2026
-        </p>
+      <header id="main-content" tabIndex={-1} className="page-container page-enter pt-12 md:pt-20 pb-4 flex flex-col items-start text-left">
+        <ProjectIntro
+          eyebrow="Brand identity · Guidelines"
+          title="Dash"
+          lede="An identity system for an instant electronics delivery service, built around speed, reliability and urban reach."
+          meta="Brand guidelines · 2026"
+          accent="#AF390F"
+          muted="#555555"
+        />
         
         {/* Cover Slide (Slide 1) */}
         <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-2xl border border-[#E5E0D5]/50 bg-white">
@@ -60,22 +36,22 @@ export default function DashBrandGuidelinesPage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-5 md:px-12 lg:px-10">
+      <main className="page-container">
         
         {/* Specs Table */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[#F5F2EA] border border-[#E5E0D5]/40 shadow-sm text-center">
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#AF390F] block mb-1 font-semibold">Role</span>
-              <span className="text-sm text-[#1A1A1A] font-medium font-sans">Brand Designer & Strategist</span>
+              <span className="eyebrow text-[11px] text-[#AF390F] block mb-1 font-semibold">Role</span>
+              <span className="text-sm text-[#1A1A1A] font-medium">Brand Designer & Strategist</span>
             </div>
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#AF390F] block mb-1 font-semibold">Platform</span>
-              <span className="text-sm text-[#1A1A1A] font-medium font-sans">Print & Digital</span>
+              <span className="eyebrow text-[11px] text-[#AF390F] block mb-1 font-semibold">Platform</span>
+              <span className="text-sm text-[#1A1A1A] font-medium">Print & Digital</span>
             </div>
             <div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-[#AF390F] block mb-1 font-semibold">Type</span>
-              <span className="text-sm text-[#1A1A1A] font-medium font-sans">Brand Guidelines</span>
+              <span className="eyebrow text-[11px] text-[#AF390F] block mb-1 font-semibold">Type</span>
+              <span className="text-sm text-[#1A1A1A] font-medium">Brand Guidelines</span>
             </div>
           </div>
         </section>
@@ -86,14 +62,14 @@ export default function DashBrandGuidelinesPage() {
         <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             <div className="w-full md:w-1/4 shrink-0">
-              <p className="text-[11px] tracking-[0.4em] uppercase text-[#AF390F] mb-3 font-semibold">Brief & Vision</p>
-              <h2 className={`${cormorant.className} text-3xl md:text-4xl text-[#1A1A1A] font-light`}>Tech Emergencies Obsolete</h2>
+              <p className="eyebrow text-[#AF390F] mb-3">Brief & Vision</p>
+              <h2 className={`font-display tracking-[0.02em] text-3xl md:text-4xl text-[#1A1A1A] font-semibold`}>Tech Emergencies Obsolete</h2>
             </div>
             <div className="w-full md:w-3/4">
-              <p className={`${cormorant.className} text-2xl md:text-[32px] leading-[1.4] text-[#1A1A1A] mb-6`}>
+              <p className={`font-display tracking-[0.02em] text-2xl md:text-[32px] leading-[1.4] text-[#1A1A1A] mb-6`}>
                 Dash is an instant delivery model for electronics, built on speed, reliability, innovation, and urban accessibility.
               </p>
-              <p className={`${jost.className} text-sm text-[#666666] leading-[1.8] font-light`}>
+              <p className={`font-body text-sm text-[#666666] leading-[1.8]`}>
                 This brand identity deck translates technical infrastructure into a customer-first brand system. Scroll through the complete presentation guidelines below to view logomarks, typography rules, color formulas, and package mockups.
               </p>
             </div>
@@ -132,14 +108,14 @@ export default function DashBrandGuidelinesPage() {
         <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start mb-6">
             <div className="w-full md:w-1/4 shrink-0">
-              <p className="text-[11px] tracking-[0.4em] uppercase text-[#AF390F] mb-3 font-semibold">05 — Mascot System</p>
-              <h2 className={`${cormorant.className} text-3xl md:text-4xl text-[#1A1A1A] font-light`}>Chigma Boy</h2>
+              <p className="eyebrow text-[#AF390F] mb-3">05 · Mascot System</p>
+              <h2 className={`font-display tracking-[0.02em] text-3xl md:text-4xl text-[#1A1A1A] font-semibold`}>Chigma Boy</h2>
             </div>
             <div className="w-full md:w-3/4">
-              <p className={`${cormorant.className} text-2xl md:text-[32px] leading-[1.4] text-[#1A1A1A] mb-6`}>
+              <p className={`font-display tracking-[0.02em] text-2xl md:text-[32px] leading-[1.4] text-[#1A1A1A] mb-6`}>
                 A friendly, tech-enabled neighborhood guide.
               </p>
-              <p className={`${jost.className} text-sm text-[#666666] leading-[1.8] font-light`}>
+              <p className={`font-body text-sm text-[#666666] leading-[1.8]`}>
                 Chigma Boy is the official brand mascot of Dash, representing our delivery partners on the ground. Styled in the signature electric blue suit and orange safety helmet, he embodies speed, accessibility, and friendly, human-centric tech support in every neighborhood.
               </p>
             </div>
@@ -233,11 +209,7 @@ export default function DashBrandGuidelinesPage() {
 
       </main>
 
-      <footer className="text-center mt-20 mb-12 px-5 md:px-12 lg:px-10">
-        <p className="text-[11px] tracking-[0.3em] text-[#666666] uppercase">
-          © {new Date().getFullYear()} DASH India · Brand Identity Guidelines
-        </p>
-      </footer>
+      <ProjectFooter current="/dash" />
     </div>
   );
 }
