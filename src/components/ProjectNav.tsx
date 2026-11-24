@@ -9,21 +9,30 @@ type Props = {
    */
   background?: string;
   tone?: 'light' | 'dark';
+  /**
+   * The page sets its own palette as --c-bg, --c-ink and --c-line, with light and
+   * dark values, so the nav follows the page and offers the theme switch.
+   */
+  adaptive?: boolean;
 };
 
-export default function ProjectNav({ background, tone = 'light' }: Props) {
-  const themed = !background;
+export default function ProjectNav({ background, tone = 'light', adaptive = false }: Props) {
+  const themed = !background && !adaptive;
   const dark = tone === 'dark';
   const style = themed
     ? { background: 'color-mix(in srgb, var(--color-off-white) 86%, transparent)', borderColor: 'var(--color-border-subtle)', color: 'var(--color-ink)' }
-    : {
+    : adaptive
+      ? { background: 'color-mix(in srgb, var(--c-bg) 86%, transparent)', borderColor: 'var(--c-line)', color: 'var(--c-ink)' }
+      : {
         background: `color-mix(in srgb, ${background} 86%, transparent)`,
         borderColor: dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,26,0.12)',
         color: dark ? '#F5F6F3' : '#1A1A1A',
       };
   const button = themed
     ? 'bg-ink text-off-white hover:bg-ink/80'
-    : dark ? 'bg-[#F5F6F3] text-[#1A1A1A] hover:bg-white' : 'bg-[#1A1A1A] text-[#F5F6F3] hover:bg-[#1A1A1A]/80';
+    : adaptive
+      ? 'bg-[var(--c-ink)] text-[var(--c-bg)] hover:opacity-85'
+      : dark ? 'bg-[#F5F6F3] text-[#1A1A1A] hover:bg-white' : 'bg-[#1A1A1A] text-[#F5F6F3] hover:bg-[#1A1A1A]/80';
 
   return (
     <header className="sticky top-0 z-50 border-b-[0.5px] backdrop-blur-md" style={style}>
@@ -42,8 +51,8 @@ export default function ProjectNav({ background, tone = 'light' }: Props) {
           Hritik Jasnani
         </Link>
         <div className="col-start-3 flex items-center gap-2 justify-self-end">
-          {/* Pages in a project's own palette stay in that palette, so they get no switch. */}
-          {themed && <ThemeToggle />}
+          {/* Pages fixed to a project's own palette stay in it, so they get no switch. */}
+          {(themed || adaptive) && <ThemeToggle />}
           <HireButton className={`cursor-pointer rounded-full px-4 py-2 text-[13px] transition-colors duration-300 ${button}`}>
             Hire Me
           </HireButton>

@@ -1,10 +1,41 @@
-.page {
-  background: #fbf4e9;
-  color: #38241c;
-  font-size: 1rem;
+.tokens {
+  --c-bg: #fbf4e9;
+  --c-ink: #38241c;
+  --c-line: #dec9b9;
   --text-muted: #68463a;
-  --line: #dec9b9;
+  --line: var(--c-line);
   --red: #983322;
+  --study: #f0e2d2;
+  --range: #f3dfc9;
+}
+
+.page {
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-size: 1rem;
+}
+
+/* Dark: the same warm palette, deepened, with the coral lifted for contrast. */
+:global(:root[data-theme="dark"]) .tokens {
+  --c-bg: #1a120e;
+  --c-ink: #f1e3d6;
+  --c-line: #3c2a22;
+  --text-muted: #c4a796;
+  --red: #f08a72;
+  --study: #251a15;
+  --range: #22170f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-theme="light"])) .tokens {
+    --c-bg: #1a120e;
+    --c-ink: #f1e3d6;
+    --c-line: #3c2a22;
+    --text-muted: #c4a796;
+    --red: #f08a72;
+    --study: #251a15;
+    --range: #22170f;
+  }
 }
 
 .shell, .nav { width: min(92%, 75rem); margin-inline: auto; }
@@ -42,13 +73,13 @@
 .sectionHeading h2 { font-size: clamp(2.65rem, 5.6vw, 5rem); line-height: .92; }
 .sectionHeading > p:not(.kicker) { margin-top: .7rem; max-width: 47ch; color: var(--text-muted); }
 .studyGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.6rem, 4vw, 3.25rem) clamp(1rem, 3vw, 2.25rem); }
-.studyMedia { padding: clamp(.45rem, 1.4vw, 1rem); background: #f0e2d2; border-radius: .45rem; }
+.studyMedia { padding: clamp(.45rem, 1.4vw, 1rem); background: var(--study); border-radius: .45rem; }
 .study img, .flavours img, .campaign img { width: 100%; height: auto; display: block; }
 .study img { aspect-ratio: 1.4; object-fit: contain; border-radius: .2rem; }
 .study figcaption { padding-top: .9rem; }
 .study h3 { font-size: 1.17rem; font-weight: 700; }
 .study figcaption p { color: var(--text-muted); max-width: 49ch; margin-top: .22rem; }
-.range { background: #f3dfc9; }
+.range { background: var(--range); }
 .flavours { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem clamp(.8rem, 2vw, 1.4rem); }
 .flavours img { border-radius: .3rem; border: 1px solid #825f4538; }
 .flavours figcaption { font-size: .91rem; font-weight: 650; margin-top: .55rem; }

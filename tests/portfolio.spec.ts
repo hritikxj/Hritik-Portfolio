@@ -257,3 +257,29 @@ test('SEO metadata, social card and 404 directives are consistent', async ({ pag
   const legacyImage = await request.get('/_next/image?url=%2Fsocial%2Fapple_1.png&w=640&q=75');
   expect(legacyImage.status()).toBe(200);
 });
+
+test('brand-palette case studies follow the chosen theme', async ({ page }) => {
+  const luminance = (rgb: string) => {
+    const [r, g, b] = rgb.match(/\d+(\.\d+)?/g)!.map(Number);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  for (const path of ['/dash', '/dove', '/purr-pantry', '/work/og-kombucha']) {
+    for (const scheme of ['light', 'dark'] as const) {
+      await page.emulateMedia({ colorScheme: scheme });
+      await page.goto(path);
+      const surface = page.locator('#main-content').first();
+      const background = await surface.evaluate(element => {
+        let node: Element | null = element;
+        while (node) {
+          const colour = getComputedStyle(node).backgroundColor;
+          if (colour !== 'rgba(0, 0, 0, 0)') return colour;
+          node = node.parentElement;
+        }
+        return getComputedStyle(document.body).backgroundColor;
+      });
+      if (scheme === 'dark') expect(luminance(background), `${path} dark`).toBeLessThan(60);
+      else expect(luminance(background), `${path} light`).toBeGreaterThan(200);
+      await expect(page.locator('header').first().getByRole('button', { name: /theme|mode/i })).toBeVisible();
+    }
+  }
+});

@@ -48,8 +48,8 @@ const flavours = [
 
 export default function OgKombuchaCaseStudy({ summary }: { summary: string }) {
   return (
-    <>
-    <ProjectNav background="#fbf4e9" />
+    <div className={styles.tokens}>
+    <ProjectNav adaptive />
     <main id="main-content" tabIndex={-1} className={`${styles.page} page-enter`}>
 
       <header className={styles.shell}>
@@ -115,6 +115,6 @@ export default function OgKombuchaCaseStudy({ summary }: { summary: string }) {
 
     </main>
     <ProjectFooter current="/work/og-kombucha" />
-    </>
+    </div>
   );
 }

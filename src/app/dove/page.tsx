@@ -95,8 +95,8 @@ export default function DoveCampaignPage() {
   }, [isLightboxOpen]);
 
   return (
-    <div className={`min-h-screen bg-[#FDFCF9] text-[#0A2240] font-body selection:bg-[#C5A059] selection:text-white`}>
-      <ProjectNav background="#FDFCF9" tone="light" />
+    <div className={`case-dove min-h-screen bg-[var(--c-bg)] text-[var(--c-ink)] font-body selection:bg-[#C5A059] selection:text-white`}>
+      <ProjectNav adaptive />
 
       {/* Hero Section */}
       <header id="main-content" tabIndex={-1} className="page-container page-enter pt-12 md:pt-20 pb-4 flex flex-col items-start text-left">
@@ -105,11 +105,11 @@ export default function DoveCampaignPage() {
           title="Dove #TheRealGrowth"
           lede="A campaign concept that moves the conversation about body hair in India from hygiene to choice."
           meta="Brand campaign · Digital & print"
-          accent="#846324"
-          muted="#3E4F6B"
+          accent="var(--c-accent)"
+          muted="var(--c-muted)"
         />
         
-        <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D6]/40">
+        <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-xl border border-[var(--c-line)]/40">
 <Image
                   sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
             src="/dove/dove-slide-1.png" 
@@ -126,32 +126,32 @@ export default function DoveCampaignPage() {
         
         {/* Specs Table */}
         <section className="mb-12 max-w-7xl mx-auto">
-          <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[#FAF7F0] border border-[#E8E2D6]/40 shadow-sm text-center">
+          <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[var(--c-panel)] border border-[var(--c-line)]/40 shadow-sm text-center">
             <div>
-              <span className="eyebrow text-[11px] text-[#846324] block mb-1 font-semibold">Role</span>
-              <span className="text-sm text-[#0A2240] font-medium">Brand Strategist</span>
+              <span className="eyebrow text-[11px] text-[var(--c-accent)] block mb-1 font-semibold">Role</span>
+              <span className="text-sm text-[var(--c-ink)] font-medium">Brand Strategist</span>
             </div>
             <div>
-              <span className="eyebrow text-[11px] text-[#846324] block mb-1 font-semibold">Platform</span>
-              <span className="text-sm text-[#0A2240] font-medium">Digital & Print</span>
+              <span className="eyebrow text-[11px] text-[var(--c-accent)] block mb-1 font-semibold">Platform</span>
+              <span className="text-sm text-[var(--c-ink)] font-medium">Digital & Print</span>
             </div>
             <div>
-              <span className="eyebrow text-[11px] text-[#846324] block mb-1 font-semibold">Type</span>
-              <span className="text-sm text-[#0A2240] font-medium">Academic Project</span>
+              <span className="eyebrow text-[11px] text-[var(--c-accent)] block mb-1 font-semibold">Type</span>
+              <span className="text-sm text-[var(--c-ink)] font-medium">Academic Project</span>
             </div>
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E8E2D6] my-10 max-w-7xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10 max-w-7xl mx-auto" />
 
         {/* Section 01: Strategic Foundation (Split-screen interactive timeline and slide viewer) */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="eyebrow text-[#846324] mb-3 block">01 · Strategic Foundation</span>
-            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[#0A2240] font-semibold leading-tight mb-4`}>
+            <span className="eyebrow text-[var(--c-accent)] mb-3 block">01 · Strategic Foundation</span>
+            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)] font-semibold leading-tight mb-4`}>
               Core Pillars
             </h2>
-            <p className="text-sm text-[#4B5E7D] max-w-2xl mx-auto">
+            <p className="text-sm text-[var(--c-muted)] max-w-2xl mx-auto">
               A structured breakdown of the insights, targets, and brand positioning that defined the campaign concept. Click any slide to expand.
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function DoveCampaignPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             
             {/* Mobile/Tablet Pill Selector */}
-            <div className="flex lg:hidden overflow-x-auto pb-4 gap-2 scrollbar-none border-b border-[#E8E2D6]/30 mb-2 w-full select-none">
+            <div className="flex lg:hidden overflow-x-auto pb-4 gap-2 scrollbar-none border-b border-[var(--c-line)]/30 mb-2 w-full select-none">
               {strategyPillars.map((pillar, idx) => {
                 const isActive = activeIndex === idx;
                 return (
@@ -169,8 +169,8 @@ export default function DoveCampaignPage() {
                     onClick={() => setActiveIndex(idx)}
                     className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 ${
                       isActive 
-                        ? 'bg-[#0A2240] text-[#FAF7F0] shadow-sm' 
-                        : 'bg-[#FAF7F0] text-[#4B5E7D] border border-[#E8E2D6]/40 hover:bg-[#E8E2D6]/20'
+                        ? 'bg-[var(--c-ink)] text-[var(--c-panel)] shadow-sm' 
+                        : 'bg-[var(--c-panel)] text-[var(--c-muted)] border border-[var(--c-line)]/40 hover:bg-[var(--c-line)]/20'
                     }`}
                   >
                     {pillar.num} · {pillar.title}
@@ -180,7 +180,7 @@ export default function DoveCampaignPage() {
             </div>
 
             {/* Desktop Timeline (Left Column) */}
-            <div className="hidden lg:flex lg:col-span-4 flex-col relative pl-6 border-l-[1px] border-[#E8E2D6]/60 select-none py-2">
+            <div className="hidden lg:flex lg:col-span-4 flex-col relative pl-6 border-l-[1px] border-[var(--c-line)]/60 select-none py-2">
               {strategyPillars.map((pillar, idx) => {
                 const isActive = activeIndex === idx;
                 return (
@@ -205,17 +205,17 @@ export default function DoveCampaignPage() {
                     )}
                     
                     {/* Stepper Node dot */}
-                    <div className={`absolute -left-[29px] top-[18px] w-2.5 h-2.5 rounded-full border border-[#FDFCF9] transition-all duration-300 ${
-                      isActive ? 'bg-[#C5A059] scale-125' : 'bg-[#E8E2D6] group-hover:bg-[#C5A059]/60'
+                    <div className={`absolute -left-[29px] top-[18px] w-2.5 h-2.5 rounded-full border border-[var(--c-bg)] transition-all duration-300 ${
+                      isActive ? 'bg-[#C5A059] scale-125' : 'bg-[var(--c-line)] group-hover:bg-[#C5A059]/60'
                     }`} />
 
                     <div className="pl-4 transition-all duration-300">
                       <div className="flex items-baseline gap-3">
-                        <span className={`font-display tracking-[0.02em] text-2xl md:text-3xl transition-all duration-300 ${isActive ? 'text-[#846324] font-medium' : 'text-[#4B5E7D]'}`}>
+                        <span className={`font-display tracking-[0.02em] text-2xl md:text-3xl transition-all duration-300 ${isActive ? 'text-[var(--c-accent)] font-medium' : 'text-[var(--c-muted)]'}`}>
                           {pillar.num}
                         </span>
                         <h3 className={`font-display tracking-[0.03em] text-3xl md:text-4xl transition-all duration-300 leading-tight ${
-                          isActive ? 'text-[#0A2240] font-medium' : 'text-[#4B5E7D] group-hover:text-[#0A2240]'
+                          isActive ? 'text-[var(--c-ink)] font-medium' : 'text-[var(--c-muted)] group-hover:text-[var(--c-ink)]'
                         }`}>
                           {pillar.title}
                         </h3>
@@ -223,7 +223,7 @@ export default function DoveCampaignPage() {
                       
                       {/* Subtitle */}
                       <span className={`eyebrow text-[11px] transition-all duration-300 mt-1 block ${
-                        isActive ? 'text-[#846324]' : 'text-[#4B5E7D]'
+                        isActive ? 'text-[var(--c-accent)]' : 'text-[var(--c-muted)]'
                       }`}>
                         {pillar.subtitle}
                       </span>
@@ -240,7 +240,7 @@ export default function DoveCampaignPage() {
                 role="button"
                 tabIndex={0}
                 aria-label={`Expand ${strategyPillars[activeIndex].title} slide`}
-                className="group relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-md border border-[#E8E2D6]/40 cursor-zoom-in bg-white"
+                className="group relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-md border border-[var(--c-line)]/40 cursor-zoom-in bg-white"
                 onClick={() => setIsLightboxOpen(true)}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter' || event.key === ' ') {
@@ -259,12 +259,12 @@ export default function DoveCampaignPage() {
                 />
 
                 {/* Hover zoom overlay */}
-                <div className="absolute inset-0 bg-[#0A2240]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center">
+                <div className="absolute inset-0 bg-[var(--c-ink)]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center">
                   <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <svg className="w-4 h-4 text-[#0A2240]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 text-[var(--c-ink)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
                     </svg>
-                    <span className="text-[10px] uppercase tracking-wider text-[#0A2240] font-semibold">
+                    <span className="text-[10px] uppercase tracking-wider text-[var(--c-ink)] font-semibold">
                       Click to Expand Slide
                     </span>
                   </div>
@@ -272,7 +272,7 @@ export default function DoveCampaignPage() {
               </div>
 
               {/* Pagination Meta indicator */}
-              <div className="eyebrow flex items-center justify-between px-2 text-[11px] text-[#4B5E7D] font-semibold select-none">
+              <div className="eyebrow flex items-center justify-between px-2 text-[11px] text-[var(--c-muted)] font-semibold select-none">
                 <span>Campaign Insight Deck</span>
                 <span>Pillar {strategyPillars[activeIndex].num} / 06</span>
               </div>
@@ -281,25 +281,25 @@ export default function DoveCampaignPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E8E2D6] my-10 max-w-7xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10 max-w-7xl mx-auto" />
 
         {/* Section 02: Touchpoints & Digital Activation */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="eyebrow text-[#846324] mb-3 block">02 · Campaign Touchpoints</span>
-            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[#0A2240] font-semibold leading-tight mb-4`}>
+            <span className="eyebrow text-[var(--c-accent)] mb-3 block">02 · Campaign Touchpoints</span>
+            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[var(--c-ink)] font-semibold leading-tight mb-4`}>
               Reaching the Target
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left mt-6">
-              <div className="p-6 bg-[#FAF7F0] border border-[#E8E2D6]/30 rounded-xl">
-                <h3 className="eyebrow text-xs text-[#846324] font-semibold mb-2">Digital Activation (Instagram)</h3>
-                <p className="text-xs text-[#4B5E7D] leading-relaxed">
+              <div className="p-6 bg-[var(--c-panel)] border border-[var(--c-line)]/30 rounded-xl">
+                <h3 className="eyebrow text-xs text-[var(--c-accent)] font-semibold mb-2">Digital Activation (Instagram)</h3>
+                <p className="text-xs text-[var(--c-muted)] leading-relaxed">
                   Statics, organic Reels, and interactive AR filters designed to reach Gen Z and Millennial audiences directly in spaces where digital perfection pressure is highest.
                 </p>
               </div>
-              <div className="p-6 bg-[#FAF7F0] border border-[#E8E2D6]/30 rounded-xl">
-                <h3 className="eyebrow text-xs text-[#846324] font-semibold mb-2">D2C Activation (The Mirror Gift)</h3>
-                <p className="text-xs text-[#4B5E7D] leading-relaxed">
+              <div className="p-6 bg-[var(--c-panel)] border border-[var(--c-line)]/30 rounded-xl">
+                <h3 className="eyebrow text-xs text-[var(--c-accent)] font-semibold mb-2">D2C Activation (The Mirror Gift)</h3>
+                <p className="text-xs text-[var(--c-muted)] leading-relaxed">
                   A unique peer-to-peer gifting system that distributes physical unfiltered mirrors, building an offline supportive community of sisters and friends.
                 </p>
               </div>
@@ -315,7 +315,7 @@ export default function DoveCampaignPage() {
                 alt="Social feed design" 
                 width={1920}
                 height={1126}
-                className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+                className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
               />
 <Image
                   sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
@@ -323,22 +323,22 @@ export default function DoveCampaignPage() {
                 alt="AR Filter details" 
                 width={1920}
                 height={1124}
-                className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+                className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
               />
             </div>
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E8E2D6] my-10 max-w-7xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10 max-w-7xl mx-auto" />
 
         {/* Section 03: Creative Deliverables & Posters (Card dimensions fixed) */}
         <section className="mb-12">
           <div className="max-w-7xl mx-auto mb-6 text-center">
-            <span className="eyebrow text-[#846324] mb-3 block">03 · Creative Assets</span>
-            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[#0A2240] font-semibold leading-tight mb-4`}>
+            <span className="eyebrow text-[var(--c-accent)] mb-3 block">03 · Creative Assets</span>
+            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)] font-semibold leading-tight mb-4`}>
               Visual Delivery
             </h2>
-            <p className="text-sm text-[#4B5E7D] max-w-2xl mx-auto">
+            <p className="text-sm text-[var(--c-muted)] max-w-2xl mx-auto">
               Print posters, mirror packaging templates, and hand-drawn line illustrations that celebrate natural growth across both professional and celebratory spaces.
             </p>
           </div>
@@ -354,9 +354,9 @@ export default function DoveCampaignPage() {
                   alt="Unfiltered Normal Poster" 
                   width={960}
                   height={1200}
-                  className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+                  className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
                 />
-                <span className="eyebrow text-[11px] text-[#846324] font-semibold pl-2">Print Poster Option A</span>
+                <span className="eyebrow text-[11px] text-[var(--c-accent)] font-semibold pl-2">Print Poster Option A</span>
               </div>
               
               <div className="flex flex-col gap-3 mt-0 md:mt-12">
@@ -366,9 +366,9 @@ export default function DoveCampaignPage() {
                   alt="Lehenga Story Poster" 
                   width={961}
                   height={1707}
-                  className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+                  className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
                 />
-                <span className="eyebrow text-[11px] text-[#846324] font-semibold pl-2">Print Poster Option B</span>
+                <span className="eyebrow text-[11px] text-[var(--c-accent)] font-semibold pl-2">Print Poster Option B</span>
               </div>
             </div>
 
@@ -380,9 +380,9 @@ export default function DoveCampaignPage() {
                 alt="Boardroom and Lehenga Illustrations" 
                 width={1920}
                 height={1937}
-                className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+                className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
               />
-              <span className="eyebrow text-[11px] text-[#846324] font-semibold pl-2">Campaign Illustrations</span>
+              <span className="eyebrow text-[11px] text-[var(--c-accent)] font-semibold pl-2">Campaign Illustrations</span>
             </div>
 
             {/* Grid 3: Slide 12 (Illustrations details) & Slide 15 (Mirror Card Mockup) */}
@@ -393,7 +393,7 @@ export default function DoveCampaignPage() {
                 alt="Identity illustrations detail" 
                 width={1920}
                 height={1590}
-                className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+                className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
               />
 <Image
                   sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
@@ -401,7 +401,7 @@ export default function DoveCampaignPage() {
                 alt="D2C Mirror Card representation" 
                 width={1920}
                 height={1282}
-                className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+                className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
               />
             </div>
 
@@ -413,7 +413,7 @@ export default function DoveCampaignPage() {
                 alt="Banner Campaign message" 
                 width={1919}
                 height={576}
-                className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+                className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
               />
             </div>
 
@@ -425,7 +425,7 @@ export default function DoveCampaignPage() {
                 alt="Unfiltered mirror details" 
                 width={1920}
                 height={1240}
-                className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+                className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
               />
 <Image
                   sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
@@ -433,23 +433,23 @@ export default function DoveCampaignPage() {
                 alt="Unfiltered packaging design" 
                 width={1920}
                 height={2158}
-                className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+                className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
               />
             </div>
             
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#E8E2D6] my-10 max-w-7xl mx-auto" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10 max-w-7xl mx-auto" />
 
         {/* Section 04: Outcome & Reflection */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="eyebrow text-[#846324] mb-3 block">04 · Outcomes</span>
-            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[#0A2240] font-semibold leading-tight mb-4`}>
+            <span className="eyebrow text-[var(--c-accent)] mb-3 block">04 · Outcomes</span>
+            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[var(--c-ink)] font-semibold leading-tight mb-4`}>
               Quiet Self-Acceptance
             </h2>
-            <p className="text-sm text-[#4B5E7D] max-w-2xl mx-auto mb-12">
+            <p className="text-sm text-[var(--c-muted)] max-w-2xl mx-auto mb-12">
               Challenging physical stigmas in India without aggressive confrontation, utilizing Dove&apos;s trusted brand tone to support personal choice and drive authenticity.
             </p>
           </div>
@@ -461,7 +461,7 @@ export default function DoveCampaignPage() {
               alt="Outcome slide" 
               width={1920}
               height={690}
-              className="w-full h-auto rounded-xl border border-[#E8E2D6]/30 shadow-sm"
+              className="w-full h-auto rounded-xl border border-[var(--c-line)]/30 shadow-sm"
             />
           </div>
         </section>

@@ -33,8 +33,8 @@ function PurrLogo({ className, color1, strokeWidth = 18 }: { className?: string,
 
 export default function PurrPantryPage() {
   return (
-    <div className={`min-h-screen bg-[#FAF6EE] text-[#1A1208] font-body selection:bg-[#C4611A] selection:text-white`}>
-      <ProjectNav background="#FAF6EE" tone="light" />
+    <div className={`case-purr min-h-screen bg-[var(--c-bg)] text-[var(--c-ink)] font-body selection:bg-[#C4611A] selection:text-white`}>
+      <ProjectNav adaptive />
 
       {/* Hero Section */}
       <header id="main-content" tabIndex={-1} className="page-container page-enter pt-12 md:pt-20 pb-4 flex flex-col items-start text-left">
@@ -43,11 +43,11 @@ export default function PurrPantryPage() {
           title="Purr Pantry"
           lede="A premium cat-food identity that balances veterinary credibility with the warmth of a home-cooked meal."
           meta="Logo · Colour · Typography"
-          accent="#984510"
-          muted="#5E4C3B"
+          accent="var(--c-accent)"
+          muted="var(--c-muted)"
         />
         
-        <div className="w-full mb-12 rounded-xl overflow-hidden shadow-2xl bg-[#F5EAD7]">
+        <div className="w-full mb-12 rounded-xl overflow-hidden shadow-2xl bg-[var(--c-soft)]">
           <Image 
             src="/purr/starting-page.jpg" 
             alt="Purr Pantry Starting Page" 
@@ -67,35 +67,35 @@ export default function PurrPantryPage() {
         <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             <div className="w-full md:w-1/4 shrink-0">
-              <p className="eyebrow text-[#984510] mb-3">00 · The Brief</p>
-              <h2 className={`font-display font-semibold tracking-[0.012em] text-3xl md:text-4xl text-[#1A1208]`}>Project Context</h2>
+              <p className="eyebrow text-[var(--c-accent)] mb-3">00 · The Brief</p>
+              <h2 className={`font-display font-semibold tracking-[0.012em] text-3xl md:text-4xl text-[var(--c-ink)]`}>Project Context</h2>
             </div>
             <div className="w-full md:w-3/4">
-              <p className={`font-display text-2xl md:text-[28px] leading-[1.5] text-[#2E1A0E] mb-6`}>
+              <p className={`font-display text-2xl md:text-[28px] leading-[1.5] text-[var(--c-ink2)] mb-6`}>
                 Purr Pantry blends culinary craft with veterinary science. The brand needed an identity balancing scientific credibility with the warmth of a home-cooked meal.
               </p>
-              <p className={`font-display text-xl md:text-[22px] leading-[1.6] text-[#705C48]`}>
+              <p className={`font-display text-xl md:text-[22px] leading-[1.6] text-[var(--c-muted)]`}>
                 Inspired by its Pacific Northwest roots, the design appeals to modern pet owners who value transparency, avoiding the sterile feel of clinical pet food.
               </p>
             </div>
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#D4C4AA] mb-24" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] mb-24" />
 
         {/* Concept Exploration */}
         <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             <div className="w-full md:w-1/4 shrink-0">
-              <p className="eyebrow text-[#984510] mb-3">01 · The Concept</p>
-              <h2 className={`font-display font-semibold tracking-[0.012em] text-3xl md:text-4xl text-[#1A1208]`}>Process & Exploration</h2>
+              <p className="eyebrow text-[var(--c-accent)] mb-3">01 · The Concept</p>
+              <h2 className={`font-display font-semibold tracking-[0.012em] text-3xl md:text-4xl text-[var(--c-ink)]`}>Process & Exploration</h2>
             </div>
             <div className="w-full md:w-3/4">
-              <p className={`font-display text-xl md:text-2xl leading-[1.6] text-[#2E1A0E] mb-6`}>
+              <p className={`font-display text-xl md:text-2xl leading-[1.6] text-[var(--c-ink2)] mb-6`}>
                 Every strong identity begins on paper. The creative process focused on elegantly combining the dual &apos;P&apos;s of Purr Pantry. I aimed to craft a clever shape that rewards a second glance, avoiding any overt cartoonishness.
               </p>
               
-              <div className="group w-full aspect-[4/3] relative rounded-3xl overflow-hidden shadow-xl bg-[#F5EAD7]">
+              <div className="group w-full aspect-[4/3] relative rounded-3xl overflow-hidden shadow-xl bg-[var(--c-soft)]">
                 <Image
                   src="/purr/sketches.jpg"
                   alt="Purr Pantry Process Sketches"
@@ -108,16 +108,16 @@ export default function PurrPantryPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#D4C4AA] my-10" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10" />
 
         {/* Logo Variations */}
         <section className="mb-12">
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="eyebrow text-[#984510] mb-3">02 · Mark & Logo</p>
-              <h2 className={`font-display font-semibold tracking-[0.012em] text-4xl md:text-5xl lg:text-6xl text-[#1A1208]`}>Logo Variations</h2>
+              <p className="eyebrow text-[var(--c-accent)] mb-3">02 · Mark & Logo</p>
+              <h2 className={`font-display font-semibold tracking-[0.012em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)]`}>Logo Variations</h2>
             </div>
-            <p className={`font-display  text-[#705C48] text-lg md:text-xl leading-relaxed max-w-xl`}>
+            <p className={`font-display  text-[var(--c-muted)] text-lg md:text-xl leading-relaxed max-w-xl`}>
               The primary brand mark adapts to different backgrounds within our palette system, ensuring high contrast and legibility while maintaining the premium aesthetic.
             </p>
           </div>
@@ -139,7 +139,7 @@ export default function PurrPantryPage() {
             
             {/* Secondary Logos */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-[#1A1208] rounded-3xl flex flex-col items-center justify-center p-16 relative overflow-hidden group shadow-md hover:shadow-xl transition-all duration-500">
+              <div className="bg-[#1A1208] shadow-[0_0_0_0.5px_var(--c-edge)] rounded-3xl flex flex-col items-center justify-center p-16 relative overflow-hidden group shadow-md hover:shadow-xl transition-all duration-500">
                 <div className="absolute top-6 left-6">
                   <p className="eyebrow text-[11px] text-[#F5EAD7]">Accent / Active</p>
                 </div>
@@ -172,23 +172,23 @@ export default function PurrPantryPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#D4C4AA] my-10" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10" />
 
         {/* Colour Palette */}
         <section className="mb-12">
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="eyebrow text-[#984510] mb-3">03 · Colour</p>
-              <h2 className={`font-display font-semibold tracking-[0.012em] text-4xl md:text-5xl lg:text-6xl text-[#1A1208]`}>The Palette</h2>
+              <p className="eyebrow text-[var(--c-accent)] mb-3">03 · Colour</p>
+              <h2 className={`font-display font-semibold tracking-[0.012em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)]`}>The Palette</h2>
             </div>
-            <p className={`font-display  text-[#705C48] text-lg md:text-xl leading-relaxed max-w-xl`}>
+            <p className={`font-display  text-[var(--c-muted)] text-lg md:text-xl leading-relaxed max-w-xl`}>
               Built from the warmth of the Pacific Northwest coast, with amber firelight, espresso dark, parchment paper, sage coastal green. Every colour has a job. None are decorative.
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-10">
             {/* Swatch 1 */}
-            <div className="bg-[#2E1A0E] aspect-square p-5 flex flex-col justify-between text-[#F5EAD7] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
+            <div className="bg-[#2E1A0E] shadow-[0_0_0_0.5px_var(--c-edge)] aspect-square p-5 flex flex-col justify-between text-[#F5EAD7] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
               <span className="eyebrow text-[11px] opacity-100">Primary</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Espresso</div>
@@ -196,7 +196,7 @@ export default function PurrPantryPage() {
               </div>
             </div>
             {/* Swatch 2 */}
-            <div className="bg-[#1A1208] aspect-square p-5 flex flex-col justify-between text-[#F5EAD7] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
+            <div className="bg-[#1A1208] shadow-[0_0_0_0.5px_var(--c-edge)] aspect-square p-5 flex flex-col justify-between text-[#F5EAD7] rounded-xl group transition-transform hover:-translate-y-2 hover:shadow-lg cursor-default">
               <span className="eyebrow text-[11px] opacity-100">Primary</span>
               <div>
                 <div className="text-sm font-medium tracking-wide">Deep Ink</div>
@@ -266,36 +266,36 @@ export default function PurrPantryPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-8 border-[0.5px] border-[#D4C4AA] rounded-xl hover:shadow-md transition-shadow">
-              <p className="eyebrow text-[#984510] mb-4">Dominant</p>
-              <p className={`font-display  text-[#1A1208] text-xl leading-[1.6]`}>Parchment and Cream together form 70% of every surface. This is the brand&apos;s breathing room: warm, tactile and quiet.</p>
+            <div className="bg-[var(--c-card)] p-8 border-[0.5px] border-[var(--c-line)] rounded-xl hover:shadow-md transition-shadow">
+              <p className="eyebrow text-[var(--c-accent)] mb-4">Dominant</p>
+              <p className={`font-display  text-[var(--c-ink)] text-xl leading-[1.6]`}>Parchment and Cream together form 70% of every surface. This is the brand&apos;s breathing room: warm, tactile and quiet.</p>
             </div>
-            <div className="bg-white p-8 border-[0.5px] border-[#D4C4AA] rounded-xl hover:shadow-md transition-shadow">
-              <p className="eyebrow text-[#984510] mb-4">Structural</p>
-              <p className={`font-display  text-[#1A1208] text-xl leading-[1.6]`}>Espresso and Deep Ink carry all type and mark applications. Never use pure black, always the warm dark browns.</p>
+            <div className="bg-[var(--c-card)] p-8 border-[0.5px] border-[var(--c-line)] rounded-xl hover:shadow-md transition-shadow">
+              <p className="eyebrow text-[var(--c-accent)] mb-4">Structural</p>
+              <p className={`font-display  text-[var(--c-ink)] text-xl leading-[1.6]`}>Espresso and Deep Ink carry all type and mark applications. Never use pure black, always the warm dark browns.</p>
             </div>
-            <div className="bg-white p-8 border-[0.5px] border-[#D4C4AA] rounded-xl hover:shadow-md transition-shadow">
-              <p className="eyebrow text-[#984510] mb-4">Accent</p>
-              <p className={`font-display  text-[#1A1208] text-xl leading-[1.6]`}>Amber is used sparingly and with intention, on the cat elements in the mark, key words in headlines and active UI states. Never as a background.</p>
+            <div className="bg-[var(--c-card)] p-8 border-[0.5px] border-[var(--c-line)] rounded-xl hover:shadow-md transition-shadow">
+              <p className="eyebrow text-[var(--c-accent)] mb-4">Accent</p>
+              <p className={`font-display  text-[var(--c-ink)] text-xl leading-[1.6]`}>Amber is used sparingly and with intention, on the cat elements in the mark, key words in headlines and active UI states. Never as a background.</p>
             </div>
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-[#D4C4AA] my-10" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10" />
 
         {/* Typography */}
         <section className="mb-12">
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="eyebrow text-[#984510] mb-3">04 · Typography</p>
-              <h2 className={`font-display font-semibold tracking-[0.012em] text-4xl md:text-5xl lg:text-6xl text-[#1A1208]`}>Type System</h2>
+              <p className="eyebrow text-[var(--c-accent)] mb-3">04 · Typography</p>
+              <h2 className={`font-display font-semibold tracking-[0.012em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)]`}>Type System</h2>
             </div>
-            <p className={`font-display  text-[#705C48] text-lg md:text-xl leading-relaxed max-w-xl`}>
+            <p className={`font-display  text-[var(--c-muted)] text-lg md:text-xl leading-relaxed max-w-xl`}>
               Two typefaces. One rule: Cormorant Garamond carries warmth and authority. Jost carries clarity and precision. They never fight, they take turns.
             </p>
           </div>
 
-          <div className="bg-[#FFFCF7] border-[0.5px] border-[#D4C4AA] rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-[var(--c-card)] border-[0.5px] border-[var(--c-line)] rounded-2xl overflow-hidden shadow-sm">
             {[
               { role: 'Display', spec: 'Cormorant Garamond\nLight 300\n48–72px\nTracking: -0.5px', sample: 'Real food.\nReal care.', isCormorant: true, classes: 'text-6xl md:text-7xl font-light leading-none tracking-[-0.5px]' },
               { role: 'Headline', spec: 'Cormorant Garamond\nRegular 400\n24–36px\nTracking: 0', sample: 'Pacific halibut, caught off\nthe Oregon coast.', isCormorant: true, classes: 'text-3xl md:text-4xl font-normal leading-[1.2]' },
@@ -303,12 +303,12 @@ export default function PurrPantryPage() {
               { role: 'Label / UI', spec: 'Jost\nMedium 500\n10–12px\nTracking: +3px · Uppercase', sample: 'SMALL-BATCH · PORTLAND, OR · EST. 2021', isCormorant: false, classes: 'text-[13px] font-medium tracking-[0.3em] uppercase' },
               { role: 'Body Copy', spec: 'Jost\nLight 300\n13–15px\nLine height: 1.8', sample: 'We spent 18 months developing these recipes in a certified commercial kitchen. Every protein is sourced from Pacific Northwest farms we visit ourselves. Not "premium fish." Wild coho salmon from the Columbia River.', isCormorant: false, classes: 'text-base font-light leading-[1.8] max-w-[500px]' }
             ].map((type, idx) => (
-              <div key={idx} className="flex flex-col lg:flex-row items-baseline gap-6 lg:gap-16 p-8 md:p-12 border-b-[0.5px] border-[#D4C4AA] last:border-0 hover:bg-white transition-colors">
+              <div key={idx} className="flex flex-col lg:flex-row items-baseline gap-6 lg:gap-16 p-8 md:p-12 border-b-[0.5px] border-[var(--c-line)] last:border-0 hover:bg-[var(--c-card-hover)] transition-colors">
                 <div className="w-full lg:w-64 shrink-0">
-                  <p className="eyebrow text-[#984510] mb-3">{type.role}</p>
-                  <p className="text-xs text-[#705C48] whitespace-pre-line leading-relaxed">{type.spec}</p>
+                  <p className="eyebrow text-[var(--c-accent)] mb-3">{type.role}</p>
+                  <p className="text-xs text-[var(--c-muted)] whitespace-pre-line leading-relaxed">{type.spec}</p>
                 </div>
-                <div className={`${type.isCormorant ? cormorant.className : jost.className} ${type.classes} whitespace-pre-line text-[#1A1208]`}>
+                <div className={`${type.isCormorant ? cormorant.className : jost.className} ${type.classes} whitespace-pre-line text-[var(--c-ink)]`}>
                   {type.sample}
                 </div>
               </div>
