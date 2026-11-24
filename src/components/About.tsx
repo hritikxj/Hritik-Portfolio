@@ -4,10 +4,10 @@ import Image from '@/components/PortfolioImage';
 import NextImage from 'next/image';
 
 const stats = [
-  { value: '17K+', label: 'Instagram community for my art and process' },
+  { value: '16.9K+', label: 'Instagram community for my art and process' },
   { value: '100+', label: 'Commissioned portraits and concept sketches' },
   { value: '4.9M', label: 'Views on a single original reel' },
-  { value: '5', label: 'Apps designed and built, from Android to macOS' },
+  { value: '8+', label: 'Apps designed and built from scratch to working' },
 ];
 
 // Grouped loosely: design, image & motion, 3D, then building.
