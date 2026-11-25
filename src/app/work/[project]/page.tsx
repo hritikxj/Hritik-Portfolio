@@ -72,12 +72,9 @@ export default async function CaseStudyPage({ params }: Props) {
             eyebrow={study.discipline}
             title={study.title}
             lede={study.summary}
-            meta={study.format}
             accent="var(--accent)"
             muted="var(--color-smoke)"
           />
-          {study.stack && <div className={styles.build}><AppBuildDetails stack={study.stack} /></div>}
-          <ProjectSummary link={`/work/${study.slug}`} className="mb-10 md:mb-12" />
           {study.video ? <AppVideo name={study.video.name} label={study.video.label} /> : (
           <div className={styles.stage}>
             {heroImages.map((image, index) => (
@@ -94,12 +91,10 @@ export default async function CaseStudyPage({ params }: Props) {
             ))}
           </div>
           )}
+          <ProjectSummary link={`/work/${study.slug}`} className="mt-10 md:mt-14" />
+          {study.stack && <div className={styles.build}><AppBuildDetails stack={study.stack} /></div>}
         </header>
         <div className={styles.body}>
-          <section className={styles.role} aria-label="My role">
-            <p className="eyebrow" style={{ color: 'var(--accent)' }}>My role</p>
-            <p className={styles.contribution}>{study.contribution}</p>
-          </section>
           {study.slug === 'clarity-labs' && <ClarityGuidelines />}
           {study.features.length > 0 && (
             <div className={styles.features}>

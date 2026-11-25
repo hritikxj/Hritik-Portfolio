@@ -28,13 +28,14 @@
   font-size: .86rem;
 }
 .nav a, .footer a { text-decoration: underline; text-underline-offset: .27em; }
-.kicker { font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red); }
+.kicker { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--red); }
 .intro {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, .75fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* the project summary's columns */
   align-items: end;
-  gap: .95rem 2.5rem;
-  padding-block: clamp(2.25rem, 6.6vw, 6rem) clamp(1.35rem, 3.5vw, 2.8rem);
+  align-items: last baseline; /* the description ends on the title baseline */
+  gap: 1.5rem 2rem;
+  padding-block: clamp(2rem, 3vw, 2.5rem) clamp(2rem, 3vw, 2.5rem);
 }
 .intro h1, .sectionHeading h2 {
   margin-top: .14em;
@@ -43,25 +44,24 @@
   font-weight: 600;
   letter-spacing: .01em;
 }
-.intro h1 { font-size: clamp(3rem, 7.5vw, 7rem); line-height: .9; }
-.intro > p { max-width: 35ch; color: var(--text-muted); font-size: clamp(1.05rem, 1.8vw, 1.3rem); line-height: 1.45; }
+.intro h1 { font-size: var(--type-title); line-height: .95; }
+.intro > p { color: var(--text-muted); font-size: var(--type-lead); line-height: 1.6; }
 .hero { width: 100%; height: auto; display: block; border-radius: .55rem; }
-.caption { margin-top: .65rem; font-size: .83rem; color: var(--text-muted); }
 .section, .range { padding-block: clamp(3rem, 7vw, 6rem); }
 .sectionHeading { margin-bottom: 1.5rem; }
-.sectionHeading h2 { font-size: clamp(2.65rem, 5.6vw, 5rem); line-height: .92; }
+.sectionHeading h2 { font-size: var(--type-h2); line-height: 1.05; letter-spacing: .02em; }
 .sectionHeading > p:not(.kicker) { margin-top: .7rem; max-width: 47ch; color: var(--text-muted); }
 .studyGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.6rem, 4vw, 3.25rem) clamp(1rem, 3vw, 2.25rem); }
 .studyMedia { padding: clamp(.45rem, 1.4vw, 1rem); background: var(--study); border-radius: .45rem; }
 .study img, .flavours img, .campaign img { width: 100%; height: auto; display: block; }
 .study img { aspect-ratio: 1.4; object-fit: contain; border-radius: .2rem; }
 .study figcaption { padding-top: .9rem; }
-.study h3 { font-size: 1.17rem; font-weight: 700; }
+.study h3 { font-size: var(--type-h3); font-weight: 600; line-height: 1.3; }
 .study figcaption p { color: var(--text-muted); max-width: 49ch; margin-top: .22rem; }
 .range { background: var(--range); }
 .flavours { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem clamp(.8rem, 2vw, 1.4rem); }
 .flavours img { border-radius: .3rem; border: 1px solid color-mix(in srgb, var(--c-line) 60%, transparent); }
-.flavours figcaption { font-size: .91rem; font-weight: 650; margin-top: .55rem; }
+.flavours figcaption { font-size: var(--type-caption); font-weight: 600; margin-top: .55rem; }
 .campaign { display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, 1fr); align-items: center; gap: 1rem clamp(2rem, 8vw, 6rem); }
 .campaign img { border-radius: .55rem; }
 .footer { padding-block: 1.6rem 2rem; border-top: 1px solid var(--line); }
@@ -73,4 +73,15 @@
   .flavours { grid-template-columns: minmax(0, 1fr); }
 }
 
-.summary { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
+.summary { margin-top: clamp(2rem, 4.5vw, 3.5rem); }
+
+.intro > * { grid-column: span 2; }
+/* Justified beside the title, so every line but the last meets the visual's right edge. */
+@media (min-width: 80rem) { .intro > :last-child, .intro > :last-child p { text-align: justify; hyphens: auto; } }
+
+/* Side by side only on wide screens; below that the description sits under the title. */
+@media (max-width: 79.99rem) {
+  .intro { grid-template-columns: minmax(0, 1fr); align-items: start; row-gap: 1.5rem; }
+  .intro > * { grid-column: auto; }
+  .intro > :last-child { max-width: 42ch; }
+}

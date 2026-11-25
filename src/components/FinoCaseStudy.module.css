@@ -27,16 +27,17 @@
 .hero a:focus-visible { outline-color: var(--gold); }
 .intro {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, .64fr);
-  gap: 1.25rem 3rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* the project summary's columns */
+  gap: 1.5rem 2rem;
   align-items: end;
-  padding-block: clamp(3rem, 6.5vw, 5.75rem) clamp(1.7rem, 4vw, 3.3rem);
+  align-items: last baseline; /* the description ends on the title baseline */
+  padding-block: clamp(2rem, 3vw, 2.5rem) clamp(2rem, 3vw, 2.5rem);
 }
 .eyebrow {
   color: #756035;
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .12em;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .14em;
   text-transform: uppercase;
 }
 .hero .eyebrow { color: var(--gold); }
@@ -45,8 +46,8 @@
   font-weight: 600;
   letter-spacing: .01em;
 }
-.intro h1 { font-size: clamp(4.5rem, 11vw, 9rem); line-height: .85; margin-top: .13em; }
-.lede { max-width: 31ch; color: #eef0f4; font-size: clamp(1.12rem, 2.2vw, 1.6rem); line-height: 1.4; }
+.intro h1 { font-size: var(--type-title); line-height: .95; margin-top: .13em; }
+.lede { color: #eef0f4; font-size: var(--type-lead); line-height: 1.6; }
 .heroStage {
   background: radial-gradient(ellipse at 62% 15%, #526d81, transparent 65%), linear-gradient(140deg, #273e56, #141f30);
   border: 1px solid #ffffff27;
@@ -55,12 +56,11 @@
 }
 .window { display: block; width: 100%; height: auto; border-radius: clamp(.3rem, 1vw, .65rem); }
 .heroStage .window { max-width: 64rem; margin-inline: auto; box-shadow: 0 1.8rem 3.6rem #0b132b91; }
-.heroFigure figcaption, .previewFigure figcaption, .lensFigure figcaption {
+.previewFigure figcaption {
   color: var(--muted);
-  font-size: .78rem;
+  font-size: var(--type-caption);
   margin-top: .7rem;
 }
-.heroFigure figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .2rem 1rem; color: #d6dde5; }
 .jump {
   display: flex;
   flex-wrap: wrap;
@@ -79,7 +79,7 @@
   align-items: end;
   margin-bottom: clamp(1.6rem, 4vw, 3rem);
 }
-.sectionIntro h2 { font-size: clamp(2.8rem, 6vw, 5.5rem); line-height: .88; margin-top: .2em; }
+.sectionIntro h2 { font-size: var(--type-h2); line-height: 1.05; letter-spacing: .02em; margin-top: .2em; }
 .sectionIntro > p, .feature p, .lensCopy > p:not(.eyebrow) { color: var(--muted); max-width: 43ch; }
 .featureGrid, .shortcutGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem clamp(1rem, 4vw, 2.7rem); }
 .featureStage { padding: clamp(.65rem, 2vw, 1.3rem); border-radius: .45rem; }
@@ -87,7 +87,7 @@
 .filterStage { background: #d3dfeb; }
 .featureStage img { width: 100%; height: auto; display: block; border-radius: .3rem; box-shadow: 0 .7rem 1.3rem #1726382e; }
 .feature figcaption { margin-top: 1.25rem; }
-.feature h3, .shortcutGroup h3, .compareRow h3 { font-weight: 650; font-size: clamp(1.1rem, 2vw, 1.32rem); line-height: 1.25; }
+.feature h3, .shortcutGroup h3, .compareRow h3 { font-weight: 600; font-size: var(--type-h3); line-height: 1.3; }
 .feature p { margin-top: .5rem; }
 .previewSection { background: #e9edf2; }
 .previewFigure {
@@ -104,10 +104,10 @@
   gap: 1.45rem clamp(1.5rem, 6vw, 5rem);
   margin-top: clamp(2.2rem, 7vw, 5rem);
 }
-.lens h3 { font-size: clamp(2.1rem, 4.3vw, 4rem); line-height: .94; margin-top: .2em; }
+.lens h3 { font-size: var(--type-h2); line-height: 1.05; letter-spacing: .02em; margin-top: .2em; }
 .lensCopy > p:not(.eyebrow) { margin-top: .85rem; }
 .lensFigure .window { box-shadow: 0 .8rem 2rem #17263828; border: 1px solid #c8d0dc; }
-.source { display: inline-block; font-size: .85rem; margin-top: .95rem; }
+.source { display: inline-block; font-size: var(--type-caption); margin-top: .95rem; }
 .page kbd {
   display: inline-block;
   border: 1px solid #abaeaa;
@@ -167,7 +167,6 @@
 :global(:root) .jump { border-color: var(--color-border-subtle); }
 :global(:root) .eyebrow { color: var(--color-smoke); }
 :global(:root) .lede { color: var(--color-ink); }
-:global(:root) .heroFigure figcaption,
 :global(:root) .previewFigure figcaption { color: var(--color-smoke); }
 :global(:root) .heroStage { background: var(--color-parchment); border-color: var(--color-border-subtle); }
 :global(:root) .folderStage,
@@ -182,4 +181,15 @@
 :global(:root) .comparison,
 :global(:root) .compareRow { border-color: var(--color-border-subtle); }
 
-.summary { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
+.summary { margin-block: clamp(2rem, 4.5vw, 3.5rem) 1.5rem; }
+
+.intro > * { grid-column: span 2; }
+/* Justified beside the title, so every line but the last meets the visual's right edge. */
+@media (min-width: 80rem) { .intro > :last-child, .intro > :last-child p { text-align: justify; hyphens: auto; } }
+
+/* Side by side only on wide screens; below that the description sits under the title. */
+@media (max-width: 79.99rem) {
+  .intro { grid-template-columns: minmax(0, 1fr); align-items: start; row-gap: 1.5rem; }
+  .intro > * { grid-column: auto; }
+  .intro > :last-child { max-width: 42ch; }
+}

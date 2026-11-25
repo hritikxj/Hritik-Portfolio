@@ -100,16 +100,14 @@ export default function DoveCampaignPage() {
       <ProjectNav adaptive />
 
       {/* Hero Section */}
-      <header id="main-content" tabIndex={-1} className="page-container page-enter pt-12 md:pt-20 pb-4 flex flex-col items-start text-left">
+      <header id="main-content" tabIndex={-1} className="page-container page-enter pt-8 md:pt-10 pb-4 flex flex-col items-start text-left">
         <ProjectIntro
           eyebrow="Campaign concept · Academic project"
           title="Dove #TheRealGrowth"
           lede="A campaign concept that moves the conversation about body hair in India from hygiene to choice."
-          meta="Brand campaign · Digital & print"
           accent="var(--c-accent)"
           muted="var(--c-muted)"
         />
-        <ProjectSummary link="/dove" className="mb-10 md:mb-14" />
         
         <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-xl border border-[var(--c-line)]/40">
 <Image
@@ -122,6 +120,7 @@ export default function DoveCampaignPage() {
             priority
           />
         </div>
+        <ProjectSummary link="/dove" className="mb-12 md:mb-16" />
       </header>
 
       <main className="page-container">
@@ -130,11 +129,10 @@ export default function DoveCampaignPage() {
         {/* Section 01: Strategic Foundation (Split-screen interactive timeline and slide viewer) */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="eyebrow text-[var(--c-accent)] mb-3 block">01 · Strategic Foundation</span>
-            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)] font-semibold leading-tight mb-4`}>
+            <h2 className={`type-h2 text-[var(--c-ink)] mb-4`}>
               Core Pillars
             </h2>
-            <p className="text-sm text-[var(--c-muted)] max-w-2xl mx-auto">
+            <p className="type-body text-[var(--c-muted)] max-w-2xl mx-auto">
               A structured breakdown of the insights, targets, and brand positioning that defined the campaign concept. Click any slide to expand.
             </p>
           </div>
@@ -247,16 +245,12 @@ export default function DoveCampaignPage() {
                     <svg className="w-4 h-4 text-[var(--c-ink)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
                     </svg>
-                    <span className="text-[10px] uppercase tracking-wider text-[var(--c-ink)] font-semibold">
-                      Click to Expand Slide
-                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Pagination Meta indicator */}
-              <div className="eyebrow flex items-center justify-between px-2 text-[11px] text-[var(--c-muted)] font-semibold select-none">
-                <span>Campaign Insight Deck</span>
+              <div className="eyebrow flex items-center justify-end px-2 text-[11px] text-[var(--c-muted)] font-semibold select-none">
                 <span>Pillar {strategyPillars[activeIndex].num} / 06</span>
               </div>
             </div>
@@ -269,20 +263,19 @@ export default function DoveCampaignPage() {
         {/* Section 02: Touchpoints & Digital Activation */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="eyebrow text-[var(--c-accent)] mb-3 block">02 · Campaign Touchpoints</span>
-            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[var(--c-ink)] font-semibold leading-tight mb-4`}>
+            <h2 className={`type-h2 text-[var(--c-ink)] mb-4`}>
               Reaching the Target
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left mt-6">
               <div className="p-6 bg-[var(--c-panel)] border border-[var(--c-line)]/30 rounded-xl">
                 <h3 className="eyebrow text-xs text-[var(--c-accent)] font-semibold mb-2">Digital Activation (Instagram)</h3>
-                <p className="text-xs text-[var(--c-muted)] leading-relaxed">
+                <p className="type-caption text-[var(--c-muted)]">
                   Statics, organic Reels, and interactive AR filters designed to reach Gen Z and Millennial audiences directly in spaces where digital perfection pressure is highest.
                 </p>
               </div>
               <div className="p-6 bg-[var(--c-panel)] border border-[var(--c-line)]/30 rounded-xl">
                 <h3 className="eyebrow text-xs text-[var(--c-accent)] font-semibold mb-2">D2C Activation (The Mirror Gift)</h3>
-                <p className="text-xs text-[var(--c-muted)] leading-relaxed">
+                <p className="type-caption text-[var(--c-muted)]">
                   A unique peer-to-peer gifting system that distributes physical unfiltered mirrors, building an offline supportive community of sisters and friends.
                 </p>
               </div>
@@ -317,11 +310,10 @@ export default function DoveCampaignPage() {
         {/* Section 03: Creative Deliverables & Posters (Card dimensions fixed) */}
         <section className="mb-12">
           <div className="max-w-7xl mx-auto mb-6 text-center">
-            <span className="eyebrow text-[var(--c-accent)] mb-3 block">03 · Creative Assets</span>
-            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)] font-semibold leading-tight mb-4`}>
+            <h2 className={`type-h2 text-[var(--c-ink)] mb-4`}>
               Visual Delivery
             </h2>
-            <p className="text-sm text-[var(--c-muted)] max-w-2xl mx-auto">
+            <p className="type-body text-[var(--c-muted)] max-w-2xl mx-auto">
               Print posters, mirror packaging templates, and hand-drawn line illustrations that celebrate natural growth across both professional and celebratory spaces.
             </p>
           </div>
@@ -428,11 +420,10 @@ export default function DoveCampaignPage() {
         {/* Section 04: Outcome & Reflection */}
         <section className="mb-12 max-w-7xl mx-auto">
           <div className="mb-6 text-center">
-            <span className="eyebrow text-[var(--c-accent)] mb-3 block">04 · Outcomes</span>
-            <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[var(--c-ink)] font-semibold leading-tight mb-4`}>
+            <h2 className={`type-h2 text-[var(--c-ink)] mb-4`}>
               Quiet Self-Acceptance
             </h2>
-            <p className="text-sm text-[var(--c-muted)] max-w-2xl mx-auto mb-12">
+            <p className="type-body text-[var(--c-muted)] max-w-2xl mx-auto mb-12">
               Challenging physical stigmas in India without aggressive confrontation, utilizing Dove&apos;s trusted brand tone to support personal choice and drive authenticity.
             </p>
           </div>

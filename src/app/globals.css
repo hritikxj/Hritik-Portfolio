@@ -22,7 +22,16 @@
 
 /* Light is the default for everyone. Dark applies only when the visitor picks it
    with the switch; `data-theme` is then restored before paint on later visits. */
-:root { color-scheme: light; }
+/* One type scale for every project page. Phone sizes on the left of each clamp, 1440px on the right. */
+:root {
+  color-scheme: light;
+  --type-title: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem); /* 40 → 72 */
+  --type-h2: clamp(2rem, 1.33rem + 1.85vw, 3rem); /* 32 → 48 */
+  --type-h3: 1.25rem;                              /* 20 */
+  --type-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem); /* 17 → 19 */
+  --type-body: 1rem;                               /* 16 */
+  --type-caption: 0.875rem;                        /* 14 */
+}
 
 :root[data-theme="dark"] {
   --color-ink: #ECEDEA;
@@ -89,6 +98,18 @@ img { -webkit-user-drag: none; }
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--type-h2);
+  line-height: 1.05;
+  letter-spacing: 0.02em; /* tighter lets Switzer's rt and ty pairs touch at this size */
+}
+@utility type-h3 { font-weight: 600; font-size: var(--type-h3); line-height: 1.3; }
+@utility type-lead { font-size: var(--type-lead); line-height: 1.6; font-weight: 400; }
+@utility type-body { font-size: var(--type-body); line-height: 1.65; }
+@utility type-caption { font-size: var(--type-caption); line-height: 1.5; }
 
 @utility section-title {
   font-family: var(--font-display);

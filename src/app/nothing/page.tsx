@@ -23,16 +23,14 @@ export default function NothingCommunityEditionPage() {
       <ProjectNav adaptive />
 
       {/* Hero Section */}
-      <header id="main-content" tabIndex={-1} className="page-container page-enter pt-12 md:pt-20 pb-4 flex flex-col items-start text-left relative z-10">
+      <header id="main-content" tabIndex={-1} className="page-container page-enter pt-8 md:pt-10 pb-4 flex flex-col items-start text-left relative z-10">
         <ProjectIntro
           eyebrow="UI design · Nothing OS"
           title="Nothing To-Do Widget"
           lede="A minimal to-do widget for Nothing Community Edition, selected as a featured submission in the Software showcase."
-          meta="Community Edition · 2025"
           accent="var(--c-accent)"
           muted="var(--c-muted)"
         />
-        <ProjectSummary link="/nothing" className="mb-10 md:mb-14" />
         
         <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-2xl bg-[var(--c-panel)] border border-[var(--c-line)]">
           <Image 
@@ -46,6 +44,7 @@ export default function NothingCommunityEditionPage() {
             sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
           />
         </div>
+        <ProjectSummary link="/nothing" className="mb-12 md:mb-16" />
       </header>
 
       <main className="page-container">
@@ -54,18 +53,17 @@ export default function NothingCommunityEditionPage() {
         <section className="mb-12 relative z-10">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
             <div className="w-full lg:w-1/4 shrink-0">
-              <p className="eyebrow text-[var(--c-accent)] mb-3">01 · The Brief</p>
-              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[var(--c-ink)] font-semibold`}>Project Context</h2>
+              <h2 className={`type-h2 text-[var(--c-ink)]`}>Project Context</h2>
             </div>
             <div className="w-full lg:w-3/4">
 
-              <p className={`font-display tracking-[0.02em] text-3xl md:text-[34px] leading-[1.3] text-[var(--c-ink)] font-semibold mb-6`}>
+              <p className={`type-lead text-[var(--c-ink)] mb-6`}>
                 Ambient utility meeting physical minimalism.
               </p>
-              <p className={`font-body text-sm text-[var(--c-muted)] leading-[1.9] mb-6`}>
+              <p className={`type-body text-[var(--c-muted)] mb-6`}>
                 A minimalist to-do widget designed for the Nothing Community Edition, utilizing dot-based progress tracking to align with Nothing&apos;s transparent and understated hardware aesthetic. The interface balances core utility with geometric simplicity.
               </p>
-              <p className={`font-display tracking-[0.02em]  text-[var(--c-muted)] text-lg md:text-xl leading-relaxed`}>
+              <p className={`type-lead text-[var(--c-muted)]`}>
                 Selected as a featured submission in the official Software showcase category, April 2025.
               </p>
             </div>
@@ -78,11 +76,10 @@ export default function NothingCommunityEditionPage() {
         <section className="mb-12 relative z-10">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
             <div className="w-full lg:w-1/4 shrink-0">
-              <p className="eyebrow text-[var(--c-accent)] mb-3">02 · The Grid</p>
-              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[var(--c-ink)] font-semibold`}>Process & Layout</h2>
+              <h2 className={`type-h2 text-[var(--c-ink)]`}>Process & Layout</h2>
             </div>
             <div className="w-full lg:w-3/4">
-              <p className={`font-display tracking-[0.02em] text-xl md:text-2xl leading-[1.6] text-[var(--c-ink)] mb-12`}>
+              <p className={`type-lead text-[var(--c-ink)] mb-12`}>
                 Strict grid constraints and dot-matrix typography scaling ensure the widget UI integrates with the device&apos;s default operating system layout.
               </p>
               
@@ -106,10 +103,9 @@ export default function NothingCommunityEditionPage() {
         <section className="mb-12 relative z-10">
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="eyebrow text-[var(--c-accent)] mb-3">03 · The Interface</p>
-              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)] font-semibold`}>Widget States</h2>
+              <h2 className={`type-h2 text-[var(--c-ink)]`}>Widget States</h2>
             </div>
-            <p className={`font-display tracking-[0.02em]  text-[var(--c-muted)] text-lg md:text-xl leading-relaxed max-w-xl`}>
+            <p className={`type-lead text-[var(--c-muted)] max-w-xl`}>
               Glanceable layouts optimized for low-emission ambient lockscreens, focusing on task completion rates.
             </p>
           </div>
@@ -144,11 +140,10 @@ export default function NothingCommunityEditionPage() {
         <section className="mb-12 relative z-10">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start mb-6">
             <div className="w-full lg:w-1/4 shrink-0">
-              <p className="eyebrow text-[var(--c-accent)] mb-3">04 · Physicality</p>
-              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[var(--c-ink)] font-semibold`}>Hardware Integration</h2>
+              <h2 className={`type-h2 text-[var(--c-ink)]`}>Hardware Integration</h2>
             </div>
             <div className="w-full lg:w-3/4">
-              <p className={`font-display tracking-[0.02em] text-xl md:text-2xl leading-[1.6] text-[var(--c-ink)]`}>
+              <p className={`type-lead text-[var(--c-ink)]`}>
                 Testing system legibility in context. The digital interface mirrors the physical dot-pattern architecture of Nothing Phone&apos;s glyphs, bridging interface logic with industrial product design.
               </p>
             </div>
@@ -184,10 +179,9 @@ export default function NothingCommunityEditionPage() {
         <section className="mb-12 relative z-10">
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="eyebrow text-[var(--c-accent)] mb-3">05 · System Tokens</p>
-              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)] font-semibold`}>Aesthetic Rules</h2>
+              <h2 className={`type-h2 text-[var(--c-ink)]`}>Aesthetic Rules</h2>
             </div>
-            <p className={`font-display tracking-[0.02em]  text-[var(--c-muted)] text-lg md:text-xl leading-relaxed max-w-xl`}>
+            <p className={`type-lead text-[var(--c-muted)] max-w-xl`}>
               Design tokens optimized for high-contrast dark environments, establishing a clear visual hierarchy.
             </p>
           </div>

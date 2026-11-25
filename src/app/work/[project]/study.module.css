@@ -17,8 +17,8 @@
 .mobile { --stage: #184d48; --surface: #e2eeeb; --accent: #236153; }
 
 .hero, .body { max-width: 1248px; margin-inline: auto; }
-.hero { padding-block: clamp(3rem, 6vw, 5rem) 0; }
-.build { max-width: 46rem; margin: -1rem 0 2.5rem; }
+.hero { padding-block: clamp(2rem, 3vw, 2.5rem) 0; }
+.build { max-width: 46rem; margin-top: 1.5rem; }
 .stage {
   display: flex;
   align-items: center;
@@ -50,9 +50,7 @@
 .lab .stage, .peach .stage { padding: 0; }
 .lab .stage img, .peach .stage img { width: 100%; }
 .body { padding-block: clamp(3rem, 6vw, 5rem) clamp(4rem, 8vw, 7rem); }
-.role { display: grid; gap: .9rem 3rem; padding-bottom: clamp(2rem, 4vw, 3rem); border-bottom: 1px solid var(--color-border-subtle); }
-@media (min-width: 48rem) { .role { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); align-items: baseline; } }
-.contribution { max-width: 36ch; font-family: var(--font-display); font-size: clamp(1.4rem, 2.4vw, 1.9rem); font-weight: 500; line-height: 1.25; letter-spacing: 0; }
+.body > :first-child { margin-top: 0; }
 .note { max-width: 58ch; line-height: 1.65; }
 .features { display: grid; gap: clamp(2rem, 4vw, 3.5rem); margin-block: clamp(2rem, 4vw, 3.5rem); }
 .feature { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); align-items: center; gap: clamp(1rem, 4vw, 3.75rem); }
@@ -61,9 +59,9 @@
 .figureMedia img { display: block; width: 100%; height: auto; border-radius: .25rem; }
 .pine .figureMedia img, .mobile .figureMedia img { width: min(100%, 15rem); border: 5px solid #17241f; border-radius: 1rem; box-shadow: 0 10px 24px #243d312c; }
 .indigo .figureMedia img, .peach .figureMedia img { width: min(100%, 27rem); }
-.feature h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.7rem, 3.2vw, 2.4rem); line-height: 1.05; letter-spacing: .035em; }
-.feature figcaption p { margin-top: .85rem; font-size: 1rem; line-height: 1.65; max-width: 38ch; color: var(--color-smoke); }
-.note { font-size: .875rem; color: var(--color-smoke); margin-top: 2rem; }
+.feature h2 { font-family: var(--font-display); font-weight: 600; font-size: var(--type-h2); line-height: 1.05; letter-spacing: .02em; }
+.feature figcaption p { margin-top: .85rem; font-size: var(--type-body); line-height: 1.65; max-width: 38ch; color: var(--color-smoke); }
+.note { font-size: var(--type-caption); color: var(--color-smoke); margin-top: 2rem; }
 @media (max-width: 47rem) {
   .feature { grid-template-columns: minmax(0, 1fr); }
   .pine .stage img, .mobile .stage img { width: min(44%, 14rem); }

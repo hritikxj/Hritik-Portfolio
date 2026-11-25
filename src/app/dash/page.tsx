@@ -12,16 +12,14 @@ export default function DashBrandGuidelinesPage() {
       <ProjectNav adaptive />
 
       {/* Hero Section */}
-      <header id="main-content" tabIndex={-1} className="page-container page-enter pt-12 md:pt-20 pb-4 flex flex-col items-start text-left">
+      <header id="main-content" tabIndex={-1} className="page-container page-enter pt-8 md:pt-10 pb-4 flex flex-col items-start text-left">
         <ProjectIntro
           eyebrow="Brand identity · Guidelines"
           title="Dash"
           lede="An identity system for an instant electronics delivery service, built around speed, reliability and urban reach."
-          meta="Brand guidelines · 2026"
           accent="var(--c-accent)"
           muted="var(--c-muted)"
         />
-        <ProjectSummary link="/dash" className="mb-10 md:mb-14" />
         
         {/* Cover Slide (Slide 1) */}
         <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-2xl border border-[var(--c-line)]/50 bg-white">
@@ -36,6 +34,7 @@ export default function DashBrandGuidelinesPage() {
             sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
           />
         </div>
+        <ProjectSummary link="/dash" className="mb-12 md:mb-16" />
       </header>
 
       <main className="page-container">
@@ -45,14 +44,13 @@ export default function DashBrandGuidelinesPage() {
         <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             <div className="w-full md:w-1/4 shrink-0">
-              <p className="eyebrow text-[var(--c-accent)] mb-3">Brief & Vision</p>
-              <h2 className={`font-display tracking-[0.02em] text-3xl md:text-4xl text-[var(--c-ink)] font-semibold`}>Tech Emergencies Obsolete</h2>
+              <h2 className={`type-h2 text-[var(--c-ink)]`}>Tech Emergencies Obsolete</h2>
             </div>
             <div className="w-full md:w-3/4">
-              <p className={`font-display tracking-[0.02em] text-2xl md:text-[32px] leading-[1.4] text-[var(--c-ink)] mb-6`}>
+              <p className={`type-lead text-[var(--c-ink)] mb-6`}>
                 Dash is an instant delivery model for electronics, built on speed, reliability, innovation, and urban accessibility.
               </p>
-              <p className={`font-body text-sm text-[var(--c-muted)] leading-[1.8]`}>
+              <p className={`type-body text-[var(--c-muted)]`}>
                 This brand identity deck translates technical infrastructure into a customer-first brand system. Scroll through the complete presentation guidelines below to view logomarks, typography rules, color formulas, and package mockups.
               </p>
             </div>
@@ -91,14 +89,13 @@ export default function DashBrandGuidelinesPage() {
         <section className="mb-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start mb-6">
             <div className="w-full md:w-1/4 shrink-0">
-              <p className="eyebrow text-[var(--c-accent)] mb-3">05 · Mascot System</p>
-              <h2 className={`font-display tracking-[0.02em] text-3xl md:text-4xl text-[var(--c-ink)] font-semibold`}>Chigma Boy</h2>
+              <h2 className={`type-h2 text-[var(--c-ink)]`}>Chigma Boy</h2>
             </div>
             <div className="w-full md:w-3/4">
-              <p className={`font-display tracking-[0.02em] text-2xl md:text-[32px] leading-[1.4] text-[var(--c-ink)] mb-6`}>
+              <p className={`type-lead text-[var(--c-ink)] mb-6`}>
                 A friendly, tech-enabled neighborhood guide.
               </p>
-              <p className={`font-body text-sm text-[var(--c-muted)] leading-[1.8]`}>
+              <p className={`type-body text-[var(--c-muted)]`}>
                 Chigma Boy is the official brand mascot of Dash, representing our delivery partners on the ground. Styled in the signature electric blue suit and orange safety helmet, he embodies speed, accessibility, and friendly, human-centric tech support in every neighborhood.
               </p>
             </div>

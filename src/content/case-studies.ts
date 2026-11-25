@@ -16,9 +16,7 @@ type CaseStudy = {
   title: string;
   category: 'Branding' | 'UI/UX' | 'Illustrations';
   discipline: string;
-  format: string;
   summary: string;
-  contribution: string;
   stack?: readonly string[];
   theme: 'pine' | 'gold' | 'indigo' | 'print' | 'lab' | 'peach' | 'desktop' | 'mobile';
   cover?: string;
@@ -39,10 +37,8 @@ export const caseStudies: readonly CaseStudy[] = [
     title: 'Farebird',
     category: 'UI/UX',
     discipline: 'Product design · Android',
-    format: 'Personal project · Private Android build',
     stack: ['Java', 'Android SDK', 'JobScheduler'],
     summary: 'I designed Farebird to watch a saved intercity bus trip and alert me when the fare fits my budget.',
-    contribution: 'I designed the route setup, fare history, and alerts, then reviewed the builds on an Android device.',
     theme: 'pine',
     hero: artwork('fare-details.webp', 'Farebird route details showing a Delhi–Jaipur fare and a compact price history chart', 520, 1127),
     companion: artwork('add-route.webp', 'Farebird form for saving a route, date and price alert', 520, 1127),
@@ -71,9 +67,7 @@ export const caseStudies: readonly CaseStudy[] = [
     title: 'Seekh Saathi',
     category: 'UI/UX',
     discipline: 'Web prototype · Product UI',
-    format: 'Education prototype · Fictional class roster',
     summary: 'A web prototype that helps teachers run short reading and maths checks on a shared device and decide what pupils should practise next.',
-    contribution: 'The prototype separates the pupil’s task from the teacher’s recording and planning screens. It works offline after the first load and supports English, Hindi, Bengali, and Tamil.',
     theme: 'gold',
     hero: artwork('class-list.webp', 'Seekh Saathi web app showing the class roster, subject switch and next reading check', 1360, 900),
     features: [
@@ -104,9 +98,7 @@ export const caseStudies: readonly CaseStudy[] = [
     title: 'Ajji KaiRuchi',
     category: 'Branding',
     discipline: 'Packaging · Brand illustration',
-    format: 'Chakli packaging study',
     summary: 'A grandmother and child become the recurring illustration across a series of chakli packaging studies.',
-    contribution: 'The studies keep the character illustration and front-label hierarchy consistent while exploring different colours and backgrounds on the pouch.',
     theme: 'indigo',
     hero: artwork('blue-pouch.webp', 'Blue Ajji KaiRuchi chakli pouch mockup with the grandmother-and-child illustration', 1080, 1350),
     companion: artwork('palm-pouch.webp', 'Ajji KaiRuchi chakli pouch mockup with a bright palm-tree background', 1080, 1350),
@@ -133,9 +125,7 @@ export const caseStudies: readonly CaseStudy[] = [
     title: 'Byraam Realty',
     category: 'Illustrations',
     discipline: 'Illustration · Bengaluru',
-    format: 'City panorama',
     summary: 'An illustrated panorama of Bengaluru for Byraam Realty, bringing landmarks, street stalls, and everyday encounters into one scene.',
-    contribution: 'The illustration moves from the park and glasshouse to the temple, café, and flower market, with the modern skyline behind them.',
     theme: 'print',
     hero: artwork('panorama.webp', 'Bengaluru panorama with a glasshouse, temple, roadside café, and flower stall', 1600, 800),
     features: [
@@ -156,9 +146,7 @@ export const caseStudies: readonly CaseStudy[] = [
     title: 'Clarity Labs',
     category: 'Branding',
     discipline: 'Brand guidelines · Packaging',
-    format: 'Visual identity and SWITCH packaging',
     summary: 'I designed the Clarity Labs brand guidelines and the bottle label and carton for SWITCH.',
-    contribution: 'The guidelines bring the wordmark, typography, palette, icons, and repeating pattern together. The packaging carries the same cyan, black, and white system onto the bottle and outer carton.',
     theme: 'lab',
     hero: artwork('bottle.webp', 'SWITCH bottle mockup with a cyan label detail in a dark laboratory setting', 1600, 900),
     features: [],
@@ -168,9 +156,7 @@ export const caseStudies: readonly CaseStudy[] = [
     title: 'OG Kombucha',
     category: 'Branding',
     discipline: 'Packaging · Beverage',
-    format: 'Beverage label system and mockups',
     summary: 'I designed a label system for three OG Kombucha flavours. Peach led the exploration, from the bottle silhouette to the butterfly and coral palette.',
-    contribution: 'The front panel uses the butterfly and flavour name to draw the eye toward the OG Kombucha mark. I explored two treatments of the cream panel and a more saturated red direction.',
     theme: 'peach',
     cover: 'peach-cover.webp',
     hero: artwork('still-life.webp', 'Packaging mockup of two Peach OG Kombucha bottles with peaches and stone blocks', 1536, 1024),
@@ -197,10 +183,8 @@ export const caseStudies: readonly CaseStudy[] = [
     title: 'Fino',
     category: 'UI/UX',
     discipline: 'Product UI · macOS',
-    format: 'Native macOS app',
     stack: ['Swift', 'SwiftUI', 'AppKit', 'WebKit'],
     summary: 'A visual reference browser for artists, designers, and photographers who remember an image before they remember its filename.',
-    contribution: 'Fino brings artwork, photos, videos, PDFs, and design files from local folders and external drives into one gallery. Browse what you already have and keep the originals where they are.',
     theme: 'desktop',
     hero: artwork('gallery.webp', 'Fino’s gallery open to a folder of Vincent van Gogh paintings and drawings', 1600, 1025),
     features: [
@@ -223,10 +207,8 @@ export const caseStudies: readonly CaseStudy[] = [
     title: 'File Shuttle',
     category: 'UI/UX',
     discipline: 'Product UI · Android',
-    format: 'Native Android app · v1.7',
     stack: ['Java', 'Android SDK', 'USB Host API', 'ADB', 'Gradle'],
     summary: 'An Android utility for copying or moving files directly between two phones over USB.',
-    contribution: 'The screen follows the order of the job: connect the receiving phone, choose the files, then decide whether to copy or move them.',
     theme: 'mobile',
     hero: artwork('setup.webp', 'File Shuttle screen with connection, file selection and copy or move controls', 520, 1127),
     features: [
@@ -248,10 +230,8 @@ export const caseStudies: readonly CaseStudy[] = [
     title: 'Typehaus',
     category: 'UI/UX',
     discipline: 'Product UI · macOS',
-    format: 'Native macOS app · v2.0',
     stack: ['Swift', 'SwiftUI', 'AppKit', 'Core Text'],
     summary: 'A font browser for comparing typefaces with your own words, then looking closely at the one that fits.',
-    contribution: 'Typehaus 2.0 groups styles by family and brings the sample text, presets, size, and colour into one preview bar.',
     theme: 'desktop',
     hero: artwork('library.webp', 'Typehaus 2.0 showing a sample font library alongside its details panel', 1600, 910),
     features: [
@@ -273,10 +253,8 @@ export const caseStudies: readonly CaseStudy[] = [
     title: 'Digital Buddy',
     category: 'UI/UX',
     discipline: 'Product UI · Android',
-    format: 'Native Android app · v0.5.0',
     stack: ['Kotlin', 'Jetpack Compose', 'Android NDK', 'llama.cpp'],
     summary: 'An Android AI companion with on-device chat and controls for what it remembers and when it checks in.',
-    contribution: 'Onboarding separates companion identity, memory preferences, and model setup. Users can explore the interface and choose a model later.',
     theme: 'mobile',
     hero: artwork('welcome.webp', 'Digital Buddy welcome screen introducing the local-first experience', 520, 1127),
     companion: artwork('preferences.webp', 'Digital Buddy onboarding with memory and follow-up controls', 520, 1127),

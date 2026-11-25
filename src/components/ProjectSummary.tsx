@@ -2,7 +2,7 @@ import { summaries } from '@/content/summaries';
 
 /**
  * The project at a glance: brief, role, what was made and the outcome, readable in
- * a few seconds before the visuals. Uses only site tokens, so it reads the same on
+ * a few seconds. It sits under the opening visual, so a project opens on the work, not on text. Uses only site tokens, so it reads the same on
  * every case study in light and dark.
  */
 export default function ProjectSummary({ link, className = '' }: { link: string; className?: string }) {

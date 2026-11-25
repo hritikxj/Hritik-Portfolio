@@ -61,11 +61,10 @@ export default function OgKombuchaCaseStudy({ summary }: { summary: string }) {
           </div>
           <p>{summary}</p>
         </div>
-        <ProjectSummary link="/work/og-kombucha" className={styles.summary} />
         <figure>
           <Image className={styles.hero} src={`${media}/still-life.webp`} alt="Two Peach OG Kombucha bottles on stone blocks with peaches against a warm peach backdrop" width={1536} height={1024} sizes="(max-width: 1300px) 92vw, 1200px" loading="eager" fetchPriority="high" />
-          <figcaption className={styles.caption}>Peach · Packaging mockup</figcaption>
         </figure>
+        <ProjectSummary link="/work/og-kombucha" className={styles.summary} />
       </header>
 
       <section className={`${styles.shell} ${styles.section}`} aria-labelledby="og-process">

@@ -293,17 +293,19 @@ test('every case study uses the site palette in light and dark', async ({ page }
   }
 });
 
-test('every case study opens with a four-part summary', async ({ page }) => {
+test('every case study opens on the work, then a four-part summary', async ({ page }) => {
   const links = ['/work/clarity-labs', '/work/fino', '/social-media-creatives', '/work/og-kombucha', '/work/farebird', '/dash', '/nothing', '/work/typehaus', '/purr-pantry', '/dove', '/work/seekh-saathi', '/work/ajji-kairuchi', '/work/byraam-realty', '/work/fileshuttle', '/work/digital-buddy'];
   for (const link of links) {
     await page.goto(link);
     const summary = page.getByRole('region', { name: 'Project at a glance' });
     await expect(summary, link).toBeVisible();
     await expect(summary.locator('dt'), link).toHaveText(['Brief', 'My role', 'What I made', /Outcome|Context/]);
-    // It sits above the first project image, so a skimmer reads it first.
+    // The opening visual comes first, so a project never opens on a wall of text.
+    // The social page has no single hero, so its summary leads into the grid instead.
+    if (link === '/social-media-creatives') continue;
     const summaryTop = (await summary.boundingBox())!.y;
-    const firstImage = page.locator('main img, header img').first();
-    expect((await firstImage.boundingBox())!.y, link).toBeGreaterThan(summaryTop);
+    const firstVisual = page.locator('main img, header img, main video, header video').first();
+    expect((await firstVisual.boundingBox())!.y, link).toBeLessThan(summaryTop);
   }
 });
 
@@ -343,5 +345,22 @@ test('the work heading names the chosen category', async ({ page }) => {
   for (const [tab, title] of [['Branding', 'Branding work'], ['UI/UX', 'UI/UX work'], ['Illustrations', 'Illustrations'], ['Selected', 'Selected work']]) {
     await page.getByRole('button', { name: tab, exact: true }).click();
     await expect(heading).toHaveText(title);
+  }
+});
+
+test('every project page uses one type scale', async ({ page }) => {
+  const links = ['/work/clarity-labs', '/work/fino', '/social-media-creatives', '/work/og-kombucha', '/work/farebird', '/dash', '/nothing', '/work/typehaus', '/purr-pantry', '/dove', '/work/seekh-saathi', '/work/ajji-kairuchi', '/work/byraam-realty', '/work/fileshuttle', '/work/digital-buddy'];
+  await page.setViewportSize({ width: 1440, height: 900 });
+  for (const link of links) {
+    await page.goto(link);
+    const sizes = await page.evaluate(() => {
+      const px = (el: Element | null) => el ? Math.round(parseFloat(getComputedStyle(el).fontSize)) : null;
+      const h1 = document.querySelector('h1')!;
+      const lede = [...(h1.closest('header') ?? document.body).querySelectorAll('p')].find(p => p.textContent!.length > 40 && !p.closest('[aria-label="Project at a glance"]'))!;
+      const h2s = [...document.querySelectorAll('main h2, header h2')].filter(h => !h.closest('footer, nav')).map(px);
+      return { lede: px(lede), h2s: [...new Set(h2s)] };
+    });
+    expect(sizes.lede, link).toBe(19);
+    expect(sizes.h2s, link).toEqual([48]);
   }
 });

@@ -58,14 +58,13 @@ export default function FinoCaseStudy({ summary, stack }: { summary: string; sta
             </div>
             <div>
               <p className={styles.lede}>{summary}</p>
-              {stack && <AppBuildDetails stack={stack} />}
             </div>
           </div>
-          <ProjectSummary link="/work/fino" className={styles.summary} />
           <figure className={styles.heroFigure}>
             <AppVideo name="fino" label="Fino in use: browsing a gallery, filtering by colour and previewing a painting" />
-            <figcaption><span>Fino for macOS</span><span>Vincent van Gogh reference collection</span></figcaption>
           </figure>
+          <ProjectSummary link="/work/fino" className={styles.summary} />
+          {stack && <AppBuildDetails stack={stack} />}
 
           <nav className={styles.jump} aria-label="On this page">
             <a href="#fino-gallery">Gallery</a>
@@ -129,7 +128,6 @@ export default function FinoCaseStudy({ summary, stack }: { summary: string; sta
             </div>
             <figure className={styles.lensFigure}>
               <Image className={styles.window} src={`${media}/lens-search.webp`} alt="Google Lens open inside Fino with the wheat field painting selected for visual search" width={1160} height={799} sizes="(max-width: 760px) 90vw, 570px" />
-              <figcaption>Searching the same reference inside Fino</figcaption>
             </figure>
           </div>
         </div>

@@ -1,9 +1,6 @@
 .details {
   width: min(100%, 43rem);
-  border-top: 1px solid currentColor;
-  border-image: linear-gradient(90deg, currentColor, transparent) 1;
-  padding-block: .8rem;
-  margin-block: .85rem 1.15rem;
+  /* It follows the project summary, whose rule already closes the section above. */
   font-size: .88rem;
   line-height: 1.5;
 }

@@ -20,7 +20,7 @@ function CreativeSection({ title, images, columns = "grid-cols-1 sm:grid-cols-2 
   return (
     <section className="mb-12">
       <div className="mb-6">
-        <h2 className={`font-display tracking-[0.02em] text-3xl md:text-4xl text-ink font-semibold leading-tight`}>
+        <h2 className={`type-h2 text-ink`}>
           {title}
         </h2>
       </div>
@@ -95,12 +95,11 @@ export default function SocialMediaCreativesPage() {
       <ProjectNav />
 
       {/* Hero Section */}
-      <header id="main-content" tabIndex={-1} className="page-container page-enter pt-12 md:pt-20 pb-4 flex flex-col items-start text-left">
+      <header id="main-content" tabIndex={-1} className="page-container page-enter pt-8 md:pt-10 pb-4 flex flex-col items-start text-left">
         <ProjectIntro
           eyebrow="Social · Campaigns"
           title="Social Media Creatives"
           lede="Social creatives across six brand sets, covering product launches, retail offers and event posters."
-          meta="Carousels, posts &amp; posters"
           accent="var(--color-smoke)"
           muted="var(--color-smoke)"
         />
