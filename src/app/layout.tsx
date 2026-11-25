@@ -22,13 +22,11 @@ const switzer = localFont({
 
 // Runs before first paint: applies a saved light/dark choice and enables
 // reveal motion only when JavaScript is available.
-const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t)}catch(e){}})();`;
+// Applies a saved dark choice before paint, and tints the browser toolbar to match.
+const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(t==='dark'){var f=function(){var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content','#131413')};f();document.addEventListener('DOMContentLoaded',f)}}catch(e){}})();`;
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F5F6F3" },
-    { media: "(prefers-color-scheme: dark)", color: "#131413" },
-  ],
+  themeColor: "#F5F6F3",
 };
 
 export const metadata: Metadata = {

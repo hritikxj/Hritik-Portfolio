@@ -4,23 +4,15 @@ import { useSyncExternalStore } from 'react';
 
 type Theme = 'light' | 'dark';
 
-const darkQuery = '(prefers-color-scheme: dark)';
-
+// Light unless the visitor has chosen dark; the device setting is not used.
 function currentTheme(): Theme {
-  const set = document.documentElement.getAttribute('data-theme');
-  if (set === 'light' || set === 'dark') return set;
-  return window.matchMedia(darkQuery).matches ? 'dark' : 'light';
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
 }
 
 function subscribe(onChange: () => void) {
-  const media = window.matchMedia(darkQuery);
   const observer = new MutationObserver(onChange);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  media.addEventListener('change', onChange);
-  return () => {
-    observer.disconnect();
-    media.removeEventListener('change', onChange);
-  };
+  return () => observer.disconnect();
 }
 
 /**
@@ -39,6 +31,7 @@ export default function ThemeToggle({ className = '' }: { className?: string }) 
       window.setTimeout(() => root.classList.remove('theme-transition'), 600);
     }
     root.setAttribute('data-theme', next);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'dark' ? '#131413' : '#F5F6F3');
     try { localStorage.setItem('theme', next); } catch { /* Choice still applies for this visit. */ }
   };
 

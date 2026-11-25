@@ -70,9 +70,7 @@
   .indigo .stage img { width: min(48%, 20rem); }
 }
 
-/* Dark theme: keep each project's stage colour, but dim the light mats behind
-   screenshots and use a readable label colour instead of the dark accent. */
-:global(:root[data-theme="dark"]) .page { --surface: color-mix(in srgb, var(--stage) 22%, #131413); --accent: var(--color-smoke); }
-@media (prefers-color-scheme: dark) {
-  :global(:root:not([data-theme="light"])) .page { --surface: color-mix(in srgb, var(--stage) 22%, #131413); --accent: var(--color-smoke); }
-}
+/* Dark theme: the site's one dark palette. Stages and mats become the same
+   neutral panel colour instead of each project's tint. */
+:global(:root[data-theme="dark"]) .page { --stage: var(--color-parchment); --surface: var(--color-parchment); --accent: var(--color-smoke); }
+:global(:root[data-theme="dark"]) .stage { background: var(--stage); }

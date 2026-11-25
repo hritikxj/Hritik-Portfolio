@@ -1,3 +1,10 @@
+.tokens {
+  /* Nav colours: Fino's navy in light mode, the site palette in dark. */
+  --c-bg: #132033;
+  --c-ink: #f5f6f3;
+  --c-line: #ffffff30;
+}
+
 .page {
   --navy: #132033;
   --ink: #19283b;
@@ -146,3 +153,38 @@
 @media (max-width: 24rem) {
   .compareRow dl { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Dark theme: Fino's navy and cream give way to the site's one dark palette. */
+:global(:root[data-theme="dark"]) .tokens {
+  --c-bg: var(--color-off-white);
+  --c-ink: var(--color-ink);
+  --c-line: var(--color-border-subtle);
+}
+:global(:root[data-theme="dark"]) .page {
+  --navy: var(--color-off-white);
+  --ink: var(--color-ink);
+  --muted: var(--color-smoke);
+  --cream: var(--color-off-white);
+  --line: var(--color-border-subtle);
+  --gold: var(--color-smoke);
+}
+:global(:root[data-theme="dark"]) .hero,
+:global(:root[data-theme="dark"]) .jump { color: var(--color-ink); }
+:global(:root[data-theme="dark"]) .nav { color: var(--color-smoke); border-color: var(--color-border-subtle); }
+:global(:root[data-theme="dark"]) .jump { border-color: var(--color-border-subtle); }
+:global(:root[data-theme="dark"]) .eyebrow { color: var(--color-smoke); }
+:global(:root[data-theme="dark"]) .lede { color: var(--color-ink); }
+:global(:root[data-theme="dark"]) .heroFigure figcaption,
+:global(:root[data-theme="dark"]) .previewFigure figcaption { color: var(--color-smoke); }
+:global(:root[data-theme="dark"]) .heroStage { background: var(--color-parchment); border-color: var(--color-border-subtle); }
+:global(:root[data-theme="dark"]) .folderStage,
+:global(:root[data-theme="dark"]) .filterStage,
+:global(:root[data-theme="dark"]) .shortcutGroup { background: var(--color-parchment); }
+:global(:root[data-theme="dark"]) .previewSection,
+:global(:root[data-theme="dark"]) .finder { background: var(--color-off-white); }
+:global(:root[data-theme="dark"]) .previewFigure { background: var(--color-parchment); }
+:global(:root[data-theme="dark"]) .lensFigure .window { border-color: var(--color-border-subtle); }
+:global(:root[data-theme="dark"]) .page kbd { background: var(--color-parchment); border-color: var(--color-smoke); }
+:global(:root[data-theme="dark"]) .shortcutGroup dl > div,
+:global(:root[data-theme="dark"]) .comparison,
+:global(:root[data-theme="dark"]) .compareRow { border-color: var(--color-border-subtle); }

@@ -20,8 +20,8 @@
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Dark theme. `data-theme` is set before paint from the visitor's choice; with
-   no choice saved (or no JavaScript) the operating-system setting is used. */
+/* Light is the default for everyone. Dark applies only when the visitor picks it
+   with the switch; `data-theme` is then restored before paint on later visits. */
 :root { color-scheme: light; }
 
 :root[data-theme="dark"] {
@@ -34,26 +34,10 @@
   color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-ink: #ECEDEA;
-    --color-off-white: #131413;
-    --color-parchment: #1E1F1E;
-    --color-smoke: #A2A4A0;
-    --color-border-subtle: rgba(236, 237, 234, 0.14);
-    --color-band: #1C1D1C;
-    color-scheme: dark;
-  }
-}
-
 /* Theme toggle icon: CSS picks the icon so server and client markup match. */
 .theme-icon-sun { display: none; }
 :root[data-theme="dark"] .theme-icon-sun { display: block; }
 :root[data-theme="dark"] .theme-icon-moon { display: none; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-icon-sun { display: block; }
-  :root:not([data-theme="light"]) .theme-icon-moon { display: none; }
-}
 
 /* Smooth colour change when the visitor switches themes (not on first paint). */
 html.theme-transition,
@@ -148,8 +132,14 @@ html.js [data-reveal].is-revealed {
   outline-offset: 3px;
 }
 
-/* Case studies in a project's own palette: each page reads --c-* tokens, so it can
-   keep its brand feel in light mode and deepen it in dark mode. */
+/* Case studies in a project's own palette: each page reads --c-* tokens. Light mode
+   keeps the brand's colours; dark mode uses the site's one dark palette everywhere. */
+
+.case-nothing {
+  --c-bg: #111110;
+  --c-ink: #FAFAF8;
+  --c-line: rgba(255, 255, 255, 0.12);
+}
 
 .case-dash {
   --c-bg: #FAF9F5;
@@ -182,66 +172,41 @@ html.js [data-reveal].is-revealed {
   --c-edge: transparent;
 }
 
+:root[data-theme="dark"] .case-nothing {
+  --c-bg: #131413;
+  --c-ink: #ECEDEA;
+  --c-line: #2C2D2B;
+}
+
 :root[data-theme="dark"] .case-dash {
-  --c-bg: #151413;
-  --c-ink: #EEECE6;
-  --c-accent: #FF8A5C;
-  --c-muted: #ABA69C;
-  --c-line: #33302B;
-  --c-panel: #1F1D1A;
+  --c-bg: #131413;
+  --c-ink: #ECEDEA;
+  --c-accent: #A2A4A0;
+  --c-muted: #A2A4A0;
+  --c-line: #2C2D2B;
+  --c-panel: #1E1F1E;
 }
 
 :root[data-theme="dark"] .case-dove {
-  --c-bg: #0C111A;
-  --c-ink: #E7ECF4;
-  --c-accent: #D9B46A;
-  --c-muted: #A3B1C6;
-  --c-line: #273141;
-  --c-panel: #141B27;
+  --c-bg: #131413;
+  --c-ink: #ECEDEA;
+  --c-accent: #A2A4A0;
+  --c-muted: #A2A4A0;
+  --c-line: #2C2D2B;
+  --c-panel: #1E1F1E;
 }
 
 :root[data-theme="dark"] .case-purr {
-  --c-bg: #15100B;
-  --c-ink: #F3E9D9;
-  --c-ink2: #E6D5BC;
-  --c-accent: #E89458;
-  --c-muted: #BCA88F;
-  --c-line: #3A2E22;
-  --c-soft: #221A12;
-  --c-card: #1D1610;
-  --c-card-hover: #261D15;
-  --c-edge: #4A3A2A;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .case-dash {
-    --c-bg: #151413;
-    --c-ink: #EEECE6;
-    --c-accent: #FF8A5C;
-    --c-muted: #ABA69C;
-    --c-line: #33302B;
-    --c-panel: #1F1D1A;
-  }
-  :root:not([data-theme="light"]) .case-dove {
-    --c-bg: #0C111A;
-    --c-ink: #E7ECF4;
-    --c-accent: #D9B46A;
-    --c-muted: #A3B1C6;
-    --c-line: #273141;
-    --c-panel: #141B27;
-  }
-  :root:not([data-theme="light"]) .case-purr {
-    --c-bg: #15100B;
-    --c-ink: #F3E9D9;
-    --c-ink2: #E6D5BC;
-    --c-accent: #E89458;
-    --c-muted: #BCA88F;
-    --c-line: #3A2E22;
-    --c-soft: #221A12;
-    --c-card: #1D1610;
-    --c-card-hover: #261D15;
-    --c-edge: #4A3A2A;
-  }
+  --c-bg: #131413;
+  --c-ink: #ECEDEA;
+  --c-ink2: #D9DAD6;
+  --c-accent: #A2A4A0;
+  --c-muted: #A2A4A0;
+  --c-line: #2C2D2B;
+  --c-soft: #1E1F1E;
+  --c-card: #1E1F1E;
+  --c-card-hover: #262726;
+  --c-edge: #3A3B39;
 }
 
 /* Hero work ribbon: two rows of real work drifting the same way. */
@@ -288,12 +253,6 @@ html.js [data-reveal].is-revealed {
 /* In dark mode, bright work would glare against the page; soften it until hovered. */
 :root[data-theme="dark"] .ribbon-tile img {
   filter: brightness(0.86);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .ribbon-tile img {
-    filter: brightness(0.86);
-  }
 }
 
 :root .ribbon-tile:hover img,

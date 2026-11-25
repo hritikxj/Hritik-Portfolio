@@ -258,15 +258,28 @@ test('SEO metadata, social card and 404 directives are consistent', async ({ pag
   expect(legacyImage.status()).toBe(200);
 });
 
-test('brand-palette case studies follow the chosen theme', async ({ page }) => {
+test('light is the default even on a dark-mode device', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto('/');
+  await expect(page.locator('html')).not.toHaveAttribute('data-theme', 'dark');
+  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(245, 246, 243)');
+  await expect(page.locator('nav[aria-label="Main"] ul').getByRole('button', { name: 'Switch to dark mode' })).toBeVisible();
+});
+
+test('every case study follows the chosen theme, with one dark palette', async ({ page }) => {
   const luminance = (rgb: string) => {
     const [r, g, b] = rgb.match(/\d+(\.\d+)?/g)!.map(Number);
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
   };
-  for (const path of ['/dash', '/dove', '/purr-pantry', '/work/og-kombucha']) {
+  for (const path of ['/dash', '/dove', '/purr-pantry', '/work/og-kombucha', '/work/fino', '/nothing', '/work/farebird']) {
     for (const scheme of ['light', 'dark'] as const) {
-      await page.emulateMedia({ colorScheme: scheme });
+      // A dark device must not matter: only the visitor's saved choice does.
+      await page.emulateMedia({ colorScheme: 'dark' });
       await page.goto(path);
+      await page.evaluate(choice => {
+        if (choice === 'dark') localStorage.setItem('theme', 'dark'); else localStorage.removeItem('theme');
+      }, scheme);
+      await page.reload();
       const surface = page.locator('#main-content').first();
       const background = await surface.evaluate(element => {
         let node: Element | null = element;
@@ -277,8 +290,9 @@ test('brand-palette case studies follow the chosen theme', async ({ page }) => {
         }
         return getComputedStyle(document.body).backgroundColor;
       });
-      if (scheme === 'dark') expect(luminance(background), `${path} dark`).toBeLessThan(60);
-      else expect(luminance(background), `${path} light`).toBeGreaterThan(200);
+      // Dark mode is the site's one palette everywhere; light keeps each brand's own colours.
+      if (scheme === 'dark') expect(background, `${path} dark`).toBe('rgb(19, 20, 19)');
+      else if (!['/work/fino', '/nothing'].includes(path)) expect(luminance(background), `${path} light`).toBeGreaterThan(200);
       await expect(page.locator('header').first().getByRole('button', { name: /theme|mode/i })).toBeVisible();
     }
   }

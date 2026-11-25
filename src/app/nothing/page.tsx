@@ -8,7 +8,7 @@ import ProjectIntro from '@/components/ProjectIntro';
 export default function NothingCommunityEditionPage() {
   return (
     <div 
-      className={`min-h-screen bg-[#111110] text-[#FAFAF8] font-body selection:bg-[#C0392B] selection:text-white relative overflow-clip`}
+      className={`case-nothing min-h-screen bg-[var(--c-bg)] text-[var(--c-ink)] font-body selection:bg-[#C0392B] selection:text-white relative overflow-clip`}
       style={{
         backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px)',
         backgroundSize: '24px 24px',
@@ -19,7 +19,7 @@ export default function NothingCommunityEditionPage() {
       <div className="absolute top-[1200px] right-0 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(192,57,43,0.04)_0%,transparent_70%)] pointer-events-none z-0" />
       <div className="absolute top-[2800px] left-0 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.015)_0%,transparent_70%)] pointer-events-none z-0" />
 
-      <ProjectNav background="#111110" tone="dark" />
+      <ProjectNav adaptive />
 
       {/* Hero Section */}
       <header id="main-content" tabIndex={-1} className="page-container page-enter pt-12 md:pt-20 pb-4 flex flex-col items-start text-left relative z-10">

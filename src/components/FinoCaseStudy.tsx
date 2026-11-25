@@ -43,8 +43,8 @@ const media = '/case-studies/fino';
 
 export default function FinoCaseStudy({ summary, stack }: { summary: string; stack?: readonly string[] }) {
   return (
-    <>
-    <ProjectNav background="#132033" tone="dark" />
+    <div className={styles.tokens}>
+    <ProjectNav adaptive />
     <main id="main-content" tabIndex={-1} className={`${styles.page} page-enter`}>
       <div className={styles.hero}>
 
@@ -188,6 +188,6 @@ export default function FinoCaseStudy({ summary, stack }: { summary: string; sta
 
     </main>
     <ProjectFooter current="/work/fino" />
-    </>
+    </div>
   );
 }
