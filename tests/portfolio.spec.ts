@@ -335,3 +335,13 @@ test('app videos load only the current theme and respect reduced motion', async 
     await context.close();
   }
 });
+
+test('the work heading names the chosen category', async ({ page }) => {
+  await page.goto('/');
+  const heading = page.locator('#work-title');
+  await expect(heading).toHaveText('Selected work');
+  for (const [tab, title] of [['Branding', 'Branding work'], ['UI/UX', 'UI/UX work'], ['Illustrations', 'Illustrations'], ['Selected', 'Selected work']]) {
+    await page.getByRole('button', { name: tab, exact: true }).click();
+    await expect(heading).toHaveText(title);
+  }
+});

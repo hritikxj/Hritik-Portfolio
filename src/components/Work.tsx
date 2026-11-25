@@ -194,6 +194,13 @@ function IllustrationGallery() {
 
 export default function Work() {
   const [activeCategory, setActiveCategory] = useWorkCategory();
+  // The heading names what the grid is showing.
+  const headings: Record<typeof activeCategory, string> = {
+    Selected: 'Selected work',
+    Branding: 'Branding work',
+    'UI/UX': 'UI/UX work',
+    Illustrations: 'Illustrations',
+  };
 
   const visible = activeCategory === 'Selected'
     ? orderedProjects.filter(project => (selectedLinks as readonly string[]).includes(project.link))
@@ -205,7 +212,7 @@ export default function Work() {
         <div data-reveal="" className="mb-10 flex flex-col gap-6 border-b-[0.5px] border-border-subtle pb-6 md:mb-12 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="eyebrow text-smoke">01 · Work</p>
-            <h2 id="work-title" className="section-title mt-3">Selected work</h2>
+            <h2 id="work-title" className="section-title mt-3">{headings[activeCategory]}</h2>
           </div>
 
           <div
