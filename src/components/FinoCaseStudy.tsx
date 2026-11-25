@@ -1,5 +1,7 @@
 import Image from '@/components/PortfolioImage';
 import ProjectNav from './ProjectNav';
+import ProjectSummary from './ProjectSummary';
+import AppVideo from './AppVideo';
 import ProjectFooter from './ProjectFooter';
 import AppBuildDetails from './AppBuildDetails';
 import styles from './FinoCaseStudy.module.css';
@@ -59,19 +61,9 @@ export default function FinoCaseStudy({ summary, stack }: { summary: string; sta
               {stack && <AppBuildDetails stack={stack} />}
             </div>
           </div>
+          <ProjectSummary link="/work/fino" className={styles.summary} />
           <figure className={styles.heroFigure}>
-            <div className={styles.heroStage}>
-              <Image
-                className={styles.window}
-                src={`${media}/gallery.webp`}
-                alt="Fino’s macOS gallery filled with Vincent van Gogh paintings and pencil studies"
-                width={1600}
-                height={1025}
-                sizes="(max-width: 740px) 92vw, (max-width: 1260px) 82vw, 1020px"
-                loading="eager"
-                fetchPriority="high"
-              />
-            </div>
+            <AppVideo name="fino" label="Fino in use: browsing a gallery, filtering by colour and previewing a painting" />
             <figcaption><span>Fino for macOS</span><span>Vincent van Gogh reference collection</span></figcaption>
           </figure>
 

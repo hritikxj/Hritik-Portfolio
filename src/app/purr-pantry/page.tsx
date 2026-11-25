@@ -5,6 +5,7 @@ import { Cormorant_Garamond, Jost } from 'next/font/google';
 import ProjectNav from '@/components/ProjectNav';
 import ProjectFooter from '@/components/ProjectFooter';
 import ProjectIntro from '@/components/ProjectIntro';
+import ProjectSummary from '@/components/ProjectSummary';
 
 // Cormorant Garamond and Jost are Purr Pantry's brand typefaces. They are used
 // only to render the brand's own type specimen below, and are not preloaded.
@@ -46,6 +47,7 @@ export default function PurrPantryPage() {
           accent="var(--c-accent)"
           muted="var(--c-muted)"
         />
+        <ProjectSummary link="/purr-pantry" className="mb-10 md:mb-14" />
         
         <div className="w-full mb-12 rounded-xl overflow-hidden shadow-2xl bg-[var(--c-soft)]">
           <Image 

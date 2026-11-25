@@ -4,6 +4,7 @@ import Image from '@/components/PortfolioImage';
 import ProjectNav from '@/components/ProjectNav';
 import ProjectFooter from '@/components/ProjectFooter';
 import ProjectIntro from '@/components/ProjectIntro';
+import ProjectSummary from '@/components/ProjectSummary';
 
 interface SectionProps {
   title: string;
@@ -103,6 +104,7 @@ export default function SocialMediaCreativesPage() {
           accent="var(--color-smoke)"
           muted="var(--color-smoke)"
         />
+        <ProjectSummary link="/social-media-creatives" className="mb-10 md:mb-14" />
       </header>
 
       <main className="page-container">

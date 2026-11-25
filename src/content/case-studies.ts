@@ -26,6 +26,8 @@ type CaseStudy = {
   companion?: Artwork;
   features: readonly Feature[];
   note?: string;
+  /** Stem of a looping product video in /public/videos, shown in place of the hero images. */
+  video?: { name: string; label: string };
 };
 
 const artwork = (file: string, alt: string, width: number, height: number): Artwork => ({ file, alt, width, height });
@@ -33,6 +35,7 @@ const artwork = (file: string, alt: string, width: number, height: number): Artw
 export const caseStudies: readonly CaseStudy[] = [
   {
     slug: 'farebird',
+    video: { name: 'farebird', label: 'Farebird running on Android: refreshing fares, opening a route and its departures' },
     title: 'Farebird',
     category: 'UI/UX',
     discipline: 'Product design · Android',
@@ -64,6 +67,7 @@ export const caseStudies: readonly CaseStudy[] = [
   },
   {
     slug: 'seekh-saathi',
+    video: { name: 'seekh-saathi', label: 'Seekh Saathi moving from the class list to reading, recording and the practice plan' },
     title: 'Seekh Saathi',
     category: 'UI/UX',
     discipline: 'Web prototype · Product UI',
@@ -87,6 +91,11 @@ export const caseStudies: readonly CaseStudy[] = [
         title: 'Plan the next session',
         copy: 'Saved checks suggest practice groups. The teacher can review and adjust the plan before using it.',
         artwork: artwork('practice-plan.webp', 'Practice plan populated with suggested groups using the fictional sample roster', 1360, 900),
+      },
+      {
+        title: 'Teach in the class’s language',
+        copy: 'One menu switches the interface and the tasks together. The same practice plan reads in Hindi here, and in Bengali or Tamil, all offline.',
+        artwork: artwork('practice-plan-hindi.webp', 'The practice plan in Hindi, with the same suggested groups and activities', 1360, 900),
       },
     ],
   },
@@ -210,6 +219,7 @@ export const caseStudies: readonly CaseStudy[] = [
   },
   {
     slug: 'fileshuttle',
+    video: { name: 'fileshuttle', label: 'File Shuttle’s transfer screen and its connection help' },
     title: 'File Shuttle',
     category: 'UI/UX',
     discipline: 'Product UI · Android',
@@ -234,6 +244,7 @@ export const caseStudies: readonly CaseStudy[] = [
   },
   {
     slug: 'typehaus',
+    video: { name: 'typehaus', label: 'Typehaus comparing a font library and opening a specimen' },
     title: 'Typehaus',
     category: 'UI/UX',
     discipline: 'Product UI · macOS',
@@ -258,6 +269,7 @@ export const caseStudies: readonly CaseStudy[] = [
   },
   {
     slug: 'digital-buddy',
+    video: { name: 'digital-buddy', label: 'Digital Buddy onboarding through to its first chat' },
     title: 'Digital Buddy',
     category: 'UI/UX',
     discipline: 'Product UI · Android',
@@ -283,6 +295,11 @@ export const caseStudies: readonly CaseStudy[] = [
         title: 'Start with an empty space',
         copy: 'The chat opens with access to memories, activity, and settings. The welcome state explains how to enable a model before the first conversation.',
         artwork: artwork('chat.webp', 'Fresh Digital Buddy chat screen with navigation for memories, activity and settings', 520, 1127),
+      },
+      {
+        title: 'Keep check-ins on your terms',
+        copy: 'The Activity screen explains when the companion may reach out, with one tap to snooze it for a day or pause everything.',
+        artwork: artwork('activity.webp', 'Digital Buddy Activity screen with Snooze 24h, Pause all and Prepare fresh messages controls', 520, 1127),
       },
     ],
   },

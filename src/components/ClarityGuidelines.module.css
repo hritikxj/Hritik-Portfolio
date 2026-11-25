@@ -18,6 +18,6 @@
   .pages { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* Dark theme: the site's ink button instead of Clarity's teal. */
-:global(:root[data-theme="dark"]) .header a { background: var(--color-ink); color: var(--color-off-white); }
-:global(:root[data-theme="dark"]) .header small { color: #4a4c4f; }
+/* Both themes: the site's ink button instead of Clarity's teal. */
+:global(:root) .header a { background: var(--color-ink); color: var(--color-off-white); }
+:global(:root) .header small { color: color-mix(in srgb, var(--color-off-white) 72%, var(--color-ink)); }

@@ -266,11 +266,7 @@ test('light is the default even on a dark-mode device', async ({ page }) => {
   await expect(page.locator('nav[aria-label="Main"] ul').getByRole('button', { name: 'Switch to dark mode' })).toBeVisible();
 });
 
-test('every case study follows the chosen theme, with one dark palette', async ({ page }) => {
-  const luminance = (rgb: string) => {
-    const [r, g, b] = rgb.match(/\d+(\.\d+)?/g)!.map(Number);
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  };
+test('every case study uses the site palette in light and dark', async ({ page }) => {
   for (const path of ['/dash', '/dove', '/purr-pantry', '/work/og-kombucha', '/work/fino', '/nothing', '/work/farebird']) {
     for (const scheme of ['light', 'dark'] as const) {
       // A dark device must not matter: only the visitor's saved choice does.
@@ -290,10 +286,52 @@ test('every case study follows the chosen theme, with one dark palette', async (
         }
         return getComputedStyle(document.body).backgroundColor;
       });
-      // Dark mode is the site's one palette everywhere; light keeps each brand's own colours.
-      if (scheme === 'dark') expect(background, `${path} dark`).toBe('rgb(19, 20, 19)');
-      else if (!['/work/fino', '/nothing'].includes(path)) expect(luminance(background), `${path} light`).toBeGreaterThan(200);
+      // One palette across the site in each theme; brand colour lives only in the work.
+      expect(background, `${path} ${scheme}`).toBe(scheme === 'dark' ? 'rgb(19, 20, 19)' : 'rgb(245, 246, 243)');
       await expect(page.locator('header').first().getByRole('button', { name: /theme|mode/i })).toBeVisible();
     }
+  }
+});
+
+test('every case study opens with a four-part summary', async ({ page }) => {
+  const links = ['/work/clarity-labs', '/work/fino', '/social-media-creatives', '/work/og-kombucha', '/work/farebird', '/dash', '/nothing', '/work/typehaus', '/purr-pantry', '/dove', '/work/seekh-saathi', '/work/ajji-kairuchi', '/work/byraam-realty', '/work/fileshuttle', '/work/digital-buddy'];
+  for (const link of links) {
+    await page.goto(link);
+    const summary = page.getByRole('region', { name: 'Project at a glance' });
+    await expect(summary, link).toBeVisible();
+    await expect(summary.locator('dt'), link).toHaveText(['Brief', 'My role', 'What I made', /Outcome|Context/]);
+    // It sits above the first project image, so a skimmer reads it first.
+    const summaryTop = (await summary.boundingBox())!.y;
+    const firstImage = page.locator('main img, header img').first();
+    expect((await firstImage.boundingBox())!.y, link).toBeGreaterThan(summaryTop);
+  }
+});
+
+test('app videos load only the current theme and respect reduced motion', async ({ browser, baseURL }) => {
+  for (const reduced of [false, true]) {
+    const context = await browser.newContext({ baseURL, reducedMotion: reduced ? 'reduce' : 'no-preference' });
+    await context.addInitScript(() => localStorage.setItem('theme', 'dark'));
+    const page = await context.newPage();
+    const videos: string[] = [];
+    page.on('request', request => { if (request.url().endsWith('.mp4')) videos.push(new URL(request.url()).pathname); });
+    await page.goto('/work/farebird');
+    const player = page.locator('.app-video');
+    await player.scrollIntoViewIfNeeded();
+    const dark = player.locator('video.app-video-dark');
+    await expect(dark).toBeVisible();
+    await expect(player.locator('video.app-video-light')).toBeHidden();
+    if (reduced) {
+      await page.waitForTimeout(800);
+      expect(videos).toEqual([]);
+      await expect(player.getByRole('button', { name: /^Play / })).toBeVisible();
+    } else {
+      await expect.poll(() => dark.evaluate((video: HTMLVideoElement) => !video.paused && video.currentTime > 0)).toBe(true);
+      // One copy only: the dark theme, in HEVC or the H.264 fallback.
+      expect([...new Set(videos)]).toHaveLength(1);
+      expect(videos[0]).toMatch(/^\/videos\/farebird-dark(\.hevc)?\.mp4$/);
+      await player.getByRole('button', { name: /^Pause / }).click();
+      await expect.poll(() => dark.evaluate((video: HTMLVideoElement) => video.paused)).toBe(true);
+    }
+    await context.close();
   }
 });

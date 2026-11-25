@@ -3,6 +3,8 @@ import Image from '@/components/PortfolioImage';
 import ProjectNav from '@/components/ProjectNav';
 import ProjectFooter from '@/components/ProjectFooter';
 import ProjectIntro from '@/components/ProjectIntro';
+import ProjectSummary from '@/components/ProjectSummary';
+import AppVideo from '@/components/AppVideo';
 import { notFound } from 'next/navigation';
 import AppBuildDetails from '@/components/AppBuildDetails';
 import ClarityGuidelines from '@/components/ClarityGuidelines';
@@ -75,6 +77,8 @@ export default async function CaseStudyPage({ params }: Props) {
             muted="var(--color-smoke)"
           />
           {study.stack && <div className={styles.build}><AppBuildDetails stack={study.stack} /></div>}
+          <ProjectSummary link={`/work/${study.slug}`} className="mb-10 md:mb-12" />
+          {study.video ? <AppVideo name={study.video.name} label={study.video.label} /> : (
           <div className={styles.stage}>
             {heroImages.map((image, index) => (
               <Image
@@ -89,6 +93,7 @@ export default async function CaseStudyPage({ params }: Props) {
               />
             ))}
           </div>
+          )}
         </header>
         <div className={styles.body}>
           <section className={styles.role} aria-label="My role">

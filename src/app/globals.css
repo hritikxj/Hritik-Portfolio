@@ -132,82 +132,29 @@ html.js [data-reveal].is-revealed {
   outline-offset: 3px;
 }
 
-/* Case studies in a project's own palette: each page reads --c-* tokens. Light mode
-   keeps the brand's colours; dark mode uses the site's one dark palette everywhere. */
-
-.case-nothing {
-  --c-bg: #111110;
-  --c-ink: #FAFAF8;
-  --c-line: rgba(255, 255, 255, 0.12);
-}
-
-.case-dash {
-  --c-bg: #FAF9F5;
-  --c-ink: #1A1A1A;
-  --c-accent: #AF390F;
-  --c-muted: #555555;
-  --c-line: #E5E0D5;
-  --c-panel: #F5F2EA;
-}
-
-.case-dove {
-  --c-bg: #FDFCF9;
-  --c-ink: #0A2240;
-  --c-accent: #846324;
-  --c-muted: #3E4F6B;
-  --c-line: #E8E2D6;
-  --c-panel: #FAF7F0;
-}
-
+/* Case studies read --c-* tokens. They point at the site palette, so every page
+   uses the same colours in light and in dark; brand colour lives only in the work. */
+.case-nothing,
+.case-dash,
+.case-dove,
 .case-purr {
-  --c-bg: #FAF6EE;
-  --c-ink: #1A1208;
-  --c-ink2: #2E1A0E;
-  --c-accent: #984510;
-  --c-muted: #5E4C3B;
-  --c-line: #D4C4AA;
-  --c-soft: #F5EAD7;
-  --c-card: #FFFCF7;
-  --c-card-hover: #FFFFFF;
-  --c-edge: transparent;
+  --c-bg: var(--color-off-white);
+  --c-ink: var(--color-ink);
+  --c-ink2: var(--color-ink);
+  --c-accent: var(--color-smoke);
+  --c-muted: var(--color-smoke);
+  --c-line: var(--color-border-subtle);
+  --c-panel: var(--color-parchment);
+  --c-soft: var(--color-parchment);
+  --c-card: var(--color-parchment);
+  --c-card-hover: color-mix(in srgb, var(--color-ink) 6%, var(--color-parchment));
+  --c-edge: var(--color-border-subtle);
 }
 
-:root[data-theme="dark"] .case-nothing {
-  --c-bg: #131413;
-  --c-ink: #ECEDEA;
-  --c-line: #2C2D2B;
-}
-
-:root[data-theme="dark"] .case-dash {
-  --c-bg: #131413;
-  --c-ink: #ECEDEA;
-  --c-accent: #A2A4A0;
-  --c-muted: #A2A4A0;
-  --c-line: #2C2D2B;
-  --c-panel: #1E1F1E;
-}
-
-:root[data-theme="dark"] .case-dove {
-  --c-bg: #131413;
-  --c-ink: #ECEDEA;
-  --c-accent: #A2A4A0;
-  --c-muted: #A2A4A0;
-  --c-line: #2C2D2B;
-  --c-panel: #1E1F1E;
-}
-
-:root[data-theme="dark"] .case-purr {
-  --c-bg: #131413;
-  --c-ink: #ECEDEA;
-  --c-ink2: #D9DAD6;
-  --c-accent: #A2A4A0;
-  --c-muted: #A2A4A0;
-  --c-line: #2C2D2B;
-  --c-soft: #1E1F1E;
-  --c-card: #1E1F1E;
-  --c-card-hover: #262726;
-  --c-edge: #3A3B39;
-}
+/* Product videos: one copy per theme, rendered on that theme's stage colour. */
+.app-video-dark { display: none; }
+:root[data-theme="dark"] .app-video-light { display: none; }
+:root[data-theme="dark"] .app-video-dark { display: block; }
 
 /* Hero work ribbon: two rows of real work drifting the same way. */
 .work-ribbon {

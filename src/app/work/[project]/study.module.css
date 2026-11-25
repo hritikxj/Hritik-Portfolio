@@ -70,7 +70,7 @@
   .indigo .stage img { width: min(48%, 20rem); }
 }
 
-/* Dark theme: the site's one dark palette. Stages and mats become the same
-   neutral panel colour instead of each project's tint. */
-:global(:root[data-theme="dark"]) .page { --stage: var(--color-parchment); --surface: var(--color-parchment); --accent: var(--color-smoke); }
-:global(:root[data-theme="dark"]) .stage { background: var(--stage); }
+/* Every theme: the site palette. Stages and mats are the same neutral panel on
+   every project instead of each project's tint; the work carries the colour. */
+:global(:root) .page { --stage: var(--color-parchment); --surface: var(--color-parchment); --accent: var(--color-smoke); }
+:global(:root) .stage { background: var(--stage); }

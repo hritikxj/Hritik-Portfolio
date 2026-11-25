@@ -4,6 +4,7 @@ import Image from '@/components/PortfolioImage';
 import ProjectNav from '@/components/ProjectNav';
 import ProjectFooter from '@/components/ProjectFooter';
 import ProjectIntro from '@/components/ProjectIntro';
+import ProjectSummary from '@/components/ProjectSummary';
 
 export default function DashBrandGuidelinesPage() {
   return (
@@ -20,6 +21,7 @@ export default function DashBrandGuidelinesPage() {
           accent="var(--c-accent)"
           muted="var(--c-muted)"
         />
+        <ProjectSummary link="/dash" className="mb-10 md:mb-14" />
         
         {/* Cover Slide (Slide 1) */}
         <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-2xl border border-[var(--c-line)]/50 bg-white">
@@ -38,25 +40,6 @@ export default function DashBrandGuidelinesPage() {
 
       <main className="page-container">
         
-        {/* Specs Table */}
-        <section className="mb-12 max-w-7xl mx-auto">
-          <div className="grid grid-cols-3 gap-4 p-6 sm:p-8 rounded-2xl bg-[var(--c-panel)] border border-[var(--c-line)]/40 shadow-sm text-center">
-            <div>
-              <span className="eyebrow text-[11px] text-[var(--c-accent)] block mb-1 font-semibold">Role</span>
-              <span className="text-sm text-[var(--c-ink)] font-medium">Brand Designer & Strategist</span>
-            </div>
-            <div>
-              <span className="eyebrow text-[11px] text-[var(--c-accent)] block mb-1 font-semibold">Platform</span>
-              <span className="text-sm text-[var(--c-ink)] font-medium">Print & Digital</span>
-            </div>
-            <div>
-              <span className="eyebrow text-[11px] text-[var(--c-accent)] block mb-1 font-semibold">Type</span>
-              <span className="text-sm text-[var(--c-ink)] font-medium">Brand Guidelines</span>
-            </div>
-          </div>
-        </section>
-
-        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10 max-w-7xl mx-auto" />
 
         {/* Project Context */}
         <section className="mb-12">

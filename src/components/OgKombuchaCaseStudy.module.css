@@ -1,12 +1,13 @@
 .tokens {
-  --c-bg: #fbf4e9;
-  --c-ink: #38241c;
-  --c-line: #dec9b9;
-  --text-muted: #68463a;
+  /* The site palette in both themes; the labels and photos carry the brand. */
+  --c-bg: var(--color-off-white);
+  --c-ink: var(--color-ink);
+  --c-line: var(--color-border-subtle);
+  --text-muted: var(--color-smoke);
   --line: var(--c-line);
-  --red: #983322;
-  --study: #f0e2d2;
-  --range: #f3dfc9;
+  --red: var(--color-ink);
+  --study: var(--color-parchment);
+  --range: var(--color-parchment);
 }
 
 .page {
@@ -15,16 +16,6 @@
   font-size: 1rem;
 }
 
-/* Dark: the site's one dark palette, like every other page. */
-:global(:root[data-theme="dark"]) .tokens {
-  --c-bg: #131413;
-  --c-ink: #ecedea;
-  --c-line: #2c2d2b;
-  --text-muted: #a2a4a0;
-  --red: #ecedea;
-  --study: #1e1f1e;
-  --range: #1e1f1e;
-}
 
 .shell, .nav { width: min(92%, 75rem); margin-inline: auto; }
 .nav {
@@ -81,3 +72,5 @@
 @media (max-width: 38rem) {
   .flavours { grid-template-columns: minmax(0, 1fr); }
 }
+
+.summary { margin-bottom: clamp(1.75rem, 4vw, 3rem); }

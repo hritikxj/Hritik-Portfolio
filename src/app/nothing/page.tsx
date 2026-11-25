@@ -4,6 +4,7 @@ import Image from '@/components/PortfolioImage';
 import ProjectNav from '@/components/ProjectNav';
 import ProjectFooter from '@/components/ProjectFooter';
 import ProjectIntro from '@/components/ProjectIntro';
+import ProjectSummary from '@/components/ProjectSummary';
 
 export default function NothingCommunityEditionPage() {
   return (
@@ -28,11 +29,12 @@ export default function NothingCommunityEditionPage() {
           title="Nothing To-Do Widget"
           lede="A minimal to-do widget for Nothing Community Edition, selected as a featured submission in the Software showcase."
           meta="Community Edition · 2025"
-          accent="#E8786B"
-          muted="#A9A7A2"
+          accent="var(--c-accent)"
+          muted="var(--c-muted)"
         />
+        <ProjectSummary link="/nothing" className="mb-10 md:mb-14" />
         
-        <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-2xl bg-[#161615]/50 border border-white/5">
+        <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-2xl bg-[var(--c-panel)] border border-[var(--c-line)]">
           <Image 
             src="/nothing/nothing-hero.png" 
             alt="Nothing Community Edition Hero" 
@@ -52,61 +54,39 @@ export default function NothingCommunityEditionPage() {
         <section className="mb-12 relative z-10">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
             <div className="w-full lg:w-1/4 shrink-0">
-              <p className="eyebrow text-[#C0392B] mb-3">01 · The Brief</p>
-              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-white font-semibold`}>Project Context</h2>
+              <p className="eyebrow text-[var(--c-accent)] mb-3">01 · The Brief</p>
+              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[var(--c-ink)] font-semibold`}>Project Context</h2>
             </div>
             <div className="w-full lg:w-3/4">
-              {/* Specs Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 sm:p-8 rounded-2xl bg-[#161615]/80 backdrop-blur-md border border-white/5 mb-6 shadow-lg">
-                <div>
-                  <span className="eyebrow text-[11px] text-[#E8786B] block mb-1.5">Role</span>
-                  <span className="text-sm text-white font-medium">UI/UX Designer</span>
-                </div>
-                <div>
-                  <span className="eyebrow text-[11px] text-[#E8786B] block mb-1.5">Timeline</span>
-                  <span className="text-sm text-white font-medium">April 2025</span>
-                </div>
-                <div>
-                  <span className="eyebrow text-[11px] text-[#E8786B] block mb-1.5">Platform</span>
-                  <span className="text-sm text-white font-medium">Nothing OS</span>
-                </div>
-                <div>
-                  <span className="eyebrow text-[11px] text-[#E8786B] block mb-1.5">Status</span>
-                  <span className="text-sm text-[#E8786B] font-medium flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E8786B]"></span>
-                    Featured submission
-                  </span>
-                </div>
-              </div>
 
-              <p className={`font-display tracking-[0.02em] text-3xl md:text-[34px] leading-[1.3] text-white font-semibold mb-6`}>
+              <p className={`font-display tracking-[0.02em] text-3xl md:text-[34px] leading-[1.3] text-[var(--c-ink)] font-semibold mb-6`}>
                 Ambient utility meeting physical minimalism.
               </p>
-              <p className={`font-body text-sm text-[#9E9C98] leading-[1.9] mb-6`}>
+              <p className={`font-body text-sm text-[var(--c-muted)] leading-[1.9] mb-6`}>
                 A minimalist to-do widget designed for the Nothing Community Edition, utilizing dot-based progress tracking to align with Nothing&apos;s transparent and understated hardware aesthetic. The interface balances core utility with geometric simplicity.
               </p>
-              <p className={`font-display tracking-[0.02em]  text-[#A0A09F] text-lg md:text-xl leading-relaxed`}>
+              <p className={`font-display tracking-[0.02em]  text-[var(--c-muted)] text-lg md:text-xl leading-relaxed`}>
                 Selected as a featured submission in the official Software showcase category, April 2025.
               </p>
             </div>
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-white/10 my-10" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10" />
 
         {/* Design System & Visual Grid */}
         <section className="mb-12 relative z-10">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
             <div className="w-full lg:w-1/4 shrink-0">
-              <p className="eyebrow text-[#C0392B] mb-3">02 · The Grid</p>
-              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-white font-semibold`}>Process & Layout</h2>
+              <p className="eyebrow text-[var(--c-accent)] mb-3">02 · The Grid</p>
+              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[var(--c-ink)] font-semibold`}>Process & Layout</h2>
             </div>
             <div className="w-full lg:w-3/4">
-              <p className={`font-display tracking-[0.02em] text-xl md:text-2xl leading-[1.6] text-[#CFCFCE] mb-12`}>
+              <p className={`font-display tracking-[0.02em] text-xl md:text-2xl leading-[1.6] text-[var(--c-ink)] mb-12`}>
                 Strict grid constraints and dot-matrix typography scaling ensure the widget UI integrates with the device&apos;s default operating system layout.
               </p>
               
-              <div className="group w-full rounded-2xl overflow-hidden shadow-xl bg-[#161615]/50 border border-white/5">
+              <div className="group w-full rounded-2xl overflow-hidden shadow-xl bg-[var(--c-panel)] border border-[var(--c-line)]">
 <Image
                   sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                   src="/nothing/nothing-details-1.png"
@@ -120,22 +100,22 @@ export default function NothingCommunityEditionPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-white/10 my-10" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10" />
 
         {/* Interface States */}
         <section className="mb-12 relative z-10">
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="eyebrow text-[#C0392B] mb-3">03 · The Interface</p>
-              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-white font-semibold`}>Widget States</h2>
+              <p className="eyebrow text-[var(--c-accent)] mb-3">03 · The Interface</p>
+              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)] font-semibold`}>Widget States</h2>
             </div>
-            <p className={`font-display tracking-[0.02em]  text-[#9E9C98] text-lg md:text-xl leading-relaxed max-w-xl`}>
+            <p className={`font-display tracking-[0.02em]  text-[var(--c-muted)] text-lg md:text-xl leading-relaxed max-w-xl`}>
               Glanceable layouts optimized for low-emission ambient lockscreens, focusing on task completion rates.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="group rounded-2xl overflow-hidden shadow-md bg-[#161615]/50 border border-white/5">
+            <div className="group rounded-2xl overflow-hidden shadow-md bg-[var(--c-panel)] border border-[var(--c-line)]">
 <Image
                   sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/nothing/nothing-details-2.png"
@@ -145,7 +125,7 @@ export default function NothingCommunityEditionPage() {
                 className="w-full h-auto transition-transform duration-700 group-hover:scale-[1.01]"
               />
             </div>
-            <div className="group rounded-2xl overflow-hidden shadow-md bg-[#161615]/50 border border-white/5">
+            <div className="group rounded-2xl overflow-hidden shadow-md bg-[var(--c-panel)] border border-[var(--c-line)]">
 <Image
                   sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/nothing/nothing-details-3.png"
@@ -158,24 +138,24 @@ export default function NothingCommunityEditionPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-white/10 my-10" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10" />
 
         {/* Integration and Device Mockups */}
         <section className="mb-12 relative z-10">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start mb-6">
             <div className="w-full lg:w-1/4 shrink-0">
-              <p className="eyebrow text-[#C0392B] mb-3">04 · Physicality</p>
-              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-white font-semibold`}>Hardware Integration</h2>
+              <p className="eyebrow text-[var(--c-accent)] mb-3">04 · Physicality</p>
+              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl text-[var(--c-ink)] font-semibold`}>Hardware Integration</h2>
             </div>
             <div className="w-full lg:w-3/4">
-              <p className={`font-display tracking-[0.02em] text-xl md:text-2xl leading-[1.6] text-[#CFCFCE]`}>
+              <p className={`font-display tracking-[0.02em] text-xl md:text-2xl leading-[1.6] text-[var(--c-ink)]`}>
                 Testing system legibility in context. The digital interface mirrors the physical dot-pattern architecture of Nothing Phone&apos;s glyphs, bridging interface logic with industrial product design.
               </p>
             </div>
           </div>
 
           <div className="flex flex-col gap-6">
-            <div className="group rounded-2xl overflow-hidden shadow-lg bg-[#161615]/50 border border-white/5">
+            <div className="group rounded-2xl overflow-hidden shadow-lg bg-[var(--c-panel)] border border-[var(--c-line)]">
 <Image
                   sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/nothing/nothing-details-4.png"
@@ -185,7 +165,7 @@ export default function NothingCommunityEditionPage() {
                 className="w-full h-auto transition-transform duration-700 group-hover:scale-[1.01]"
               />
             </div>
-            <div className="group rounded-2xl overflow-hidden shadow-lg bg-[#161615]/50 border border-white/5">
+            <div className="group rounded-2xl overflow-hidden shadow-lg bg-[var(--c-panel)] border border-[var(--c-line)]">
 <Image
                   sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(100vw - 96px), 1200px"
                 src="/nothing/nothing-details-5.png"
@@ -198,16 +178,16 @@ export default function NothingCommunityEditionPage() {
           </div>
         </section>
 
-        <hr className="border-t-[0.5px] border-white/10 my-10" />
+        <hr className="border-t-[0.5px] border-[var(--c-line)] my-10" />
 
         {/* Design Tokens palette */}
         <section className="mb-12 relative z-10">
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="eyebrow text-[#C0392B] mb-3">05 · System Tokens</p>
-              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-white font-semibold`}>Aesthetic Rules</h2>
+              <p className="eyebrow text-[var(--c-accent)] mb-3">05 · System Tokens</p>
+              <h2 className={`font-display tracking-[0.02em] text-4xl md:text-5xl lg:text-6xl text-[var(--c-ink)] font-semibold`}>Aesthetic Rules</h2>
             </div>
-            <p className={`font-display tracking-[0.02em]  text-[#9E9C98] text-lg md:text-xl leading-relaxed max-w-xl`}>
+            <p className={`font-display tracking-[0.02em]  text-[var(--c-muted)] text-lg md:text-xl leading-relaxed max-w-xl`}>
               Design tokens optimized for high-contrast dark environments, establishing a clear visual hierarchy.
             </p>
           </div>
@@ -222,7 +202,7 @@ export default function NothingCommunityEditionPage() {
             ].map((swatch, idx) => (
               <div 
                 key={idx} 
-                className={`border border-white/5 rounded-2xl p-6 flex flex-col justify-between h-[220px] shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-lg ${swatch.text}`}
+                className={`border border-[var(--c-line)] rounded-2xl p-6 flex flex-col justify-between h-[220px] shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-lg ${swatch.text}`}
                 style={{ backgroundColor: swatch.hex }}
               >
                 <div className="flex justify-between items-start">
