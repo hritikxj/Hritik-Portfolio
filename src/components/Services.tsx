@@ -2,7 +2,7 @@ import Reveal from './Reveal';
 
 const services = [
   { name: 'Brand Identity', desc: 'Logo systems, visual identities and guidelines that hold together from the favicon to the shelf.', examples: 'Clarity Labs · Dash · Purr Pantry' },
-  { name: 'Packaging', desc: 'Labels, pouches and cartons where illustration and hierarchy do the selling.', examples: 'OG Kombucha · Ajji KaiRuchi' },
+  { name: 'Packaging', desc: 'Labels, pouches and cartons where illustration and hierarchy do the selling.', examples: 'OG Kombucha · Clarity Labs' },
   { name: 'Illustration', desc: 'A distinctive hand for editorial work, characters, covers and brand storytelling.', examples: 'Byraam Realty · Ghalib' },
   { name: 'UI/UX Design', desc: 'Flows and interfaces that remove friction, from research to high-fidelity prototypes.', examples: 'Nothing · Seekh Saathi' },
   { name: 'Design + Build', desc: 'I design apps and ship working builds with AI coding tools, in Swift, Kotlin and for the web.', examples: 'Fino · Farebird · Typehaus' },

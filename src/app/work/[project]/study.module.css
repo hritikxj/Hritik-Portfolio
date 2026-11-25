@@ -45,7 +45,8 @@
   box-shadow: 0 20px 48px #49310f38;
 }
 .desktop .stage img { border-top: 1px solid #ffffff80; }
-.indigo .stage img { width: min(46%, 26rem); }
+.indigo .stage { padding: 0; }
+.indigo .stage img { width: 100%; }
 .print .stage img { width: min(100%, 70rem); border: clamp(.35rem, 1.2vw, .95rem) solid #fff9ee; box-shadow: 0 12px 30px #37280c43; }
 .lab .stage, .peach .stage { padding: 0; }
 .lab .stage img, .peach .stage img { width: 100%; }
@@ -58,14 +59,13 @@
 .figureMedia { display: grid; place-items: center; min-width: 0; padding: clamp(.65rem, 3vw, 2rem); background: var(--surface); border-radius: .55rem; }
 .figureMedia img { display: block; width: 100%; height: auto; border-radius: .25rem; }
 .pine .figureMedia img, .mobile .figureMedia img { width: min(100%, 15rem); border: 5px solid #17241f; border-radius: 1rem; box-shadow: 0 10px 24px #243d312c; }
-.indigo .figureMedia img, .peach .figureMedia img { width: min(100%, 27rem); }
+.peach .figureMedia img { width: min(100%, 27rem); }
 .feature h2 { font-family: var(--font-display); font-weight: 600; font-size: var(--type-h2); line-height: 1.05; letter-spacing: .02em; }
 .feature figcaption p { margin-top: .85rem; font-size: var(--type-body); line-height: 1.65; max-width: 38ch; color: var(--color-smoke); }
 .note { font-size: var(--type-caption); color: var(--color-smoke); margin-top: 2rem; }
 @media (max-width: 47rem) {
   .feature { grid-template-columns: minmax(0, 1fr); }
   .pine .stage img, .mobile .stage img { width: min(44%, 14rem); }
-  .indigo .stage img { width: min(48%, 20rem); }
 }
 
 /* Every theme: the site palette. Stages and mats are the same neutral panel on

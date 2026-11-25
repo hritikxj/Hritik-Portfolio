@@ -64,7 +64,7 @@ export const summaries: Record<string, ProjectSummary> = {
   '/purr-pantry': {
     brief: 'A premium cat-food brand that feels both vet-credible and home-cooked.',
     role: 'Brand identity designer.',
-    made: 'Logo and its variations, colour palette, type system, a printed can label and social carousels.',
+    made: 'Logo and its variations, colour palette, type system and social carousels.',
     last: { label: 'Context', text: 'Identity built from a written design brief.' },
   },
   '/dove': {
@@ -80,10 +80,10 @@ export const summaries: Record<string, ProjectSummary> = {
     last: { label: 'Context', text: 'Education prototype with a fictional class roster.' },
   },
   '/work/ajji-kairuchi': {
-    brief: 'Give a chakli brand one character that carries a whole packaging series.',
-    role: 'Illustrator and packaging designer.',
-    made: 'The grandmother-and-child illustration and three pouch colourways.',
-    last: { label: 'Context', text: 'Packaging study.' },
+    brief: 'Draw a grandmother a snack brand can be known by.',
+    role: 'Illustrator.',
+    made: 'Ajji and her granddaughter in two poses, used on the front of every pack.',
+    last: { label: 'Context', text: 'Illustration for Ajji KaiRuchi, a South Indian snack brand.' },
   },
   '/work/byraam-realty': {
     brief: 'Capture everyday Bengaluru in one illustration for Byraam Realty.',

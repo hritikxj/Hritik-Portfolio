@@ -107,10 +107,10 @@ const illustrationGroups: Group[] = [
   },
   {
     caption: 'Ajji KaiRuchi',
-    detail: 'Brand illustration for packaging',
+    detail: 'Character illustration',
     link: '/work/ajji-kairuchi',
     items: [
-      art('5 ajji kairuchi brand illustration for their packaging.jpg', 'Grandmothers preparing traditional recipes, illustrated for Ajji KaiRuchi packaging', 1200, 1000, 'col-span-2 md:col-span-12', '(max-width: 767px) calc(100vw - 40px), 100vw'),
+      art('5 ajji kairuchi brand illustration for their packaging.jpg', 'Ajji hugging her granddaughter, and Ajji at a wooden pestle and mortar, illustrated for Ajji KaiRuchi', 1200, 1000, 'col-span-2 md:col-span-12', '(max-width: 767px) calc(100vw - 40px), 100vw'),
     ],
   },
   {

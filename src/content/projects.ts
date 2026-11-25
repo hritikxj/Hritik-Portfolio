@@ -16,7 +16,7 @@ export type Project = {
 const blurbs: Record<string, string> = {
   'clarity-labs': 'Brand guidelines and SWITCH supplement packaging.',
   'og-kombucha': 'A label system for three kombucha flavours.',
-  fino: 'A macOS reference browser for visual people.',
+  fino: 'A macOS reference browser for creative people.',
   farebird: 'An Android app that watches bus fares for you.',
   typehaus: 'A macOS font browser for comparing type in context.',
   fileshuttle: 'Copy or move files between two phones over USB.',
