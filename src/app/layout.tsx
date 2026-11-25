@@ -4,6 +4,7 @@ import "./globals.css";
 import HireMeProvider from "@/components/HireMeProvider";
 import RevealObserver from "@/components/RevealObserver";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 // Switzer by Indian Type Foundry (Fontshare, ITF Free Font License), self-hosted.
 // One family for the whole site: headings and text.
@@ -84,6 +85,7 @@ export default function RootLayout({
         <HireMeProvider>{children}</HireMeProvider>
         <RevealObserver />
         {process.env.VERCEL === '1' && <SpeedInsights />}
+        <Analytics />
       </body>
     </html>
   );
